@@ -1,0 +1,351 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Guitar Acoustic Yamaha F310",
+      "category": "guitar",
+      "price": 2500000,
+      "oldPrice": 2900000,
+      "image": "assets/images/products/guitar-yamaha-f310.jpg",
+      "rating": 4.8,
+      "reviews": 128,
+      "badge": "hot",
+      "featured": true,
+      "inStock": true,
+      "mood": ["chill", "sad"],
+      "description": "Guitar acoustic dành cho người mới bắt đầu. Chất âm tốt, dễ chơi, phù hợp học nhạc.",
+      "specs": {
+        "brand": "Yamaha",
+        "material": "Gỗ hồng đào (Body), Gỗ tuyết tùng (Top)",
+        "origin": "Indonesia",
+        "size": "Dreadnought 4/4",
+        "weight": "2.1 kg",
+        "strings": "6 dây thép",
+        "warranty": "12 tháng",
+        "suited_for": ["Beginner", "Intermediate"],
+        "colors": ["Natural", "Sunburst"]
+      }
+    },
+    {
+      "id": 2,
+      "name": "Piano Điện Yamaha P-125",
+      "category": "piano",
+      "price": 15000000,
+      "oldPrice": 17500000,
+      "image": "assets/images/products/piano-yamaha-p125.jpg",
+      "rating": 4.9,
+      "reviews": 243,
+      "badge": "best",
+      "featured": true,
+      "inStock": true,
+      "mood": ["chill", "sad", "energetic"],
+      "description": "Piano điện 88 phím với công nghệ GHC (Graded Hammer Compact). Âm thanh chuẩn piano cơ.",
+      "specs": {
+        "brand": "Yamaha",
+        "material": "Nhựa cao cấp ABS",
+        "origin": "Japan/China",
+        "keys": 88,
+        "polyphony": "192 nốt",
+        "voices": "24 loại âm thanh",
+        "weight": "11.8 kg",
+        "warranty": "24 tháng",
+        "suited_for": ["Beginner", "Intermediate", "Advanced"]
+      }
+    },
+    {
+      "id": 3,
+      "name": "Trống Điện Roland TD-1K",
+      "category": "drum",
+      "price": 12000000,
+      "oldPrice": 14000000,
+      "image": "assets/images/products/drum-roland-td1k.jpg",
+      "rating": 4.7,
+      "reviews": 89,
+      "badge": "new",
+      "featured": true,
+      "inStock": true,
+      "mood": ["energetic"],
+      "description": "Bộ trống điện tử nhỏ gọn, lý tưởng cho người mới học và luyện tập tại nhà.",
+      "specs": {
+        "brand": "Roland",
+        "material": "Cao su tổng hợp, nhựa ABS",
+        "origin": "Japan",
+        "pads": "5 pad + 1 hi-hat + 1 kick",
+        "sounds": "15 bộ trống",
+        "warranty": "12 tháng",
+        "suited_for": ["Beginner", "Intermediate"]
+      }
+    },
+    {
+      "id": 4,
+      "name": "Ukulele Soprano Kala KA-15S",
+      "category": "ukulele",
+      "price": 950000,
+      "oldPrice": 1200000,
+      "image": "assets/images/products/ukulele-kala.jpg",
+      "rating": 4.6,
+      "reviews": 67,
+      "badge": "sale",
+      "featured": true,
+      "inStock": true,
+      "mood": ["chill"],
+      "description": "Ukulele soprano nhỏ gọn, dễ học, âm thanh trong trẻo. Phù hợp cho người mới bắt đầu.",
+      "specs": {
+        "brand": "Kala",
+        "material": "Gỗ mahogany",
+        "origin": "USA/Vietnam",
+        "size": "Soprano (21 inch)",
+        "strings": "4 dây Nylon",
+        "warranty": "6 tháng",
+        "suited_for": ["Beginner"]
+      }
+    },
+    {
+      "id": 5,
+      "name": "Violin 4/4 Suzuki SVL-110",
+      "category": "violin",
+      "price": 3500000,
+      "image": "assets/images/products/violin-suzuki.jpg",
+      "rating": 4.5,
+      "reviews": 45,
+      "featured": false,
+      "inStock": true,
+      "mood": ["chill", "sad"],
+      "description": "Violin chất lượng cao dành cho học sinh và người tập luyện. Âm thanh ấm áp.",
+      "specs": {
+        "brand": "Suzuki",
+        "material": "Gỗ vân sam (Top), Gỗ maple (Back & Sides)",
+        "origin": "Japan",
+        "size": "4/4",
+        "warranty": "12 tháng",
+        "suited_for": ["Beginner", "Intermediate"]
+      }
+    },
+    {
+      "id": 6,
+      "name": "Guitar Điện Fender Stratocaster Player Series",
+      "category": "guitar",
+      "price": 18000000,
+      "image": "assets/images/products/guitar-fender.jpg",
+      "rating": 4.9,
+      "reviews": 312,
+      "badge": "best",
+      "featured": true,
+      "inStock": true,
+      "mood": ["energetic"],
+      "description": "Guitar điện huyền thoại của Fender. Âm thanh sắc bén, versatile cho nhiều thể loại nhạc.",
+      "specs": {
+        "brand": "Fender",
+        "material": "Gỗ alder (Body), Maple (Neck)",
+        "origin": "Mexico",
+        "strings": "6 dây",
+        "pickups": "3 Single-coil",
+        "warranty": "24 tháng",
+        "suited_for": ["Intermediate", "Advanced"]
+      }
+    },
+    {
+      "id": 7,
+      "name": "Keyboard Casio CT-X700",
+      "category": "keyboard",
+      "price": 2800000,
+      "oldPrice": 3200000,
+      "image": "assets/images/products/keyboard-casio.jpg",
+      "rating": 4.5,
+      "reviews": 95,
+      "badge": "sale",
+      "featured": false,
+      "inStock": true,
+      "mood": ["chill", "energetic"],
+      "description": "Keyboard 61 phím với 600 âm thanh và 195 điệu nhảy. Lý tưởng cho người mới học nhạc.",
+      "specs": {
+        "brand": "Casio",
+        "material": "Nhựa ABS cao cấp",
+        "origin": "Japan/China",
+        "keys": 61,
+        "sounds": "600 âm thanh",
+        "warranty": "12 tháng",
+        "suited_for": ["Beginner", "Intermediate"]
+      }
+    },
+    {
+      "id": 8,
+      "name": "Guitar Bass Fender Squier Affinity",
+      "category": "bass",
+      "price": 8500000,
+      "image": "assets/images/products/bass-squier.jpg",
+      "rating": 4.6,
+      "reviews": 78,
+      "featured": false,
+      "inStock": true,
+      "mood": ["energetic"],
+      "description": "Guitar bass dành cho người mới học. Âm thanh chắc khỏe, cổ đàn dễ chơi.",
+      "specs": {
+        "brand": "Squier by Fender",
+        "material": "Gỗ poplar (Body), Maple (Neck)",
+        "origin": "China",
+        "strings": "4 dây",
+        "warranty": "12 tháng",
+        "suited_for": ["Beginner", "Intermediate"]
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "id": 1,
+      "level": "Beginner",
+      "title": "Cách cầm đàn guitar đúng cách",
+      "duration": "15 phút",
+      "description": "Học cách cầm đàn guitar đúng tư thế, tránh chấn thương và phát triển kỹ năng nhanh hơn.",
+      "icon": "🎸",
+      "video_url": null,
+      "exercises": ["Tập ngồi đúng tư thế 10 phút/ngày", "Đặt tay trái lên cổ đàn đúng vị trí", "Luyện ngón cái và 4 ngón còn lại"]
+    },
+    {
+      "id": 2,
+      "level": "Beginner",
+      "title": "Đọc nốt nhạc cơ bản",
+      "duration": "20 phút",
+      "description": "Tìm hiểu 7 nốt nhạc cơ bản (Đô Rê Mi Fa Sol La Si) và cách đọc trên khuông nhạc.",
+      "icon": "🎼",
+      "exercises": ["Ghi nhớ vị trí 7 nốt trên khuông", "Tập đọc bài nhạc đơn giản", "Nghe và nhận biết nốt nhạc"]
+    },
+    {
+      "id": 3,
+      "level": "Beginner",
+      "title": "4 Hợp âm guitar cơ bản",
+      "duration": "25 phút",
+      "description": "Học và luyện 4 hợp âm cơ bản nhất: C, G, Am, F. Đây là nền tảng của hàng trăm bài hát.",
+      "icon": "🎵",
+      "exercises": ["Luyện chuyển hợp âm C - G", "Luyện Am - F", "Chơi bài hát đơn giản với 4 hợp âm"]
+    },
+    {
+      "id": 4,
+      "level": "Beginner",
+      "title": "Nhịp điệu và strumming cơ bản",
+      "duration": "20 phút",
+      "description": "Học các mẫu gảy đàn cơ bản và cách giữ nhịp điệu khi chơi.",
+      "icon": "🎶",
+      "exercises": ["Luyện đếm nhịp 1-2-3-4", "Mẫu Down-Down-Up-Down-Up", "Chơi với metronome BPM 60"]
+    },
+    {
+      "id": 5,
+      "level": "Intermediate",
+      "title": "Kỹ thuật Fingerpicking",
+      "duration": "30 phút",
+      "description": "Kỹ thuật chơi từng ngón tay riêng biệt, tạo ra âm thanh phong phú và chi tiết hơn.",
+      "icon": "🤞",
+      "exercises": ["Pattern P-I-M-A cơ bản", "Fingerpicking bài Ước Gì", "Luyện ngón theo metronome"]
+    },
+    {
+      "id": 6,
+      "level": "Intermediate",
+      "title": "Scales & Pentatonic",
+      "duration": "35 phút",
+      "description": "Học major và minor pentatonic scale - nền tảng của solo guitar và improvisation.",
+      "icon": "🎹",
+      "exercises": ["Major pentatonic trên cung C", "Minor pentatonic trên cung A", "Luyện 3 nốt/nhịp đập"]
+    },
+    {
+      "id": 7,
+      "level": "Intermediate",
+      "title": "Barre Chords - Hợp âm chặn",
+      "duration": "30 phút",
+      "description": "Kỹ thuật barre chord giúp bạn chơi bất kỳ hợp âm nào trên toàn bộ cần đàn.",
+      "icon": "💪",
+      "exercises": ["Luyện ngón trỏ chặn đủ 6 dây", "Barre chord F (ngón trỏ ở fret 1)", "Chuyển động từ E-shape barre chord"]
+    },
+    {
+      "id": 8,
+      "level": "Advanced",
+      "title": "Improvisation - Tứ tấu tự do",
+      "duration": "45 phút",
+      "description": "Nghệ thuật ứng tấu và biểu diễn sáng tạo trong jazz và blues.",
+      "icon": "🎤",
+      "exercises": ["Ứng tấu trên blues progression 12 bar", "Sử dụng chord tones khi solo", "Call and response technique"]
+    },
+    {
+      "id": 9,
+      "level": "Advanced",
+      "title": "Music Theory Nâng Cao",
+      "duration": "50 phút",
+      "description": "Hiểu sâu về harmony, voice leading và chord substitutions.",
+      "icon": "📚",
+      "exercises": ["Phân tích bài hát theo harmony", "Viết chord progression gốc", "Chuyển điệu (modulation)"]
+    }
+  ],
+  "blog_posts": [
+    {
+      "id": 1,
+      "title": "Top 10 Guitar Acoustic Cho Người Mới Bắt Đầu 2025",
+      "slug": "top-guitar-acoustic-nguoi-moi",
+      "category": "Guitar",
+      "date": "2025-01-15",
+      "image": "assets/images/backgrounds/blog-guitar.jpg",
+      "excerpt": "Chọn guitar đầu tiên rất quan trọng. Chúng tôi đã test 20+ mẫu guitar acoustic để tìm ra top 10 tốt nhất trong tầm giá dưới 5 triệu...",
+      "read_time": "8 phút",
+      "tags": ["guitar", "acoustic", "người mới", "review"]
+    },
+    {
+      "id": 2,
+      "title": "Cách Chọn Piano Điện Phù Hợp: Hướng Dẫn Đầy Đủ 2025",
+      "slug": "chon-piano-dien",
+      "category": "Piano",
+      "date": "2025-01-20",
+      "image": "assets/images/backgrounds/blog-piano.jpg",
+      "excerpt": "Piano điện ngày càng phổ biến với nhiều model và mức giá khác nhau. Bài viết này giúp bạn chọn đúng model theo ngân sách và mục tiêu...",
+      "read_time": "10 phút",
+      "tags": ["piano", "hướng dẫn", "mua sắm"]
+    },
+    {
+      "id": 3,
+      "title": "So Sánh Acoustic vs Electric Guitar: Nên Chọn Cái Nào?",
+      "slug": "acoustic-vs-electric-guitar",
+      "category": "Guitar",
+      "date": "2025-02-01",
+      "image": "assets/images/backgrounds/blog-compare.jpg",
+      "excerpt": "Acoustic hay Electric - câu hỏi mà mọi guitarist đều phải trả lời. Bài viết này phân tích chi tiết ưu/nhược điểm của từng loại...",
+      "read_time": "7 phút",
+      "tags": ["guitar", "acoustic", "electric", "so sánh"]
+    },
+    {
+      "id": 4,
+      "title": "Hướng Dẫn Bảo Dưỡng Nhạc Cụ Đúng Cách",
+      "slug": "bao-duong-nhac-cu",
+      "category": "Mẹo hay",
+      "date": "2025-02-10",
+      "image": "assets/images/backgrounds/blog-care.jpg",
+      "excerpt": "Nhạc cụ của bạn sẽ bền lâu và có âm thanh tốt hơn nếu được chăm sóc đúng cách. Đây là hướng dẫn đầy đủ từ lau chùi đến bảo quản...",
+      "read_time": "6 phút",
+      "tags": ["bảo dưỡng", "chăm sóc", "mẹo hay"]
+    },
+    {
+      "id": 5,
+      "title": "Ukulele vs Guitar: Nên Học Cái Nào Trước?",
+      "slug": "ukulele-vs-guitar",
+      "category": "Mẹo hay",
+      "date": "2025-02-15",
+      "image": "assets/images/backgrounds/blog-guitar.jpg",
+      "excerpt": "Nhiều người phân vân giữa ukulele và guitar khi mới bắt đầu. Bài viết so sánh chi tiết để bạn đưa ra quyết định đúng đắn...",
+      "read_time": "5 phút",
+      "tags": ["ukulele", "guitar", "người mới", "so sánh"]
+    }
+  ],
+  "repair_services": [
+    { "id": 1, "name": "Thay dây đàn", "price": 50000, "time": "30 phút", "instruments": ["guitar", "bass", "ukulele"] },
+    { "id": 2, "name": "Lên dây, cân chỉnh action", "price": 150000, "time": "1-2 giờ", "instruments": ["guitar", "bass"] },
+    { "id": 3, "name": "Bảo dưỡng tổng thể guitar acoustic", "price": 300000, "time": "2-3 giờ", "instruments": ["guitar"] },
+    { "id": 4, "name": "Sửa phím bấm (refretting)", "price": 500000, "time": "1-2 ngày", "instruments": ["guitar", "bass"] },
+    { "id": 5, "name": "Bảo dưỡng piano điện", "price": 400000, "time": "2-3 giờ", "instruments": ["piano"] },
+    { "id": 6, "name": "Lên dây violin", "price": 80000, "time": "30 phút", "instruments": ["violin"] }
+  ],
+  "categories": [
+    { "id": "guitar", "name": "Guitar", "icon": "🎸", "count": 45 },
+    { "id": "piano", "name": "Piano & Keyboard", "icon": "🎹", "count": 32 },
+    { "id": "drum", "name": "Trống & Bộ gõ", "icon": "🥁", "count": 28 },
+    { "id": "ukulele", "name": "Ukulele", "icon": "🪗", "count": 20 },
+    { "id": "violin", "name": "Violin & Cello", "icon": "🎻", "count": 15 },
+    { "id": "wind", "name": "Nhạc cụ hơi", "icon": "🎺", "count": 12 },
+    { "id": "accessories", "name": "Phụ kiện", "icon": "🎵", "count": 150 }
+  ]
+}
