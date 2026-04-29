@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cộng đồng âm nhạc DLQ - Kết nối người yêu nhạc trên cả nước">
+  <title>Cộng Đồng Âm Nhạc | DLQ Music Store</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/community.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+  <style>
+    .community-hero{background:linear-gradient(135deg,var(--bg-dark),var(--primary-light));padding:3rem 0 2rem;text-align:center}
+    .community-hero h1{font-size:var(--fs-4xl);margin-bottom:0.5rem}
+    .community-layout{display:grid;grid-template-columns:280px 1fr;gap:2rem;padding:2rem 0 4rem;align-items:start}
+    @media(max-width:900px){.community-layout{grid-template-columns:1fr}}
+    /* Sidebar */
+    .community-sidebar{}
+    .sidebar-widget{background:var(--bg-card);border-radius:var(--radius-xl);padding:1.25rem;border:1px solid rgba(255,255,255,0.08);margin-bottom:1.25rem}
+    .sidebar-widget h3{font-size:1rem;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;color:var(--text-secondary);text-transform:uppercase;font-size:0.8rem;letter-spacing:0.08em;font-weight:700}
+    .user-mini-profile{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0.5rem}
+    .mini-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--gold));display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin-bottom:0.75rem;border:3px solid rgba(255,255,255,0.1)}
+    .mini-name{font-weight:700;font-size:1.05rem;margin-bottom:0.25rem}
+    .mini-level{font-size:0.8rem;color:var(--accent);background:rgba(233,69,96,0.1);padding:0.2rem 0.75rem;border-radius:var(--radius-full);border:1px solid rgba(233,69,96,0.3)}
+    .mini-stats{display:flex;gap:1.5rem;margin-top:0.75rem;font-size:0.8rem;color:var(--text-muted)}
+    .mini-stats div{text-align:center}
+    .mini-stats strong{display:block;color:var(--text-primary);font-size:1rem}
+    .leaderboard-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:0.6rem}
+    .leaderboard-item{display:flex;align-items:center;gap:0.75rem;padding:0.5rem;border-radius:var(--radius-md);transition:var(--transition-fast)}
+    .leaderboard-item:hover{background:rgba(255,255,255,0.04)}
+    .lb-rank{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0}
+    .lb-rank-1{background:var(--gold);color:var(--bg-dark)}
+    .lb-rank-2{background:#c0c0c0;color:var(--bg-dark)}
+    .lb-rank-3{background:#cd7f32;color:#fff}
+    .lb-rank-n{background:var(--bg-dark);color:var(--text-muted)}
+    .lb-name{flex:1;font-size:0.9rem;font-weight:600}
+    .lb-points{font-size:0.8rem;color:var(--gold)}
+    .tag-cloud{display:flex;flex-wrap:wrap;gap:0.5rem}
+    .tag{padding:0.3rem 0.75rem;border-radius:var(--radius-full);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);font-size:0.8rem;color:var(--text-secondary);cursor:pointer;transition:var(--transition-fast)}
+    .tag:hover{border-color:var(--accent);color:var(--accent);background:rgba(233,69,96,0.1)}
+    /* Feed */
+    .community-feed{}
+    .create-post-box{background:var(--bg-card);border-radius:var(--radius-xl);padding:1.25rem;border:1px solid rgba(255,255,255,0.08);margin-bottom:1.5rem}
+    .create-post-box .box-header{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem}
+    .post-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--gold));display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+    #create-post-input{flex:1;padding:0.75rem 1rem;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-full);color:var(--text-primary);font-size:0.9rem;cursor:pointer;transition:var(--transition-fast)}
+    #create-post-input:focus{outline:none;border-color:var(--accent);border-radius:var(--radius-lg);cursor:text}
+    .post-actions{display:flex;gap:0.5rem;flex-wrap:wrap}
+    .post-action-btn{padding:0.45rem 0.9rem;border-radius:var(--radius-full);border:1px solid rgba(255,255,255,0.1);background:none;color:var(--text-muted);cursor:pointer;font-size:0.85rem;transition:var(--transition-fast);display:flex;align-items:center;gap:0.3rem}
+    .post-action-btn:hover{border-color:var(--accent);color:var(--accent)}
+    .filter-tabs{display:flex;gap:0;border-bottom:2px solid rgba(255,255,255,0.08);margin-bottom:1.5rem;flex-wrap:wrap}
+    .filter-tab{padding:0.6rem 1.2rem;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:0.9rem;font-weight:600;transition:var(--transition-fast);border-bottom:2px solid transparent;margin-bottom:-2px}
+    .filter-tab.active,.filter-tab:hover{color:var(--text-primary);border-bottom-color:var(--accent)}
+    #post-feed{display:flex;flex-direction:column;gap:1.25rem}
+    .post-card{background:var(--bg-card);border-radius:var(--radius-xl);padding:1.25rem;border:1px solid rgba(255,255,255,0.08);transition:var(--transition-base);animation:fadeIn 0.4s ease}
+    .post-card:hover{border-color:rgba(255,255,255,0.15)}
+    .post-header{display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:0.75rem}
+    .post-author-info{flex:1}
+    .post-author-name{font-weight:700;font-size:0.95rem;color:var(--text-primary);display:flex;align-items:center;gap:0.5rem}
+    .author-badge{font-size:0.7rem;padding:0.1rem 0.5rem;border-radius:var(--radius-full);background:rgba(233,69,96,0.15);color:var(--accent);border:1px solid rgba(233,69,96,0.3)}
+    .post-time{font-size:0.75rem;color:var(--text-muted);margin-top:0.1rem}
+    .post-body{color:var(--text-secondary);line-height:1.6;font-size:0.95rem;margin-bottom:0.75rem;white-space:pre-line}
+    .post-tags{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.75rem}
+    .post-tag{padding:0.2rem 0.65rem;border-radius:var(--radius-full);background:rgba(255,255,255,0.06);font-size:0.75rem;color:var(--accent)}
+    .post-media{width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,var(--bg-dark),rgba(233,69,96,0.05));border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:4rem;margin-bottom:0.75rem;border:1px dashed rgba(255,255,255,0.08)}
+    .post-reactions{display:flex;gap:0.5rem;flex-wrap:wrap;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.06)}
+    .reaction-btn{padding:0.35rem 0.75rem;border-radius:var(--radius-full);border:1px solid rgba(255,255,255,0.08);background:none;color:var(--text-muted);cursor:pointer;font-size:0.85rem;transition:var(--transition-fast);display:flex;align-items:center;gap:0.3rem}
+    .reaction-btn:hover,.reaction-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(233,69,96,0.08)}
+    .reaction-btn.liked{color:var(--danger);border-color:var(--danger);background:rgba(220,53,69,0.08)}
+    /* Post Modal */
+    .post-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:var(--z-modal);align-items:center;justify-content:center;padding:1rem}
+    .post-modal.open{display:flex}
+    .post-modal-box{background:var(--bg-card);border-radius:var(--radius-xl);max-width:580px;width:100%;border:1px solid rgba(255,255,255,0.1)}
+    .post-modal-head{display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.1)}
+    .post-modal-body{padding:1.5rem}
+    #post-textarea{width:100%;min-height:120px;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius-lg);color:var(--text-primary);padding:0.9rem 1rem;font-size:0.95rem;resize:vertical;font-family:var(--font-primary);line-height:1.6}
+    #post-textarea:focus{outline:none;border-color:var(--accent)}
+    .post-modal-footer{padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:flex-end;gap:0.75rem}
+    #submit-post{padding:0.7rem 1.5rem;background:var(--accent);color:#fff;border:none;border-radius:var(--radius-lg);font-weight:700;cursor:pointer;transition:var(--transition-fast)}
+    #submit-post:hover{background:var(--accent-hover)}
+    .post-category-select{width:100%;padding:0.6rem 0.9rem;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius-md);color:var(--text-secondary);font-size:0.9rem;margin-top:0.75rem}
+  </style>
+</head>
+<body class="community-page">
+<div id="loading-screen" class="loading-screen">
+  <div class="loading-logo">DLQ</div>
+  <div class="loading-bars"><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div></div>
+  <p style="color:var(--text-muted);font-size:0.875rem">Đang tải DLQ Music Store...</p>
+</div>
+<div id="floating-notes" class="music-notes-container" aria-hidden="true"></div>
+
+<nav class="navbar" role="navigation">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo"><div class="logo-mark">DLQ</div><div class="logo-text"><span class="logo-name">DLQ Music</span><span class="logo-tagline">NHẠC CỤ CHÍNH HÃNG</span></div></a>
+    <nav class="nav-links">
+      <a href="../index.html" class="nav-link">🏠 Trang chủ</a>
+      <a href="../pages/search-results.html" class="nav-link">🛍️ Sản phẩm</a>
+      <a href="../pages/interactive-play.html" class="nav-link">🎹 Thử online</a>
+      <a href="../pages/learning.html" class="nav-link">📚 Học nhạc</a>
+      <a href="../pages/community.html" class="nav-link active">👥 Cộng đồng</a>
+      <a href="../pages/blog.html" class="nav-link">✍️ Blog</a>
+      <a href="../pages/repair-service.html" class="nav-link">🔧 Sửa chữa</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="nav-search" role="search"><span>🔍</span><input type="search" placeholder="Tìm nhạc cụ..." aria-label="Tìm kiếm" onkeydown="if(event.key==='Enter')window.location.href='../pages/search-results.html?q='+this.value"></div>
+      <a href="../pages/profile.html" class="nav-icon-btn">👤</a>
+      <a href="../pages/cart.html" class="nav-icon-btn" style="position:relative">🛒<span class="cart-badge" style="display:none">0</span></a>
+      <button class="hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu">
+  <a href="../index.html" class="nav-link">🏠 Trang chủ</a>
+  <a href="../pages/search-results.html" class="nav-link">🛍️ Sản phẩm</a>
+  <a href="../pages/interactive-play.html" class="nav-link">🎹 Thử nhạc cụ online</a>
+  <a href="../pages/learning.html" class="nav-link">📚 Học nhạc</a>
+  <a href="../pages/community.html" class="nav-link">👥 Cộng đồng</a>
+  <a href="../pages/blog.html" class="nav-link">✍️ Blog</a>
+  <a href="../pages/repair-service.html" class="nav-link">🔧 Sửa chữa</a>
+  <a href="../pages/profile.html" class="nav-link">👤 Tài khoản</a>
+  <a href="../pages/cart.html" class="nav-link">🛒 Giỏ hàng</a>
+</div>
+
+<main>
+  <section class="community-hero">
+    <div class="container">
+      <h1>👥 Cộng Đồng <span class="text-accent">Âm Nhạc</span></h1>
+      <p class="text-secondary">Kết nối với hơn 5,000+ người yêu nhạc trên khắp Việt Nam. Chia sẻ, học hỏi, cùng phát triển!</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="community-layout">
+      <!-- Sidebar -->
+      <aside class="community-sidebar">
+        <!-- User Profile -->
+        <div class="sidebar-widget">
+          <div class="user-mini-profile">
+            <div class="mini-avatar">🎸</div>
+            <div class="mini-name" id="sidebar-username">Khách</div>
+            <div class="mini-level">🌱 Người mới</div>
+            <div class="mini-stats">
+              <div><strong id="sidebar-posts">0</strong>Bài viết</div>
+              <div><strong id="sidebar-likes">0</strong>Lượt thích</div>
+              <div><strong id="sidebar-followers">0</strong>Theo dõi</div>
+            </div>
+          </div>
+          <a href="../pages/profile.html" class="btn btn-secondary btn-sm" style="width:100%;margin-top:0.75rem;text-align:center;display:block">👤 Xem hồ sơ</a>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="sidebar-widget">
+          <h3>🏆 Bảng Xếp Hạng</h3>
+          <ul class="leaderboard-list" id="leaderboard-list">
+            <li class="leaderboard-item"><span class="lb-rank lb-rank-1">1</span><span class="lb-name">Nguyễn Minh Tuấn 🎸</span><span class="lb-points">2,840 điểm</span></li>
+            <li class="leaderboard-item"><span class="lb-rank lb-rank-2">2</span><span class="lb-name">Trần Thị Hoa 🎹</span><span class="lb-points">2,210 điểm</span></li>
+            <li class="leaderboard-item"><span class="lb-rank lb-rank-3">3</span><span class="lb-name">Lê Quốc Bảo 🥁</span><span class="lb-points">1,980 điểm</span></li>
+            <li class="leaderboard-item"><span class="lb-rank lb-rank-n">4</span><span class="lb-name">Phạm Văn Long 🎻</span><span class="lb-points">1,540 điểm</span></li>
+            <li class="leaderboard-item"><span class="lb-rank lb-rank-n">5</span><span class="lb-name">Võ Thị Thanh 🎸</span><span class="lb-points">1,320 điểm</span></li>
+          </ul>
+        </div>
+
+        <!-- Tag Cloud -->
+        <div class="sidebar-widget">
+          <h3>🏷️ Chủ Đề Nổi Bật</h3>
+          <div class="tag-cloud">
+            <span class="tag">#guitar</span>
+            <span class="tag">#piano</span>
+            <span class="tag">#drum</span>
+            <span class="tag">#beginner</span>
+            <span class="tag">#nhạcthai</span>
+            <span class="tag">#cover</span>
+            <span class="tag">#acoustic</span>
+            <span class="tag">#fingerstyle</span>
+            <span class="tag">#nhạcpop</span>
+            <span class="tag">#dlqmusic</span>
+            <span class="tag">#điệuBlues</span>
+            <span class="tag">#hòaâm</span>
+          </div>
+        </div>
+
+        <!-- Stats Widget -->
+        <div class="sidebar-widget">
+          <h3>📊 Thống Kê Cộng Đồng</h3>
+          <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:0.9rem;color:var(--text-secondary)">
+            <div style="display:flex;justify-content:space-between"><span>👥 Thành viên</span><strong>5,240</strong></div>
+            <div style="display:flex;justify-content:space-between"><span>📝 Bài viết</span><strong>12,890</strong></div>
+            <div style="display:flex;justify-content:space-between"><span>🔥 Online hôm nay</span><strong style="color:var(--success)">284</strong></div>
+            <div style="display:flex;justify-content:space-between"><span>🆕 Mới hôm nay</span><strong style="color:var(--accent)">47</strong></div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Feed -->
+      <div class="community-feed">
+        <!-- Create Post Box -->
+        <div class="create-post-box">
+          <div class="box-header">
+            <div class="post-avatar">🎸</div>
+            <input type="text" id="create-post-input" placeholder="Bạn muốn chia sẻ điều gì về âm nhạc? 🎵" readonly>
+          </div>
+          <div class="post-actions">
+            <button class="post-action-btn" onclick="openPostModal('video')">🎬 Video</button>
+            <button class="post-action-btn" onclick="openPostModal('image')">📷 Ảnh</button>
+            <button class="post-action-btn" onclick="openPostModal('audio')">🎵 Âm thanh</button>
+            <button class="post-action-btn" onclick="openPostModal('text')">✏️ Viết bài</button>
+          </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs" role="tablist" aria-label="Lọc bài viết">
+          <button class="filter-tab active" data-filter-posts="all" role="tab">🔥 Tất cả</button>
+          <button class="filter-tab" data-filter-posts="guitar" role="tab">🎸 Guitar</button>
+          <button class="filter-tab" data-filter-posts="piano" role="tab">🎹 Piano</button>
+          <button class="filter-tab" data-filter-posts="drum" role="tab">🥁 Trống</button>
+        </div>
+
+        <!-- Post Feed -->
+        <div id="post-feed" role="feed" aria-label="Bài viết cộng đồng">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Post Modal -->
+<div class="post-modal" id="post-modal" role="dialog" aria-label="Tạo bài viết">
+  <div class="post-modal-box">
+    <div class="post-modal-head">
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <div class="post-avatar" style="width:36px;height:36px;font-size:1.2rem">🎸</div>
+        <span style="font-weight:700">Tạo bài viết mới</span>
+      </div>
+      <button onclick="document.getElementById('post-modal').classList.remove('open')" aria-label="Đóng">✕</button>
+    </div>
+    <div class="post-modal-body">
+      <textarea id="post-textarea" placeholder="Chia sẻ kinh nghiệm, hỏi đáp, hoặc giới thiệu bản cover của bạn... 🎵" aria-label="Nội dung bài viết"></textarea>
+      <select class="post-category-select" id="post-category" aria-label="Chủ đề">
+        <option value="all">🎵 Chủ đề</option>
+        <option value="guitar">🎸 Guitar</option>
+        <option value="piano">🎹 Piano</option>
+        <option value="drum">🥁 Trống</option>
+        <option value="tips">💡 Mẹo & Thủ thuật</option>
+        <option value="gear">🔧 Thiết bị & Nhạc cụ</option>
+      </select>
+    </div>
+    <div class="post-modal-footer">
+      <button class="btn btn-ghost" onclick="document.getElementById('post-modal').classList.remove('open')">Hủy</button>
+      <button id="submit-post">📝 Đăng bài</button>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="logo-mark" style="font-size:1.5rem;font-weight:900;color:var(--accent)">DLQ</div><p>DLQ Music Store – Kết nối cộng đồng âm nhạc</p></div>
+      <div><h4>Liên kết</h4><ul><li><a href="../pages/learning.html">Học nhạc</a></li><li><a href="../pages/blog.html">Blog âm nhạc</a></li><li><a href="../pages/repair-service.html">Sửa chữa</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 DLQ Music Store. All rights reserved. 🎵</p></div>
+  </div>
+</footer>
+
+<div class="chatbot-widget"><div class="chatbot-box" id="chatbot-box"><div class="chatbot-header"><div class="chatbot-avatar">🤖</div><div class="chatbot-info"><h4>DLQ Bot</h4><p>Tư vấn 24/7</p></div><button class="chatbot-close" id="chatbot-close">✕</button></div><div class="chatbot-messages" id="chatbot-messages" role="log" aria-live="polite"></div><div class="chatbot-quick-replies" id="chatbot-quick-replies"></div><div class="chatbot-input-area"><input type="text" class="chatbot-input" id="chatbot-input" placeholder="Nhập câu hỏi..." aria-label="Nhập tin nhắn"><button class="chatbot-send" id="chatbot-send">➤</button></div></div><button class="chatbot-toggle" id="chatbot-toggle">💬</button></div>
+<div class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/audio-player.js"></script>
+<script src="../js/mood-system.js"></script>
+<script src="../js/animations.js"></script>
+<script src="../js/chatbot.js"></script>
+<script src="../js/community.js"></script>
+
+<script>
+const SAMPLE_POSTS = [
+  {id:'p1',author:'Nguyễn Minh Tuấn',avatar:'🎸',badge:'Pro',time:'2 giờ trước',category:'guitar',content:'Hôm nay mình vừa học xong bài "Blackbird" của The Beatles theo fingerpicking! Mất 2 tuần luyện tập nhưng cảm giác chơi được bài này thật sự rất đã 🎸✨\n\nMẹo nhỏ: hãy luyện từng ô nhịp một, đừng vội chạy toàn bài ngay từ đầu.',tags:['#guitar','#fingerpicking','#thebeatles'],likes:42,comments:8,hasMedia:false,icon:'🎸'},
+  {id:'p2',author:'Trần Thị Hoa',avatar:'🎹',badge:'Mod',time:'4 giờ trước',category:'piano',content:'Review đàn piano điện Yamaha P-45 sau 6 tháng sử dụng:\n✅ Âm thanh rất chân thực, 88 phím weighted\n✅ Nhỏ gọn, phù hợp phòng ở\n✅ Giá hợp lý cho level mới bắt đầu\n❌ Không có loa ngoài tốt\n\nNhìn chung là xứng đáng 8/10 cho người mới học piano 🎹',tags:['#piano','#yamaha','#review'],likes:67,comments:15,hasMedia:true,mediaIcon:'🎹',icon:'🎹'},
+  {id:'p3',author:'Lê Quốc Bảo',avatar:'🥁',badge:null,time:'6 giờ trước',category:'drum',content:'Ai đang học trống như mình không? Mình đang stuck ở phần ghost note quá 😅 Đã luyện 2 tuần rồi mà vẫn chưa đều.\n\nAnh chị nào có kinh nghiệm xin chỉ giáo với ạ!',tags:['#drum','#ghostnotes','#hỏiđáp'],likes:23,comments:19,hasMedia:false,icon:'🥁'},
+  {id:'p4',author:'Phạm Văn Long',avatar:'🎻',badge:null,time:'1 ngày trước',category:'all',content:'Vừa mua được cây violin Yamaha V3 tại DLQ Music Store! Setup rất chuyên nghiệp, giá tốt hơn nhiều nơi khác mình đã hỏi. Anh nhân viên tư vấn cực kỳ nhiệt tình 🎻❤️\n\nCảm ơn team DLQ!',tags:['#violin','#yamaha','#dlqmusic'],likes:89,comments:24,hasMedia:true,mediaIcon:'🎻',icon:'🎻'},
+  {id:'p5',author:'Võ Thị Thanh',avatar:'🪗',badge:null,time:'2 ngày trước',category:'guitar',content:'Bài mình cover hôm nay: "Lắng Nghe Nước Mưa" fingerstyle 🌧️\nChord progression: Am - F - C - G\nArrangement tự làm, ai muốn tab thì inbox nhé!\n\n#guitar #fingerstyle #nhạcviệt #cover',tags:['#guitar','#fingerstyle','#nhạcviệt'],likes:134,comments:31,hasMedia:true,mediaIcon:'🎸',icon:'🪗'},
+];
+
+let posts = JSON.parse(localStorage.getItem('dlq_community_posts')||JSON.stringify(SAMPLE_POSTS));
+let currentFilter = 'all';
+
+function renderPosts(filter='all') {
+  const feed = document.getElementById('post-feed');
+  const filtered = posts.filter(p=>filter==='all'||p.category===filter);
+  if(!filtered.length){ feed.innerHTML='<div style="text-align:center;padding:3rem;color:var(--text-muted)"><p style="font-size:3rem">📭</p><p>Chưa có bài viết nào. Hãy là người đầu tiên!</p></div>'; return; }
+  feed.innerHTML = filtered.map(p=>`
+    <article class="post-card" data-post-id="${p.id}" aria-label="Bài viết của ${p.author}">
+      <div class="post-header">
+        <div class="post-avatar">${p.avatar||'👤'}</div>
+        <div class="post-author-info">
+          <div class="post-author-name">${p.author}${p.badge?`<span class="author-badge">${p.badge==='Mod'?'🛡️ Mod':'⭐ Pro'}</span>`:''}</div>
+          <div class="post-time">🕐 ${p.time}</div>
+        </div>
+        <span style="font-size:1.5rem">${p.icon||'🎵'}</span>
+      </div>
+      ${p.hasMedia?`<div class="post-media" role="img" aria-label="Media">${p.mediaIcon||'🎵'}<br><span style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem">Nhấn để xem</span></div>`:''}
+      <div class="post-body">${p.content}</div>
+      <div class="post-tags">${p.tags.map(t=>`<span class="post-tag">${t}</span>`).join('')}</div>
+      <div class="post-reactions">
+        <button class="reaction-btn ${p.liked?'liked':''}" data-like="${p.id}">❤️ ${p.likes}</button>
+        <button class="reaction-btn" data-comment="${p.id}">💬 ${p.comments}</button>
+        <button class="reaction-btn">🔗 Chia sẻ</button>
+        <button class="reaction-btn">🔖 Lưu</button>
+      </div>
+    </article>`).join('');
+
+  feed.querySelectorAll('[data-like]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const p = posts.find(x=>x.id===btn.dataset.like);
+      if(!p) return;
+      p.liked=!p.liked; p.likes=p.liked?p.likes+1:p.likes-1;
+      btn.classList.toggle('liked'); btn.textContent=`❤️ ${p.likes}`;
+      localStorage.setItem('dlq_community_posts',JSON.stringify(posts));
+    });
+  });
+}
+
+function openPostModal(type) {
+  const ta = document.getElementById('post-textarea');
+  if(ta) ta.placeholder = type==='video'?'Dán link video YouTube/TikTok vào đây... 🎬':type==='audio'?'Mô tả bản nhạc của bạn... 🎵':'Chia sẻ điều gì đó về âm nhạc... 🎵';
+  document.getElementById('post-modal')?.classList.add('open');
+}
+window.openPostModal = openPostModal;
+
+document.getElementById('create-post-input')?.addEventListener('click',()=>openPostModal('text'));
+
+document.getElementById('submit-post')?.addEventListener('click',()=>{
+  const text = document.getElementById('post-textarea')?.value?.trim();
+  const cat = document.getElementById('post-category')?.value||'all';
+  if(!text){ if(window.DLQToast) DLQToast.show('⚠️ Vui lòng nhập nội dung bài viết','warning'); return; }
+  const newPost = {
+    id:'p'+Date.now(), author:'Bạn', avatar:'👤', badge:null,
+    time:'Vừa xong', category:cat, content:text,
+    tags:['#dlqcommunity'], likes:0, comments:0, hasMedia:false, icon:'🎵', liked:false
+  };
+  posts.unshift(newPost);
+  localStorage.setItem('dlq_community_posts',JSON.stringify(posts));
+  document.getElementById('post-textarea').value='';
+  document.getElementById('post-modal').classList.remove('open');
+  renderPosts(currentFilter);
+  if(window.DLQToast) DLQToast.show('✅ Bài viết đã được đăng!','success');
+  document.getElementById('sidebar-posts').textContent = parseInt(document.getElementById('sidebar-posts').textContent||0)+1;
+});
+
+document.querySelectorAll('[data-filter-posts]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('[data-filter-posts]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filterPosts;
+    renderPosts(currentFilter);
+  });
+});
+
+document.querySelectorAll('.tag').forEach(tag=>{
+  tag.addEventListener('click',()=>{
+    const text = document.getElementById('post-textarea');
+    if(text){ text.value+=(text.value?' ':'')+tag.textContent; document.getElementById('post-modal').classList.add('open'); }
+  });
+});
+
+document.addEventListener('DOMContentLoaded',()=>{
+  renderPosts('all');
+  const user = JSON.parse(localStorage.getItem('dlq_user')||'{}');
+  if(user.name) document.getElementById('sidebar-username').textContent = user.name;
+  const myPosts = posts.filter(p=>p.author==='Bạn').length;
+  document.getElementById('sidebar-posts').textContent = myPosts;
+});
+</script>
+</body>
+</html>

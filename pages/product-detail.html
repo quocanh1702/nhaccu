@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Chi tiết sản phẩm nhạc cụ tại DLQ Music Store">
+  <title>Chi Tiết Sản Phẩm | DLQ Music Store</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/product.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+  <style>
+    .product-detail-section{padding:2rem 0 4rem}
+    .product-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+    @media(max-width:900px){.product-detail-grid{grid-template-columns:1fr}}
+    .product-gallery{position:sticky;top:100px}
+    .gallery-main{aspect-ratio:1;background:linear-gradient(135deg,var(--bg-card),rgba(233,69,96,0.1));border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;font-size:10rem;border:1px solid rgba(255,255,255,0.08);margin-bottom:1rem;overflow:hidden;cursor:zoom-in;transition:var(--transition-base)}
+    .gallery-main:hover{box-shadow:var(--shadow-lg)}
+    .gallery-thumbs{display:flex;gap:0.75rem;flex-wrap:wrap}
+    .gallery-thumb{width:80px;height:80px;background:var(--bg-card);border-radius:var(--radius-md);border:2px solid rgba(255,255,255,0.1);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:2.5rem;transition:var(--transition-fast)}
+    .gallery-thumb:hover,.gallery-thumb.active{border-color:var(--accent)}
+    .product-info-panel{}
+    .product-brand{font-size:0.85rem;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem}
+    .product-title{font-size:var(--fs-3xl);font-weight:800;color:var(--text-primary);line-height:1.2;margin-bottom:0.75rem;font-family:var(--font-heading)}
+    .product-stars{display:flex;align-items:center;gap:0.5rem;margin-bottom:1rem}
+    .product-stars .stars{color:var(--gold);font-size:1.1rem;letter-spacing:0.05em}
+    .product-reviews-count{font-size:0.85rem;color:var(--text-muted)}
+    .product-price-box{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem;padding:1rem 0;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08)}
+    .price-main{font-size:var(--fs-3xl);font-weight:900;color:var(--accent)}
+    .price-old{font-size:var(--fs-xl);color:var(--text-muted);text-decoration:line-through}
+    .price-discount-pct{background:var(--danger);color:#fff;padding:0.25rem 0.6rem;border-radius:var(--radius-sm);font-size:0.8rem;font-weight:700}
+    .stock-status{display:inline-flex;align-items:center;gap:0.5rem;padding:0.4rem 1rem;border-radius:var(--radius-full);font-size:0.85rem;font-weight:700;margin-bottom:1.25rem}
+    .stock-status.in-stock{background:rgba(40,167,69,0.15);color:var(--success);border:1px solid rgba(40,167,69,0.3)}
+    .stock-status.out-stock{background:rgba(220,53,69,0.15);color:var(--danger);border:1px solid rgba(220,53,69,0.3)}
+    .audio-demo-box{background:var(--bg-card);border-radius:var(--radius-lg);padding:1rem 1.25rem;margin-bottom:1.25rem;border:1px solid rgba(255,255,255,0.08)}
+    .audio-demo-box h4{font-size:0.9rem;color:var(--text-muted);margin-bottom:0.75rem}
+    .audio-samples{display:flex;gap:0.5rem;flex-wrap:wrap}
+    .audio-sample-btn{padding:0.5rem 1rem;border-radius:var(--radius-full);border:1px solid rgba(255,255,255,0.15);background:var(--bg-dark);color:var(--text-secondary);cursor:pointer;font-size:0.85rem;transition:var(--transition-fast);display:flex;align-items:center;gap:0.4rem}
+    .audio-sample-btn:hover,.audio-sample-btn.playing{border-color:var(--accent);color:var(--accent);background:rgba(233,69,96,0.1)}
+    .qty-selector{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem}
+    .qty-selector label{font-size:0.9rem;color:var(--text-muted)}
+    .qty-wrap{display:flex;align-items:center;gap:0.5rem}
+    .qty-btn-large{width:36px;height:36px;border-radius:var(--radius-md);border:1px solid rgba(255,255,255,0.2);background:var(--bg-dark);color:var(--text-primary);cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:var(--transition-fast)}
+    .qty-btn-large:hover{border-color:var(--accent);color:var(--accent)}
+    #product-qty{width:60px;text-align:center;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.15);color:var(--text-primary);padding:0.5rem;border-radius:var(--radius-md);font-size:1rem}
+    .product-cta{display:flex;gap:0.75rem;margin-bottom:1rem;flex-wrap:wrap}
+    .add-to-cart-btn{flex:1;padding:0.9rem 1.5rem;background:linear-gradient(135deg,var(--accent),var(--accent-hover));color:#fff;border:none;border-radius:var(--radius-lg);font-size:1rem;font-weight:700;cursor:pointer;transition:var(--transition-base);min-width:160px}
+    .add-to-cart-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-glow)}
+    .buy-now-btn{flex:1;padding:0.9rem 1.5rem;background:var(--gold);color:var(--bg-dark);border:none;border-radius:var(--radius-lg);font-size:1rem;font-weight:700;cursor:pointer;transition:var(--transition-base);min-width:160px}
+    .buy-now-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-gold);background:var(--gold-light)}
+    .product-actions-row{display:flex;gap:0.75rem;flex-wrap:wrap}
+    .wishlist-btn,.compare-btn{padding:0.6rem 1.2rem;border-radius:var(--radius-lg);border:1px solid rgba(255,255,255,0.15);background:var(--bg-card);color:var(--text-secondary);cursor:pointer;font-size:0.9rem;transition:var(--transition-fast);display:flex;align-items:center;gap:0.4rem}
+    .wishlist-btn:hover{border-color:#e94560;color:#e94560}
+    .compare-btn:hover{border-color:var(--info);color:var(--info)}
+    /* Tabs */
+    .product-tabs{margin-top:3rem}
+    .tab-nav{display:flex;gap:0;border-bottom:2px solid rgba(255,255,255,0.1);flex-wrap:wrap}
+    .tab-btn{padding:0.75rem 1.5rem;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:0.95rem;font-weight:600;transition:var(--transition-fast);border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap}
+    .tab-btn.active,.tab-btn:hover{color:var(--text-primary);border-bottom-color:var(--accent)}
+    .tab-panel{display:none;padding:2rem 0;animation:fadeIn 0.3s ease}
+    .tab-panel.active{display:block}
+    .specs-table{width:100%;border-collapse:collapse}
+    .specs-table tr:nth-child(even){background:rgba(255,255,255,0.03)}
+    .specs-table td{padding:0.75rem 1rem;border-bottom:1px solid rgba(255,255,255,0.06);font-size:0.9rem}
+    .specs-table td:first-child{color:var(--text-muted);width:40%;font-weight:600}
+    .suited-for{margin-top:1.5rem}
+    .suited-tags{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem}
+    .suited-tag{padding:0.4rem 1rem;border-radius:var(--radius-full);background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.3);color:var(--gold);font-size:0.85rem}
+    /* Reviews */
+    .rating-overview{display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:center;margin-bottom:2rem;padding:1.5rem;background:var(--bg-card);border-radius:var(--radius-lg)}
+    .rating-big-num{font-size:4rem;font-weight:900;color:var(--gold);text-align:center;line-height:1}
+    .rating-stars-overview{font-size:1.5rem;color:var(--gold);margin:0.25rem 0}
+    .rating-total{font-size:0.85rem;color:var(--text-muted)}
+    .rating-bars{flex:1}
+    .rating-bar-row{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.4rem}
+    .rating-bar-label{font-size:0.8rem;color:var(--text-muted);width:40px;text-align:right}
+    .rating-bar-bg{flex:1;height:8px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden}
+    .rating-bar-fill{height:100%;background:var(--gold);border-radius:4px;transition:width 1s ease}
+    .rating-bar-count{font-size:0.75rem;color:var(--text-muted);width:30px}
+    .review-list{display:flex;flex-direction:column;gap:1.25rem}
+    .review-item{background:var(--bg-card);border-radius:var(--radius-lg);padding:1.25rem;border:1px solid rgba(255,255,255,0.06)}
+    .review-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem}
+    .review-author{font-weight:700;color:var(--text-primary)}
+    .review-date{font-size:0.8rem;color:var(--text-muted)}
+    .review-stars{color:var(--gold);font-size:0.9rem;margin-bottom:0.5rem}
+    .review-body{font-size:0.9rem;color:var(--text-secondary);line-height:1.6}
+    /* Related Products */
+    .related-products{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
+    /* Compare Modal */
+    .compare-modal{display:none;position:fixed;inset:0;background:var(--bg-overlay);z-index:var(--z-modal);align-items:center;justify-content:center;padding:1rem}
+    .compare-modal.open{display:flex}
+    .compare-modal-box{background:var(--bg-card);border-radius:var(--radius-xl);max-width:800px;width:100%;max-height:80vh;overflow:auto;border:1px solid rgba(255,255,255,0.1)}
+    .compare-modal-head{display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.1)}
+    .compare-table{width:100%;border-collapse:collapse}
+    .compare-table td,.compare-table th{padding:0.75rem 1rem;border-bottom:1px solid rgba(255,255,255,0.07);font-size:0.9rem}
+    .compare-table th{background:var(--bg-dark);color:var(--text-muted);font-weight:700;text-align:left}
+  </style>
+</head>
+<body>
+<div id="loading-screen" class="loading-screen">
+  <div class="loading-logo">DLQ</div>
+  <div class="loading-bars"><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div></div>
+  <p style="color:var(--text-muted);font-size:0.875rem">Đang tải DLQ Music Store...</p>
+</div>
+<div id="floating-notes" class="music-notes-container" aria-hidden="true"></div>
+
+<nav class="navbar" role="navigation">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo"><div class="logo-mark">DLQ</div><div class="logo-text"><span class="logo-name">DLQ Music</span><span class="logo-tagline">NHẠC CỤ CHÍNH HÃNG</span></div></a>
+    <nav class="nav-links">
+      <a href="../index.html" class="nav-link">🏠 Trang chủ</a>
+      <a href="../pages/search-results.html" class="nav-link active">🛍️ Sản phẩm</a>
+      <a href="../pages/interactive-play.html" class="nav-link">🎹 Thử online</a>
+      <a href="../pages/learning.html" class="nav-link">📚 Học nhạc</a>
+      <a href="../pages/community.html" class="nav-link">👥 Cộng đồng</a>
+      <a href="../pages/blog.html" class="nav-link">✍️ Blog</a>
+      <a href="../pages/repair-service.html" class="nav-link">🔧 Sửa chữa</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="nav-search" role="search"><span>🔍</span><input type="search" placeholder="Tìm nhạc cụ..." aria-label="Tìm kiếm" onkeydown="if(event.key==='Enter')window.location.href='../pages/search-results.html?q='+this.value"></div>
+      <a href="../pages/profile.html" class="nav-icon-btn">👤</a>
+      <a href="../pages/cart.html" class="nav-icon-btn" style="position:relative">🛒<span class="cart-badge" style="display:none">0</span></a>
+      <button class="hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu">
+  <a href="../index.html" class="nav-link">🏠 Trang chủ</a>
+  <a href="../pages/search-results.html" class="nav-link">🛍️ Sản phẩm</a>
+  <a href="../pages/interactive-play.html" class="nav-link">🎹 Thử nhạc cụ online</a>
+  <a href="../pages/learning.html" class="nav-link">📚 Học nhạc</a>
+  <a href="../pages/community.html" class="nav-link">👥 Cộng đồng</a>
+  <a href="../pages/blog.html" class="nav-link">✍️ Blog</a>
+  <a href="../pages/repair-service.html" class="nav-link">🔧 Sửa chữa</a>
+  <a href="../pages/profile.html" class="nav-link">👤 Tài khoản</a>
+  <a href="../pages/cart.html" class="nav-link">🛒 Giỏ hàng</a>
+</div>
+
+<main>
+  <div class="container product-detail-section">
+    <nav aria-label="Breadcrumb" style="margin-bottom:1.5rem;font-size:0.85rem;color:var(--text-muted)" id="breadcrumb">
+      <a href="../index.html" style="color:var(--text-muted)">Trang chủ</a> › <a href="../pages/search-results.html" style="color:var(--text-muted)">Sản phẩm</a> › <span id="breadcrumb-name" style="color:var(--text-primary)">Chi tiết sản phẩm</span>
+    </nav>
+
+    <div class="product-detail-grid">
+      <!-- Gallery -->
+      <div class="product-gallery">
+        <div class="gallery-main" id="gallery-main" aria-label="Ảnh sản phẩm">🎸</div>
+        <div class="gallery-thumbs" id="gallery-thumbs" role="group" aria-label="Ảnh thu nhỏ">
+          <div class="gallery-thumb active" data-img="🎸">🎸</div>
+          <div class="gallery-thumb" data-img="🎵">🎵</div>
+          <div class="gallery-thumb" data-img="🎼">🎼</div>
+          <div class="gallery-thumb" data-img="🎶">🎶</div>
+        </div>
+      </div>
+
+      <!-- Info Panel -->
+      <div class="product-info-panel">
+        <div class="product-brand" id="product-brand">DLQ Music</div>
+        <h1 class="product-title" id="product-title">Đang tải sản phẩm...</h1>
+        <div class="product-stars" id="product-stars">
+          <span class="stars">⭐⭐⭐⭐⭐</span>
+          <span class="product-reviews-count" id="product-reviews-count">(0 đánh giá)</span>
+          <a href="#tab-reviews" class="tab-link" style="font-size:0.85rem;color:var(--accent);margin-left:0.5rem">Xem đánh giá</a>
+        </div>
+        <div class="product-price-box">
+          <span class="price-main" id="price-main">—</span>
+          <span class="price-old" id="price-old" style="display:none"></span>
+          <span class="price-discount-pct" id="price-discount-pct" style="display:none"></span>
+        </div>
+        <div class="stock-status in-stock" id="stock-status">✅ Còn hàng</div>
+
+        <!-- Audio Demo -->
+        <div class="audio-demo-box" aria-label="Nghe thử âm thanh">
+          <h4>🎵 Nghe thử âm thanh</h4>
+          <div class="audio-samples">
+            <button class="audio-sample-btn" data-sample="clean" aria-label="Nghe Clean tone">▶ Clean tone</button>
+            <button class="audio-sample-btn" data-sample="warm" aria-label="Nghe Warm tone">▶ Warm tone</button>
+            <button class="audio-sample-btn" data-sample="bright" aria-label="Nghe Bright tone">▶ Bright tone</button>
+          </div>
+        </div>
+
+        <!-- Quantity Selector -->
+        <div class="qty-selector">
+          <label for="product-qty">Số lượng:</label>
+          <div class="qty-wrap">
+            <button class="qty-btn-large" id="qty-dec" aria-label="Giảm số lượng">−</button>
+            <input type="number" id="product-qty" value="1" min="1" max="99" aria-label="Số lượng">
+            <button class="qty-btn-large" id="qty-inc" aria-label="Tăng số lượng">+</button>
+          </div>
+        </div>
+
+        <!-- CTA Buttons -->
+        <div class="product-cta">
+          <button class="add-to-cart-btn" id="add-to-cart-btn">🛒 Thêm vào giỏ</button>
+          <button class="buy-now-btn" id="buy-now-btn">⚡ Mua ngay</button>
+        </div>
+        <div class="product-actions-row">
+          <button class="wishlist-btn" id="wishlist-btn">❤️ Yêu thích</button>
+          <button class="compare-btn" id="compare-btn">⚖️ So sánh</button>
+          <button class="wishlist-btn" onclick="navigator.share&&navigator.share({title:document.title,url:location.href})">🔗 Chia sẻ</button>
+        </div>
+
+        <!-- Perks -->
+        <div style="margin-top:1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;font-size:0.85rem;color:var(--text-muted)">
+          <div>🚚 Giao hàng 2-3 ngày</div>
+          <div>🔒 Thanh toán bảo mật</div>
+          <div>🎵 Bảo hành 12-24 tháng</div>
+          <div>↩️ Đổi trả 7 ngày</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Tabs -->
+    <div class="product-tabs" id="product-tabs">
+      <div class="tab-nav" role="tablist">
+        <button class="tab-btn active" data-tab="tab-desc" role="tab" aria-selected="true">📄 Mô tả</button>
+        <button class="tab-btn" data-tab="tab-specs" role="tab" aria-selected="false">📊 Thông số kỹ thuật</button>
+        <button class="tab-btn" data-tab="tab-reviews" role="tab" aria-selected="false" id="reviews-tab-btn">⭐ Đánh giá</button>
+        <button class="tab-btn" data-tab="tab-related" role="tab" aria-selected="false">🎵 Sản phẩm liên quan</button>
+      </div>
+
+      <div id="tab-desc" class="tab-panel active" role="tabpanel">
+        <div id="product-description" style="line-height:1.8;color:var(--text-secondary)">
+          <p>Đang tải mô tả sản phẩm...</p>
+        </div>
+      </div>
+
+      <div id="tab-specs" class="tab-panel" role="tabpanel">
+        <table class="specs-table" aria-label="Thông số kỹ thuật">
+          <tbody id="specs-table-body">
+            <tr><td>Đang tải</td><td>...</td></tr>
+          </tbody>
+        </table>
+        <div class="suited-for">
+          <h4>🎯 Phù hợp với:</h4>
+          <div class="suited-tags" id="suited-tags">
+            <span class="suited-tag">Người mới bắt đầu</span>
+            <span class="suited-tag">Học sinh / Sinh viên</span>
+            <span class="suited-tag">Chơi tại nhà</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-reviews" class="tab-panel" role="tabpanel">
+        <div class="rating-overview">
+          <div>
+            <div class="rating-big-num" id="rating-big-num">4.8</div>
+            <div class="rating-stars-overview">⭐⭐⭐⭐⭐</div>
+            <div class="rating-total" id="rating-total">0 đánh giá</div>
+          </div>
+          <div class="rating-bars">
+            <div class="rating-bar-row"><span class="rating-bar-label">5 ⭐</span><div class="rating-bar-bg"><div class="rating-bar-fill" style="width:78%"></div></div><span class="rating-bar-count">78%</span></div>
+            <div class="rating-bar-row"><span class="rating-bar-label">4 ⭐</span><div class="rating-bar-bg"><div class="rating-bar-fill" style="width:14%"></div></div><span class="rating-bar-count">14%</span></div>
+            <div class="rating-bar-row"><span class="rating-bar-label">3 ⭐</span><div class="rating-bar-bg"><div class="rating-bar-fill" style="width:5%"></div></div><span class="rating-bar-count">5%</span></div>
+            <div class="rating-bar-row"><span class="rating-bar-label">2 ⭐</span><div class="rating-bar-bg"><div class="rating-bar-fill" style="width:2%"></div></div><span class="rating-bar-count">2%</span></div>
+            <div class="rating-bar-row"><span class="rating-bar-label">1 ⭐</span><div class="rating-bar-bg"><div class="rating-bar-fill" style="width:1%"></div></div><span class="rating-bar-count">1%</span></div>
+          </div>
+        </div>
+        <div class="review-list" id="review-list">
+          <div class="review-item"><div class="review-header"><span class="review-author">Nguyễn Văn Minh</span><span class="review-date">15/06/2025</span></div><div class="review-stars">⭐⭐⭐⭐⭐</div><div class="review-body">Sản phẩm tuyệt vời! Âm thanh rất hay, đóng gói cẩn thận. Giao hàng nhanh. Sẽ ủng hộ DLQ lần sau.</div></div>
+          <div class="review-item"><div class="review-header"><span class="review-author">Trần Thị Hoa</span><span class="review-date">10/06/2025</span></div><div class="review-stars">⭐⭐⭐⭐⭐</div><div class="review-body">Đây là lần thứ 3 mình mua tại DLQ rồi. Chất lượng luôn ổn định, nhân viên tư vấn nhiệt tình.</div></div>
+          <div class="review-item"><div class="review-header"><span class="review-author">Lê Quốc Tuấn</span><span class="review-date">05/06/2025</span></div><div class="review-stars">⭐⭐⭐⭐⬜</div><div class="review-body">Sản phẩm tốt nhưng dây đi kèm hơi yếu, phải thay sau 1 tuần. Nhìn chung vẫn đáng tiền.</div></div>
+        </div>
+      </div>
+
+      <div id="tab-related" class="tab-panel" role="tabpanel">
+        <div class="related-products" id="related-products">
+          <!-- Loaded by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Compare Modal -->
+<div class="compare-modal" id="compare-modal" role="dialog" aria-label="So sánh sản phẩm">
+  <div class="compare-modal-box">
+    <div class="compare-modal-head">
+      <h3>⚖️ So sánh sản phẩm</h3>
+      <button onclick="document.getElementById('compare-modal').classList.remove('open')" aria-label="Đóng">✕</button>
+    </div>
+    <div style="padding:1rem;overflow-x:auto">
+      <table class="compare-table">
+        <thead><tr><th>Thông số</th><th>Sản phẩm hiện tại</th><th>Sản phẩm so sánh</th></tr></thead>
+        <tbody id="compare-table-body">
+          <tr><td>Tên</td><td id="cmp-name1">—</td><td>—</td></tr>
+          <tr><td>Giá</td><td id="cmp-price1">—</td><td>—</td></tr>
+          <tr><td>Đánh giá</td><td>⭐⭐⭐⭐⭐ 4.8</td><td>⭐⭐⭐⭐ 4.2</td></tr>
+          <tr><td>Bảo hành</td><td>12 tháng</td><td>6 tháng</td></tr>
+          <tr><td>Thương hiệu</td><td id="cmp-brand1">—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="logo-mark" style="font-size:1.5rem;font-weight:900;color:var(--accent)">DLQ</div><p>DLQ Music Store – Nhạc cụ chính hãng, giá tốt</p></div>
+      <div><h4>Liên kết</h4><ul><li><a href="../index.html">Trang chủ</a></li><li><a href="../pages/search-results.html">Tất cả sản phẩm</a></li><li><a href="../pages/repair-service.html">Sửa chữa</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 DLQ Music Store. All rights reserved. 🎵</p></div>
+  </div>
+</footer>
+
+<div class="chatbot-widget"><div class="chatbot-box" id="chatbot-box"><div class="chatbot-header"><div class="chatbot-avatar">🤖</div><div class="chatbot-info"><h4>DLQ Bot</h4><p>Tư vấn 24/7</p></div><button class="chatbot-close" id="chatbot-close">✕</button></div><div class="chatbot-messages" id="chatbot-messages" role="log" aria-live="polite"></div><div class="chatbot-quick-replies" id="chatbot-quick-replies"></div><div class="chatbot-input-area"><input type="text" class="chatbot-input" id="chatbot-input" placeholder="Nhập câu hỏi..." aria-label="Nhập tin nhắn"><button class="chatbot-send" id="chatbot-send">➤</button></div></div><button class="chatbot-toggle" id="chatbot-toggle">💬</button></div>
+<div class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/audio-player.js"></script>
+<script src="../js/mood-system.js"></script>
+<script src="../js/animations.js"></script>
+<script src="../js/chatbot.js"></script>
+<script src="../js/product.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const fmt = n => new Intl.NumberFormat('vi-VN',{style:'currency',currency:'VND'}).format(n);
+  const params = new URLSearchParams(location.search);
+  const productId = params.get('id');
+  const icons = {guitar:'🎸',piano:'🎹',drum:'🥁',ukulele:'🪗',violin:'🎻',keyboard:'🎹',bass:'🎸'};
+  const catNames = {guitar:'Guitar',piano:'Piano',drum:'Trống',ukulele:'Ukulele',violin:'Violin',keyboard:'Keyboard',bass:'Bass Guitar'};
+  let currentProduct = null;
+
+  // Load product
+  try {
+    const products = await DLQData.getProducts();
+    currentProduct = products.find(p=>p.id==productId) || products[0];
+    if(!currentProduct) return;
+
+    const icon = icons[currentProduct.category]||'🎵';
+    document.title = `${currentProduct.name} | DLQ Music Store`;
+    document.getElementById('breadcrumb-name').textContent = currentProduct.name;
+    document.getElementById('product-brand').textContent = currentProduct.brand || 'DLQ Music';
+    document.getElementById('product-title').textContent = currentProduct.name;
+    document.getElementById('product-reviews-count').textContent = `(${currentProduct.reviews||0} đánh giá)`;
+    document.getElementById('price-main').textContent = fmt(currentProduct.price);
+    document.getElementById('rating-big-num').textContent = currentProduct.rating || '4.8';
+    document.getElementById('rating-total').textContent = `${currentProduct.reviews||0} đánh giá`;
+
+    if(currentProduct.oldPrice){
+      document.getElementById('price-old').style.display='inline';
+      document.getElementById('price-old').textContent = fmt(currentProduct.oldPrice);
+      const pct = Math.round((1-currentProduct.price/currentProduct.oldPrice)*100);
+      document.getElementById('price-discount-pct').style.display='inline';
+      document.getElementById('price-discount-pct').textContent = `-${pct}%`;
+    }
+
+    document.getElementById('gallery-main').textContent = icon;
+    document.getElementById('gallery-thumbs').querySelectorAll('.gallery-thumb').forEach((t,i)=>{
+      t.textContent = [icon,'🎵','🎼','🎶'][i]||icon;
+    });
+
+    document.getElementById('product-description').innerHTML = `
+      <h3>${currentProduct.name}</h3>
+      <p>${currentProduct.description||'Nhạc cụ chất lượng cao từ DLQ Music Store. Sản phẩm chính hãng 100%, được kiểm tra kỹ lưỡng trước khi giao hàng.'}</p>
+      <h4 style="margin-top:1.5rem;margin-bottom:0.75rem">✨ Đặc điểm nổi bật:</h4>
+      <ul style="list-style:none;padding:0;display:grid;gap:0.5rem">
+        ${(currentProduct.features||['Chất lượng âm thanh vượt trội','Thiết kế bền đẹp, dễ chơi','Phù hợp cho mọi trình độ','Đi kèm phụ kiện đầy đủ']).map(f=>`<li style="display:flex;gap:0.5rem;align-items:center;color:var(--text-secondary)"><span style="color:var(--success)">✓</span>${f}</li>`).join('')}
+      </ul>`;
+
+    document.getElementById('specs-table-body').innerHTML = [
+      ['Danh mục', catNames[currentProduct.category]||currentProduct.category],
+      ['Thương hiệu', currentProduct.brand||'DLQ Music'],
+      ['Trình độ', {beginner:'Người mới',intermediate:'Trung cấp',advanced:'Nâng cao'}[currentProduct.level]||'Tất cả'],
+      ['Bảo hành', '12 tháng chính hãng'],
+      ['Xuất xứ', 'Nhập khẩu chính hãng'],
+      ['Tình trạng', 'Mới 100%'],
+    ].map(([k,v])=>`<tr><td>${k}</td><td><strong>${v}</strong></td></tr>`).join('');
+
+    document.getElementById('cmp-name1').textContent = currentProduct.name;
+    document.getElementById('cmp-price1').textContent = fmt(currentProduct.price);
+    document.getElementById('cmp-brand1').textContent = currentProduct.brand||'DLQ';
+
+    // Related products
+    const related = products.filter(p=>p.category===currentProduct.category&&p.id!==currentProduct.id).slice(0,4);
+    document.getElementById('related-products').innerHTML = related.map(p=>`
+      <div class="product-card"><div class="product-img-wrap"><div style="width:100%;height:150px;background:linear-gradient(135deg,var(--bg-card),rgba(233,69,96,0.1));display:flex;align-items:center;justify-content:center;font-size:4rem">${icons[p.category]||'🎵'}</div></div>
+      <div class="product-body"><div class="product-name">${p.name}</div><div class="product-price"><span class="price-current">${fmt(p.price)}</span></div></div>
+      <div class="product-footer"><button class="btn btn-primary btn-sm" data-add-cart="${p.id}">🛒 Thêm</button><a href="../pages/product-detail.html?id=${p.id}" class="btn btn-ghost btn-sm">Chi tiết</a></div></div>`).join('');
+
+  } catch(e) { console.warn('Product load error:',e); }
+
+  // Tabs
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected','false');});
+      document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active'); btn.setAttribute('aria-selected','true');
+      document.getElementById(btn.dataset.tab)?.classList.add('active');
+    });
+  });
+  document.querySelectorAll('a[href^="#tab-"]').forEach(a=>{
+    a.addEventListener('click',e=>{e.preventDefault();const id=a.getAttribute('href').slice(1);document.querySelector(`.tab-btn[data-tab="${id}"]`)?.click();document.getElementById(id)?.scrollIntoView({behavior:'smooth'});});
+  });
+
+  // Gallery thumbs
+  document.querySelectorAll('.gallery-thumb').forEach(t=>{
+    t.addEventListener('click',()=>{
+      document.querySelectorAll('.gallery-thumb').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById('gallery-main').textContent = t.dataset.img||t.textContent;
+    });
+  });
+
+  // Qty
+  const qtyInput = document.getElementById('product-qty');
+  document.getElementById('qty-dec')?.addEventListener('click',()=>{if(qtyInput.value>1)qtyInput.value--;});
+  document.getElementById('qty-inc')?.addEventListener('click',()=>{qtyInput.value++;});
+
+  // Add to cart
+  document.getElementById('add-to-cart-btn')?.addEventListener('click',()=>{
+    if(!currentProduct) return;
+    const qty = parseInt(qtyInput?.value||1);
+    const cart = JSON.parse(localStorage.getItem('dlq_cart')||'[]');
+    const idx = cart.findIndex(i=>i.id===currentProduct.id);
+    if(idx>=0) cart[idx].quantity=(cart[idx].quantity||1)+qty;
+    else cart.push({...currentProduct,quantity:qty});
+    localStorage.setItem('dlq_cart',JSON.stringify(cart));
+    if(window.DLQToast) DLQToast.show('🛒 Đã thêm vào giỏ hàng!','success');
+  });
+
+  // Buy now
+  document.getElementById('buy-now-btn')?.addEventListener('click',()=>{
+    document.getElementById('add-to-cart-btn')?.click();
+    window.location.href='../pages/checkout.html';
+  });
+
+  // Wishlist
+  document.getElementById('wishlist-btn')?.addEventListener('click',()=>{
+    const wl = JSON.parse(localStorage.getItem('dlq_wishlist')||'[]');
+    if(!wl.find(i=>i.id===currentProduct?.id)) { wl.push(currentProduct); localStorage.setItem('dlq_wishlist',JSON.stringify(wl)); }
+    if(window.DLQToast) DLQToast.show('❤️ Đã thêm vào danh sách yêu thích!','success');
+  });
+
+  // Compare
+  document.getElementById('compare-btn')?.addEventListener('click',()=>{
+    document.getElementById('compare-modal')?.classList.add('open');
+  });
+
+  // Audio samples
+  document.querySelectorAll('.audio-sample-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.audio-sample-btn').forEach(b=>b.classList.remove('playing'));
+      btn.classList.add('playing');
+      if(window.DLQToast) DLQToast.show(`🎵 Đang phát ${btn.textContent.trim()}...`,'info',2000);
+      setTimeout(()=>btn.classList.remove('playing'),2000);
+    });
+  });
+});
+</script>
+</body>
+</html>

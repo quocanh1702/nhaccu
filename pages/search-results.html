@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tìm kiếm và lọc nhạc cụ tại DLQ Music Store">
+  <title>Tìm Kiếm Sản Phẩm | DLQ Music Store</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/product.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+  <style>
+    .search-page{padding:2rem 0 4rem}
+    .search-layout{display:grid;grid-template-columns:260px 1fr;gap:2rem;align-items:start}
+    @media(max-width:900px){.search-layout{grid-template-columns:1fr}}
+    .filter-sidebar{background:var(--bg-card);border-radius:var(--radius-lg);padding:1.5rem;border:1px solid rgba(255,255,255,0.08);position:sticky;top:100px}
+    .filter-sidebar h3{font-size:var(--fs-lg);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem}
+    .filter-group{margin-bottom:1.5rem}
+    .filter-group h4{font-size:0.85rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:0.75rem;font-weight:700}
+    .filter-options{display:flex;flex-direction:column;gap:0.4rem}
+    .filter-option{display:flex;align-items:center;gap:0.6rem;cursor:pointer;padding:0.35rem 0.5rem;border-radius:var(--radius-sm);transition:var(--transition-fast);font-size:0.9rem;color:var(--text-secondary)}
+    .filter-option:hover{background:rgba(255,255,255,0.05);color:var(--text-primary)}
+    .filter-option input{accent-color:var(--accent);cursor:pointer}
+    .filter-option.active-filter{color:var(--accent)}
+    .price-range{display:flex;flex-direction:column;gap:0.75rem}
+    .price-range-inputs{display:flex;gap:0.5rem;align-items:center}
+    .price-range input[type=number]{flex:1;padding:0.5rem 0.6rem;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.85rem;width:100%}
+    .filter-search-wrap{position:relative;margin-bottom:0.75rem}
+    #filter-search{width:100%;padding:0.75rem 1rem 0.75rem 2.75rem;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius-lg);color:var(--text-primary);font-size:0.95rem}
+    #filter-search:focus{outline:none;border-color:var(--accent)}
+    .search-icon{position:absolute;left:0.9rem;top:50%;transform:translateY(-50%);color:var(--text-muted)}
+    .results-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:0.75rem}
+    .filter-count{font-weight:700;color:var(--text-primary)}
+    .sort-select{padding:0.5rem 1rem;background:var(--bg-card);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem;cursor:pointer}
+    .active-filters{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem}
+    .active-filter-tag{display:flex;align-items:center;gap:0.4rem;padding:0.3rem 0.75rem;background:rgba(233,69,96,0.15);border:1px solid rgba(233,69,96,0.3);border-radius:var(--radius-full);font-size:0.8rem;color:var(--accent)}
+    .active-filter-tag button{background:none;border:none;color:var(--accent);cursor:pointer;font-size:0.9rem;padding:0;line-height:1}
+    #filtered-products{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.25rem}
+    .view-toggle{display:flex;gap:0.35rem}
+    .view-btn{padding:0.4rem 0.7rem;background:var(--bg-card);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-sm);color:var(--text-muted);cursor:pointer;font-size:1rem;transition:var(--transition-fast)}
+    .view-btn.active{border-color:var(--accent);color:var(--accent)}
+    #filtered-products.list-view{grid-template-columns:1fr}
+    #filtered-products.list-view .product-card{display:grid;grid-template-columns:120px 1fr auto;align-items:center}
+    #filtered-products.list-view .product-img-wrap{height:120px}
+    .no-results{text-align:center;padding:4rem 2rem;color:var(--text-muted);grid-column:1/-1}
+    .reset-filters{background:none;border:1px solid rgba(255,255,255,0.15);color:var(--text-muted);padding:0.5rem 1rem;border-radius:var(--radius-md);cursor:pointer;font-size:0.85rem;width:100%;margin-top:0.5rem;transition:var(--transition-fast)}
+    .reset-filters:hover{border-color:var(--accent);color:var(--accent)}
+    .smart-filter-form{}
+    @media(max-width:900px){.filter-sidebar{position:static}}
+  </style>
+</head>
+<body>
+<div id="loading-screen" class="loading-screen">
+  <div class="loading-logo">DLQ</div>
+  <div class="loading-bars"><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div></div>
+  <p style="color:var(--text-muted);font-size:0.875rem">Đang tải DLQ Music Store...</p>
+</div>
+<div id="floating-notes" class="music-notes-container" aria-hidden="true"></div>
+
+<nav class="navbar" role="navigation">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo"><div class="logo-mark">DLQ</div><div class="logo-text"><span class="logo-name">DLQ Music</span><span class="logo-tagline">NHẠC CỤ CHÍNH HÃNG</span></div></a>
+    <nav class="nav-links">
+      <a href="../index.html" class="nav-link">🏠 Trang chủ</a>
+      <a href="../pages/search-results.html" class="nav-link active">🛍️ Sản phẩm</a>
+      <a href="../pages/interactive-play.html" class="nav-link">🎹 Thử online</a>
+      <a href="../pages/learning.html" class="nav-link">📚 Học nhạc</a>
+      <a href="../pages/community.html" class="nav-link">👥 Cộng đồng</a>
+      <a href="../pages/blog.html" class="nav-link">✍️ Blog</a>
+      <a href="../pages/repair-service.html" class="nav-link">🔧 Sửa chữa</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="nav-search" role="search"><span>🔍</span><input type="search" placeholder="Tìm nhạc cụ..." id="main-search-input" aria-label="Tìm kiếm" onkeydown="if(event.key==='Enter'){document.getElementById('filter-search').value=this.value;applyFilters();}"></div>
+      <a href="../pages/profile.html" class="nav-icon-btn">👤</a>
+      <a href="../pages/cart.html" class="nav-icon-btn" style="position:relative">🛒<span class="cart-badge" style="display:none">0</span></a>
+      <button class="hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu">
+  <a href="../index.html" class="nav-link">🏠 Trang chủ</a>
+  <a href="../pages/search-results.html" class="nav-link">🛍️ Sản phẩm</a>
+  <a href="../pages/interactive-play.html" class="nav-link">🎹 Thử nhạc cụ online</a>
+  <a href="../pages/learning.html" class="nav-link">📚 Học nhạc</a>
+  <a href="../pages/community.html" class="nav-link">👥 Cộng đồng</a>
+  <a href="../pages/blog.html" class="nav-link">✍️ Blog</a>
+  <a href="../pages/repair-service.html" class="nav-link">🔧 Sửa chữa</a>
+  <a href="../pages/profile.html" class="nav-link">👤 Tài khoản</a>
+  <a href="../pages/cart.html" class="nav-link">🛒 Giỏ hàng</a>
+</div>
+
+<main>
+  <div class="container search-page">
+    <div style="margin-bottom:1.5rem">
+      <h1 style="font-size:var(--fs-3xl);margin-bottom:0.25rem">🛍️ Tất Cả Sản Phẩm</h1>
+      <p class="text-secondary">Khám phá hơn 500+ nhạc cụ chính hãng tại DLQ Music Store</p>
+    </div>
+
+    <div class="search-layout">
+      <!-- Filter Sidebar -->
+      <aside>
+        <form class="smart-filter-form filter-sidebar" id="smart-filter" aria-label="Bộ lọc sản phẩm">
+          <h3>🔧 Bộ lọc</h3>
+
+          <div class="filter-search-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="search" id="filter-search" placeholder="Tìm tên sản phẩm..." aria-label="Tìm kiếm trong danh sách" data-filter="search">
+          </div>
+
+          <div class="filter-group">
+            <h4>Danh mục</h4>
+            <div class="filter-options" role="group" aria-label="Danh mục">
+              <label class="filter-option"><input type="radio" name="category" value="" data-filter="category" checked> Tất cả</label>
+              <label class="filter-option"><input type="radio" name="category" value="guitar" data-filter="category"> 🎸 Guitar</label>
+              <label class="filter-option"><input type="radio" name="category" value="piano" data-filter="category"> 🎹 Piano & Keyboard</label>
+              <label class="filter-option"><input type="radio" name="category" value="drum" data-filter="category"> 🥁 Trống & Bộ gõ</label>
+              <label class="filter-option"><input type="radio" name="category" value="ukulele" data-filter="category"> 🪗 Ukulele</label>
+              <label class="filter-option"><input type="radio" name="category" value="violin" data-filter="category"> 🎻 Violin</label>
+              <label class="filter-option"><input type="radio" name="category" value="bass" data-filter="category"> 🎸 Bass Guitar</label>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <h4>Trình độ</h4>
+            <div class="filter-options" role="group" aria-label="Trình độ">
+              <label class="filter-option"><input type="radio" name="level" value="" data-filter="level" checked> Tất cả</label>
+              <label class="filter-option"><input type="radio" name="level" value="beginner" data-filter="level"> 🌱 Người mới</label>
+              <label class="filter-option"><input type="radio" name="level" value="intermediate" data-filter="level"> 🎯 Trung cấp</label>
+              <label class="filter-option"><input type="radio" name="level" value="advanced" data-filter="level"> 🏆 Nâng cao</label>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <h4>Khoảng giá</h4>
+            <div class="price-range">
+              <div class="price-range-inputs">
+                <input type="number" id="price-min" placeholder="Từ" min="0" data-filter="priceMin" aria-label="Giá từ">
+                <span style="color:var(--text-muted)">—</span>
+                <input type="number" id="price-max" placeholder="Đến" min="0" data-filter="priceMax" aria-label="Giá đến">
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <h4>Sắp xếp</h4>
+            <select id="sort-select" data-filter="sort" aria-label="Sắp xếp theo" class="sort-select" style="width:100%;margin-top:0">
+              <option value="default">Mặc định</option>
+              <option value="price-asc">Giá tăng dần</option>
+              <option value="price-desc">Giá giảm dần</option>
+              <option value="rating">Đánh giá cao nhất</option>
+              <option value="newest">Mới nhất</option>
+              <option value="popular">Phổ biến nhất</option>
+            </select>
+          </div>
+
+          <button type="button" class="reset-filters" id="reset-filters">↺ Xóa bộ lọc</button>
+        </form>
+      </aside>
+
+      <!-- Results -->
+      <div>
+        <!-- Active filters -->
+        <div class="active-filters" id="active-filters" aria-live="polite"></div>
+
+        <div class="results-header">
+          <div>
+            Hiển thị <span class="filter-count" id="filter-count">0</span> sản phẩm
+          </div>
+          <div style="display:flex;align-items:center;gap:0.75rem">
+            <div class="view-toggle">
+              <button class="view-btn active" id="grid-view-btn" title="Lưới" aria-label="Xem dạng lưới">⊞</button>
+              <button class="view-btn" id="list-view-btn" title="Danh sách" aria-label="Xem dạng danh sách">☰</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="filtered-products" role="list" aria-label="Danh sách sản phẩm">
+          <p style="color:var(--text-muted);text-align:center;padding:3rem;grid-column:1/-1">Đang tải sản phẩm...</p>
+        </div>
+
+        <div id="load-more-wrap" style="text-align:center;margin-top:2rem;display:none">
+          <button id="load-more-btn" class="btn btn-secondary">Xem thêm sản phẩm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="logo-mark" style="font-size:1.5rem;font-weight:900;color:var(--accent)">DLQ</div><p>DLQ Music Store – Nhạc cụ chính hãng, giá tốt</p></div>
+      <div><h4>Danh mục</h4><ul><li><a href="?category=guitar">Guitar</a></li><li><a href="?category=piano">Piano</a></li><li><a href="?category=drum">Trống</a></li><li><a href="?category=ukulele">Ukulele</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 DLQ Music Store. All rights reserved. 🎵</p></div>
+  </div>
+</footer>
+
+<div class="chatbot-widget"><div class="chatbot-box" id="chatbot-box"><div class="chatbot-header"><div class="chatbot-avatar">🤖</div><div class="chatbot-info"><h4>DLQ Bot</h4><p>Tư vấn 24/7</p></div><button class="chatbot-close" id="chatbot-close">✕</button></div><div class="chatbot-messages" id="chatbot-messages" role="log" aria-live="polite"></div><div class="chatbot-quick-replies" id="chatbot-quick-replies"></div><div class="chatbot-input-area"><input type="text" class="chatbot-input" id="chatbot-input" placeholder="Nhập câu hỏi..." aria-label="Nhập tin nhắn"><button class="chatbot-send" id="chatbot-send">➤</button></div></div><button class="chatbot-toggle" id="chatbot-toggle">💬</button></div>
+<div class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/audio-player.js"></script>
+<script src="../js/mood-system.js"></script>
+<script src="../js/ai-recommend.js"></script>
+<script src="../js/animations.js"></script>
+<script src="../js/chatbot.js"></script>
+
+<script>
+let allProducts = [];
+const fmt = n => new Intl.NumberFormat('vi-VN',{style:'currency',currency:'VND'}).format(n);
+const icons = {guitar:'🎸',piano:'🎹',drum:'🥁',ukulele:'🪗',violin:'🎻',keyboard:'🎹',bass:'🎸'};
+const catNames = {guitar:'Guitar',piano:'Piano',drum:'Trống',ukulele:'Ukulele',violin:'Violin',keyboard:'Keyboard',bass:'Bass'};
+
+function getFilters() {
+  return {
+    search: document.getElementById('filter-search')?.value?.toLowerCase()||'',
+    category: document.querySelector('[name=category]:checked')?.value||'',
+    level: document.querySelector('[name=level]:checked')?.value||'',
+    priceMin: parseInt(document.getElementById('price-min')?.value)||0,
+    priceMax: parseInt(document.getElementById('price-max')?.value)||Infinity,
+    sort: document.getElementById('sort-select')?.value||'default'
+  };
+}
+
+function applyFilters() {
+  const f = getFilters();
+  let results = allProducts.filter(p=>{
+    if(f.search && !p.name.toLowerCase().includes(f.search)) return false;
+    if(f.category && p.category!==f.category) return false;
+    if(f.level && p.level!==f.level) return false;
+    if(p.price < f.priceMin) return false;
+    if(f.priceMax !== Infinity && p.price > f.priceMax) return false;
+    return true;
+  });
+  if(f.sort==='price-asc') results.sort((a,b)=>a.price-b.price);
+  else if(f.sort==='price-desc') results.sort((a,b)=>b.price-a.price);
+  else if(f.sort==='rating') results.sort((a,b)=>(b.rating||0)-(a.rating||0));
+  else if(f.sort==='popular') results.sort((a,b)=>(b.reviews||0)-(a.reviews||0));
+
+  document.getElementById('filter-count').textContent = results.length;
+  renderProducts(results);
+  renderActiveTags(f);
+}
+
+function renderActiveTags(f) {
+  const container = document.getElementById('active-filters');
+  const tags = [];
+  if(f.search) tags.push(['🔍 '+f.search,'search']);
+  if(f.category) tags.push([catNames[f.category]||f.category,'category']);
+  if(f.level) tags.push([{beginner:'Người mới',intermediate:'Trung cấp',advanced:'Nâng cao'}[f.level]||f.level,'level']);
+  container.innerHTML = tags.map(([label,type])=>`<div class="active-filter-tag">${label}<button onclick="clearFilter('${type}')" aria-label="Xóa bộ lọc ${label}">×</button></div>`).join('');
+}
+
+function clearFilter(type) {
+  if(type==='search'){document.getElementById('filter-search').value='';}
+  else if(type==='category'){document.querySelector('[name=category][value=""]').checked=true;}
+  else if(type==='level'){document.querySelector('[name=level][value=""]').checked=true;}
+  applyFilters();
+}
+
+window.applyFilters = applyFilters;
+
+function renderProducts(products) {
+  const container = document.getElementById('filtered-products');
+  if(!products.length){
+    container.innerHTML='<div class="no-results"><p style="font-size:3rem">😔</p><h3>Không tìm thấy sản phẩm phù hợp</h3><p>Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm</p><button class="btn btn-secondary" onclick="document.getElementById(\'reset-filters\').click()">Xóa bộ lọc</button></div>';
+    return;
+  }
+  container.innerHTML = products.map(p=>`
+    <div class="product-card animate-on-scroll" role="listitem">
+      <div class="product-img-wrap">
+        <div style="width:100%;height:180px;background:linear-gradient(135deg,var(--bg-card),rgba(233,69,96,0.1));display:flex;align-items:center;justify-content:center;font-size:5rem">${icons[p.category]||'🎵'}</div>
+        ${p.badge?`<div class="product-badges"><span class="badge badge-${p.badge}">${{hot:'🔥 Hot',new:'🆕 Mới',sale:'💸 Sale',best:'⭐ Best'}[p.badge]||p.badge}</span></div>`:''}
+        <div class="product-quick-actions">
+          <button class="quick-btn" data-wishlist="${p.id}" title="Yêu thích">❤️</button>
+          <button class="quick-btn" onclick="window.location.href='../pages/product-detail.html?id=${p.id}'" title="Xem">👁️</button>
+          <button class="quick-btn" data-add-cart="${p.id}" title="Thêm giỏ">🛒</button>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="product-category">${catNames[p.category]||p.category}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-rating"><span class="stars">${'⭐'.repeat(Math.round(p.rating||4))}</span><span class="rating-count">(${p.reviews||0})</span></div>
+        <div class="product-price">
+          <span class="price-current">${fmt(p.price)}</span>
+          ${p.oldPrice?`<span class="price-original">${fmt(p.oldPrice)}</span>`:''}
+        </div>
+      </div>
+      <div class="product-footer">
+        <button class="btn btn-primary btn-sm" data-add-cart="${p.id}">🛒 Thêm vào giỏ</button>
+        <a href="../pages/product-detail.html?id=${p.id}" class="btn btn-ghost btn-sm">Chi tiết</a>
+      </div>
+    </div>`).join('');
+  container.querySelectorAll('.animate-on-scroll').forEach(el=>{
+    if(window.Animations?._scrollObserver) Animations._scrollObserver.observe(el);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', async ()=>{
+  // Parse URL params
+  const params = new URLSearchParams(location.search);
+  const urlCat = params.get('category');
+  const urlQ = params.get('q');
+  if(urlCat){ const r=document.querySelector(`[name=category][value="${urlCat}"]`); if(r) r.checked=true; }
+  if(urlQ){ document.getElementById('filter-search').value=urlQ; document.getElementById('main-search-input').value=urlQ; }
+
+  try {
+    allProducts = await DLQData.getProducts();
+    applyFilters();
+  } catch(e) {
+    allProducts = [];
+    document.getElementById('filtered-products').innerHTML='<p style="color:var(--danger);text-align:center;padding:2rem;grid-column:1/-1">Lỗi tải sản phẩm. Vui lòng thử lại.</p>';
+  }
+
+  // Attach filter events
+  document.querySelectorAll('[data-filter]').forEach(el=>{
+    el.addEventListener('change', applyFilters);
+    el.addEventListener('input', ()=>{ clearTimeout(el._t); el._t=setTimeout(applyFilters,300); });
+  });
+
+  document.getElementById('reset-filters')?.addEventListener('click',()=>{
+    document.querySelector('[name=category][value=""]').checked=true;
+    document.querySelector('[name=level][value=""]').checked=true;
+    document.getElementById('filter-search').value='';
+    document.getElementById('price-min').value='';
+    document.getElementById('price-max').value='';
+    document.getElementById('sort-select').value='default';
+    applyFilters();
+  });
+
+  document.getElementById('grid-view-btn')?.addEventListener('click',()=>{
+    document.getElementById('filtered-products').classList.remove('list-view');
+    document.getElementById('grid-view-btn').classList.add('active');
+    document.getElementById('list-view-btn').classList.remove('active');
+  });
+  document.getElementById('list-view-btn')?.addEventListener('click',()=>{
+    document.getElementById('filtered-products').classList.add('list-view');
+    document.getElementById('list-view-btn').classList.add('active');
+    document.getElementById('grid-view-btn').classList.remove('active');
+  });
+});
+</script>
+</body>
+</html>
