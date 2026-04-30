@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Học nhạc online tại DLQ Music Store - Bài học cho mọi trình độ">
+  <title>Học Nhạc Online | DLQ Music Store</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+  <style>
+    .learning-hero{background:linear-gradient(135deg,var(--bg-dark),var(--primary-light));padding:3.5rem 0 2.5rem;text-align:center}
+    .learning-hero h1{font-size:var(--fs-4xl);margin-bottom:0.75rem}
+    .learning-stats{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin-top:2rem}
+    .l-stat{text-align:center}
+    .l-stat strong{display:block;font-size:var(--fs-2xl);color:var(--accent);font-weight:900}
+    .l-stat span{font-size:0.85rem;color:var(--text-muted)}
+    .level-tabs{display:flex;justify-content:center;gap:0.75rem;margin:2.5rem 0 2rem;flex-wrap:wrap}
+    .level-tab{padding:0.6rem 1.6rem;border-radius:var(--radius-full);border:2px solid rgba(255,255,255,0.15);background:var(--bg-card);color:var(--text-secondary);cursor:pointer;font-weight:600;transition:var(--transition-base);font-size:0.95rem}
+    .level-tab.active,.level-tab:hover{border-color:var(--accent);background:rgba(233,69,96,0.15);color:var(--accent)}
+    .lessons-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
+    .lesson-card{background:var(--bg-card);border-radius:var(--radius-xl);border:1px solid rgba(255,255,255,0.08);overflow:hidden;transition:var(--transition-base);cursor:pointer}
+    .lesson-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:rgba(255,255,255,0.15)}
+    .lesson-thumb{height:160px;display:flex;align-items:center;justify-content:center;font-size:5rem;position:relative;overflow:hidden}
+    .lesson-thumb-guitar{background:linear-gradient(135deg,rgba(233,69,96,0.15),rgba(233,69,96,0.05))}
+    .lesson-thumb-piano{background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(245,166,35,0.05))}
+    .lesson-thumb-drum{background:linear-gradient(135deg,rgba(78,205,196,0.15),rgba(78,205,196,0.05))}
+    .lesson-thumb-theory{background:linear-gradient(135deg,rgba(124,92,191,0.15),rgba(124,92,191,0.05))}
+    .lesson-duration{position:absolute;bottom:0.75rem;right:0.75rem;background:rgba(0,0,0,0.6);color:#fff;padding:0.2rem 0.6rem;border-radius:var(--radius-sm);font-size:0.75rem;font-family:var(--font-mono)}
+    .lesson-level-badge{position:absolute;top:0.75rem;left:0.75rem;padding:0.2rem 0.6rem;border-radius:var(--radius-sm);font-size:0.7rem;font-weight:700}
+    .badge-beginner{background:rgba(40,167,69,0.8);color:#fff}
+    .badge-intermediate{background:rgba(245,166,35,0.8);color:#000}
+    .badge-advanced{background:rgba(220,53,69,0.8);color:#fff}
+    .lesson-body{padding:1.25rem}
+    .lesson-category{font-size:0.75rem;color:var(--accent);text-transform:uppercase;font-weight:700;letter-spacing:0.08em;margin-bottom:0.35rem}
+    .lesson-title{font-size:1.05rem;font-weight:700;color:var(--text-primary);margin-bottom:0.5rem;line-height:1.3}
+    .lesson-desc{font-size:0.85rem;color:var(--text-muted);line-height:1.5;margin-bottom:0.75rem}
+    .lesson-meta{display:flex;gap:0.75rem;align-items:center;font-size:0.8rem;color:var(--text-muted);flex-wrap:wrap}
+    .lesson-progress-bar{height:4px;background:rgba(255,255,255,0.1);border-radius:2px;margin:0.75rem 0 1rem;overflow:hidden}
+    .lesson-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:2px;transition:width 0.8s ease}
+    .lesson-footer{padding:0 1.25rem 1.25rem;display:flex;gap:0.5rem}
+    .start-lesson-btn{flex:1;padding:0.65rem;border-radius:var(--radius-md);border:none;font-weight:700;font-size:0.9rem;cursor:pointer;transition:var(--transition-base)}
+    .start-lesson-btn.not-started{background:var(--accent);color:#fff}
+    .start-lesson-btn.in-progress{background:var(--gold);color:var(--bg-dark)}
+    .start-lesson-btn.completed{background:var(--success);color:#fff}
+    .start-lesson-btn:hover{transform:translateY(-1px);opacity:0.9}
+    /* Progress Dashboard */
+    .progress-dashboard{background:var(--bg-card);border-radius:var(--radius-xl);padding:2rem;border:1px solid rgba(255,255,255,0.08);margin-bottom:2rem}
+    .progress-dashboard h2{font-size:var(--fs-2xl);margin-bottom:1.5rem;display:flex;align-items:center;gap:0.75rem}
+    .progress-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1.5rem}
+    .progress-stat{background:var(--bg-dark);border-radius:var(--radius-lg);padding:1rem;text-align:center;border:1px solid rgba(255,255,255,0.06)}
+    .progress-stat .p-num{font-size:var(--fs-2xl);font-weight:900;color:var(--accent)}
+    .progress-stat .p-label{font-size:0.8rem;color:var(--text-muted);margin-top:0.25rem}
+    .overall-progress{margin-top:1rem}
+    .overall-progress p{font-size:0.9rem;color:var(--text-secondary);margin-bottom:0.5rem}
+    .progress-bar-big{height:12px;background:rgba(255,255,255,0.08);border-radius:6px;overflow:hidden}
+    .progress-bar-big-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:6px;transition:width 1s ease}
+    /* Lesson Modal */
+    .lesson-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:var(--z-modal);align-items:center;justify-content:center;padding:1rem}
+    .lesson-modal.open{display:flex}
+    .lesson-modal-box{background:var(--bg-card);border-radius:var(--radius-xl);max-width:700px;width:100%;max-height:85vh;overflow:auto;border:1px solid rgba(255,255,255,0.1)}
+    .lesson-modal-head{display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.1)}
+    .lesson-modal-body{padding:1.5rem}
+    .lesson-steps{list-style:none;padding:0;display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0}
+    .lesson-step{display:flex;align-items:center;gap:0.75rem;padding:0.6rem 0.75rem;border-radius:var(--radius-md);background:rgba(255,255,255,0.03);font-size:0.9rem;cursor:pointer;transition:var(--transition-fast)}
+    .lesson-step:hover{background:rgba(255,255,255,0.07)}
+    .lesson-step.done{color:var(--success)}
+    .lesson-step.done::before{content:'✅'}
+    .lesson-step.current{color:var(--accent);background:rgba(233,69,96,0.08)}
+    .lesson-step.current::before{content:'▶'}
+    .lesson-step.locked::before{content:'🔒';opacity:0.5}
+    .lesson-step.locked{opacity:0.5;cursor:default}
+    .video-placeholder{aspect-ratio:16/9;background:linear-gradient(135deg,var(--bg-dark),rgba(233,69,96,0.08));border-radius:var(--radius-lg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;border:1px dashed rgba(255,255,255,0.1);margin-bottom:1rem}
+  </style>
+</head>
+<body>
+<div id="loading-screen" class="loading-screen">
+  <div class="loading-logo">DLQ</div>
+  <div class="loading-bars"><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div></div>
+  <p style="color:var(--text-muted);font-size:0.875rem">Đang tải DLQ Music Store...</p>
+</div>
+<div id="floating-notes" class="music-notes-container" aria-hidden="true"></div>
+
+<nav class="navbar" role="navigation">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo"><div class="logo-mark">DLQ</div><div class="logo-text"><span class="logo-name">DLQ Music</span><span class="logo-tagline">NHẠC CỤ CHÍNH HÃNG</span></div></a>
+    <nav class="nav-links">
+      <a href="../index.html" class="nav-link">🏠 Trang chủ</a>
+      <a href="../pages/search-results.html" class="nav-link">🛍️ Sản phẩm</a>
+      <a href="../pages/interactive-play.html" class="nav-link">🎹 Thử online</a>
+      <a href="../pages/learning.html" class="nav-link active">📚 Học nhạc</a>
+      <a href="../pages/community.html" class="nav-link">👥 Cộng đồng</a>
+      <a href="../pages/blog.html" class="nav-link">✍️ Blog</a>
+      <a href="../pages/repair-service.html" class="nav-link">🔧 Sửa chữa</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="nav-search" role="search"><span>🔍</span><input type="search" placeholder="Tìm nhạc cụ..." aria-label="Tìm kiếm" onkeydown="if(event.key==='Enter')window.location.href='../pages/search-results.html?q='+this.value"></div>
+      <a href="../pages/profile.html" class="nav-icon-btn">👤</a>
+      <a href="../pages/cart.html" class="nav-icon-btn" style="position:relative">🛒<span class="cart-badge" style="display:none">0</span></a>
+      <button class="hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu">
+  <a href="../index.html" class="nav-link">🏠 Trang chủ</a>
+  <a href="../pages/search-results.html" class="nav-link">🛍️ Sản phẩm</a>
+  <a href="../pages/interactive-play.html" class="nav-link">🎹 Thử nhạc cụ online</a>
+  <a href="../pages/learning.html" class="nav-link">📚 Học nhạc</a>
+  <a href="../pages/community.html" class="nav-link">👥 Cộng đồng</a>
+  <a href="../pages/blog.html" class="nav-link">✍️ Blog</a>
+  <a href="../pages/repair-service.html" class="nav-link">🔧 Sửa chữa</a>
+  <a href="../pages/profile.html" class="nav-link">👤 Tài khoản</a>
+  <a href="../pages/cart.html" class="nav-link">🛒 Giỏ hàng</a>
+</div>
+
+<main>
+  <section class="learning-hero">
+    <div class="container">
+      <h1>📚 Học Nhạc <span class="text-accent">Online</span></h1>
+      <p class="text-secondary">Từ beginner đến pro — học theo tốc độ của riêng bạn, hoàn toàn miễn phí</p>
+      <div class="learning-stats">
+        <div class="l-stat"><strong>50+</strong><span>Bài học</span></div>
+        <div class="l-stat"><strong>3</strong><span>Nhạc cụ</span></div>
+        <div class="l-stat"><strong>5,000+</strong><span>Học viên</span></div>
+        <div class="l-stat"><strong>100%</strong><span>Miễn phí</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container" style="padding:2rem 0 4rem">
+    <!-- Progress Dashboard -->
+    <div class="progress-dashboard animate-on-scroll" id="progress-dashboard">
+      <h2>📊 Tiến Độ Học Tập</h2>
+      <div class="progress-stats">
+        <div class="progress-stat"><div class="p-num" id="lessons-completed">0</div><div class="p-label">Bài đã hoàn thành</div></div>
+        <div class="progress-stat"><div class="p-num" id="lessons-in-progress">0</div><div class="p-label">Đang học</div></div>
+        <div class="progress-stat"><div class="p-num" id="study-streak">0</div><div class="p-label">Ngày liên tiếp</div></div>
+        <div class="progress-stat"><div class="p-num" id="total-minutes">0</div><div class="p-label">Phút học</div></div>
+      </div>
+      <div class="overall-progress">
+        <p>Tiến độ tổng quan: <strong id="overall-pct">0%</strong></p>
+        <div class="progress-bar-big"><div class="progress-bar-big-fill" id="overall-progress-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- Level Filter Tabs -->
+    <div class="level-tabs" role="tablist" aria-label="Lọc theo trình độ">
+      <button class="level-tab active" data-level="all" role="tab" aria-selected="true">🎵 Tất cả</button>
+      <button class="level-tab" data-level="beginner" role="tab" aria-selected="false">🌱 Người mới</button>
+      <button class="level-tab" data-level="intermediate" role="tab" aria-selected="false">🎯 Trung cấp</button>
+      <button class="level-tab" data-level="advanced" role="tab" aria-selected="false">🏆 Nâng cao</button>
+    </div>
+
+    <!-- Lessons Grid -->
+    <div class="lessons-grid" id="lessons-grid" role="list" aria-label="Danh sách bài học">
+      <p style="color:var(--text-muted);text-align:center;padding:3rem;grid-column:1/-1">Đang tải bài học...</p>
+    </div>
+  </div>
+</main>
+
+<!-- Lesson Modal -->
+<div class="lesson-modal" id="lesson-modal" role="dialog" aria-label="Bài học">
+  <div class="lesson-modal-box">
+    <div class="lesson-modal-head">
+      <h3 id="modal-lesson-title">Bài học</h3>
+      <button onclick="document.getElementById('lesson-modal').classList.remove('open')" aria-label="Đóng">✕</button>
+    </div>
+    <div class="lesson-modal-body">
+      <div class="video-placeholder">
+        <span style="font-size:4rem">▶</span>
+        <p style="color:var(--text-muted);font-size:0.9rem">Video bài học sẽ hiển thị tại đây</p>
+        <p style="color:var(--text-muted);font-size:0.8rem">🎬 Kết nối YouTube/Vimeo để xem</p>
+      </div>
+      <div id="modal-lesson-content">
+        <h4>Nội dung bài học</h4>
+        <ul class="lesson-steps" id="lesson-steps-list"></ul>
+      </div>
+      <div style="display:flex;gap:0.75rem;margin-top:1.5rem">
+        <button id="modal-mark-done" class="btn btn-primary" style="flex:1">✅ Đánh dấu hoàn thành</button>
+        <button id="modal-prev" class="btn btn-secondary">← Trước</button>
+        <button id="modal-next" class="btn btn-secondary">Tiếp →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="logo-mark" style="font-size:1.5rem;font-weight:900;color:var(--accent)">DLQ</div><p>DLQ Music Store – Học nhạc miễn phí, chất lượng cao</p></div>
+      <div><h4>Bài học</h4><ul><li><a href="?level=beginner">Người mới bắt đầu</a></li><li><a href="?level=intermediate">Trung cấp</a></li><li><a href="?level=advanced">Nâng cao</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 DLQ Music Store. All rights reserved. 🎵</p></div>
+  </div>
+</footer>
+
+<div class="chatbot-widget"><div class="chatbot-box" id="chatbot-box"><div class="chatbot-header"><div class="chatbot-avatar">🤖</div><div class="chatbot-info"><h4>DLQ Bot</h4><p>Tư vấn 24/7</p></div><button class="chatbot-close" id="chatbot-close">✕</button></div><div class="chatbot-messages" id="chatbot-messages" role="log" aria-live="polite"></div><div class="chatbot-quick-replies" id="chatbot-quick-replies"></div><div class="chatbot-input-area"><input type="text" class="chatbot-input" id="chatbot-input" placeholder="Nhập câu hỏi..." aria-label="Nhập tin nhắn"><button class="chatbot-send" id="chatbot-send">➤</button></div></div><button class="chatbot-toggle" id="chatbot-toggle">💬</button></div>
+<div class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/audio-player.js"></script>
+<script src="../js/mood-system.js"></script>
+<script src="../js/animations.js"></script>
+<script src="../js/chatbot.js"></script>
+
+<script>
+const LESSONS = [
+  {id:'l1',title:'Cách cầm đàn guitar đúng kỹ thuật',desc:'Tư thế ngồi, cách đặt tay trái và phải, điều chỉnh dây.',category:'guitar',level:'beginner',duration:'15:00',icon:'🎸',steps:['Tư thế ngồi chuẩn','Cách đặt tay trái','Kỹ thuật gảy dây','Luyện tập cơ bản']},
+  {id:'l2',title:'Hợp âm Am, C, G cơ bản',desc:'Học 3 hợp âm quan trọng nhất cho người mới bắt đầu.',category:'guitar',level:'beginner',duration:'20:00',icon:'🎸',steps:['Hợp âm Am','Hợp âm C','Hợp âm G','Chuyển hợp âm']},
+  {id:'l3',title:'Fingerpicking cho guitar acoustic',desc:'Kỹ thuật ngón tay: Travis picking, arpeggio patterns.',category:'guitar',level:'intermediate',duration:'25:00',icon:'🎸',steps:['Cơ bản Travis picking','Pattern arpeggio','Luyện tốc độ','Áp dụng vào bài hát']},
+  {id:'l4',title:'Kỹ thuật barre chord',desc:'Hợp âm barre đầy đủ và một phần – giải quyết điểm yếu phổ biến.',category:'guitar',level:'intermediate',duration:'30:00',icon:'🎸',steps:['Hiểu barre chord','Barre chord Am shape','Barre chord E shape','Luyện tập chuyển']},
+  {id:'l5',title:'Điệu thức Modal và ứng dụng',desc:'Dorian, Mixolydian, Lydian trong nhạc pop và blues.',category:'guitar',level:'advanced',duration:'40:00',icon:'🎸',steps:['Lý thuyết Modal','Dorian mode','Mixolydian mode','Ứng tấu jazz blues']},
+  {id:'l6',title:'Các phím cơ bản trên piano',desc:'Nhận biết 88 phím, tay trái tay phải, ký hiệu nhạc.',category:'piano',level:'beginner',duration:'18:00',icon:'🎹',steps:['Nhận biết bàn phím','Tư thế ngồi và tay','Kỹ thuật đánh số ngón','Bài tập cơ bản']},
+  {id:'l7',title:'Gam Do trưởng và bài tập vảy',desc:'Luyện gam C major hai tay, kỹ thuật legato và staccato.',category:'piano',level:'beginner',duration:'22:00',icon:'🎹',steps:['Gam C major tay phải','Gam C major tay trái','Kết hợp hai tay','Legato và Staccato']},
+  {id:'l8',title:'Đọc bản nhạc và ký hiệu cơ bản',desc:'Khoá Sol, khóa Fa, nốt nhạc, trường độ, nhịp điệu.',category:'piano',level:'beginner',duration:'28:00',icon:'🎹',steps:['Khóa Sol và Fa','Giá trị nốt nhạc','Nhịp và phách','Đọc bản nhạc đơn giản']},
+  {id:'l9',title:'Hòa thanh bốn giọng',desc:'Sopr, Alto, Tenor, Bass – hòa thanh cổ điển 4 bè.',category:'piano',level:'advanced',duration:'45:00',icon:'🎹',steps:['Nguyên tắc 4 bè','Phân tích hòa âm','Giải quyết hợp âm','Luyện tập thực tế']},
+  {id:'l10',title:'Kỹ thuật đánh kick và snare cơ bản',desc:'Tư thế ngồi, cầm dùi, beat 4/4 cơ bản.',category:'drum',level:'beginner',duration:'15:00',icon:'🥁',steps:['Tư thế và cầm dùi','Kick drum technique','Snare drum technique','Beat 4/4 cơ bản']},
+  {id:'l11',title:'Hi-hat và độ đều nhịp',desc:'Điều khiển hi-hat, luyện metronome, độ chính xác nhịp điệu.',category:'drum',level:'beginner',duration:'20:00',icon:'🥁',steps:['Hi-hat closed','Hi-hat open','Kết hợp 3 âm','Luyện metronome']},
+  {id:'l12',title:'Ghost notes và groove',desc:'Kỹ thuật ghost note, shuffle beat, funk groove.',category:'drum',level:'intermediate',duration:'35:00',icon:'🥁',steps:['Ghost notes là gì','Shuffle beat','Funk groove pattern','Ứng tấu tự do']},
+];
+
+let currentLessonId = null;
+const progress = JSON.parse(localStorage.getItem('dlq_learning_progress')||'{}');
+
+function getLessonStatus(id) { return progress[id]||'not-started'; }
+function setLessonStatus(id, status) { progress[id]=status; localStorage.setItem('dlq_learning_progress',JSON.stringify(progress)); }
+
+function updateStats() {
+  const done = LESSONS.filter(l=>getLessonStatus(l.id)==='completed').length;
+  const inProg = LESSONS.filter(l=>getLessonStatus(l.id)==='in-progress').length;
+  document.getElementById('lessons-completed').textContent = done;
+  document.getElementById('lessons-in-progress').textContent = inProg;
+  const streak = parseInt(localStorage.getItem('dlq_streak')||'0');
+  document.getElementById('study-streak').textContent = streak;
+  document.getElementById('total-minutes').textContent = done*20;
+  const pct = Math.round(done/LESSONS.length*100);
+  document.getElementById('overall-pct').textContent = pct+'%';
+  document.getElementById('overall-progress-fill').style.width = pct+'%';
+}
+
+function renderLessons(filterLevel='all') {
+  const grid = document.getElementById('lessons-grid');
+  const filtered = LESSONS.filter(l=>filterLevel==='all'||l.level===filterLevel);
+  grid.innerHTML = filtered.map(l=>{
+    const status = getLessonStatus(l.id);
+    const pct = status==='completed'?100:status==='in-progress'?50:0;
+    return `
+    <div class="lesson-card animate-on-scroll" data-lesson-id="${l.id}" role="listitem" tabindex="0">
+      <div class="lesson-thumb lesson-thumb-${l.category}">
+        <span aria-hidden="true">${l.icon}</span>
+        <div class="lesson-duration">${l.duration}</div>
+        <div class="lesson-level-badge badge-${l.level}">${{beginner:'🌱 Cơ bản',intermediate:'🎯 Trung cấp',advanced:'🏆 Nâng cao'}[l.level]}</div>
+      </div>
+      <div class="lesson-body">
+        <div class="lesson-category">${{guitar:'Guitar',piano:'Piano',drum:'Trống',theory:'Lý thuyết'}[l.category]}</div>
+        <div class="lesson-title">${l.title}</div>
+        <div class="lesson-desc">${l.desc}</div>
+        <div class="lesson-progress-bar"><div class="lesson-progress-fill" style="width:${pct}%"></div></div>
+        <div class="lesson-meta">
+          <span>⏱ ${l.duration}</span>
+          <span>${l.steps.length} bước</span>
+          ${status==='completed'?'<span style="color:var(--success)">✅ Hoàn thành</span>':status==='in-progress'?'<span style="color:var(--gold)">▶ Đang học</span>':''}
+        </div>
+      </div>
+      <div class="lesson-footer">
+        <button class="start-lesson-btn ${status}" data-id="${l.id}">
+          ${status==='completed'?'↺ Học lại':status==='in-progress'?'▶ Tiếp tục':'▶ Bắt đầu học'}
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+
+  grid.querySelectorAll('.start-lesson-btn').forEach(btn=>{
+    btn.addEventListener('click', e=>{ e.stopPropagation(); openLesson(btn.dataset.id); });
+  });
+  grid.querySelectorAll('.lesson-card').forEach(card=>{
+    card.addEventListener('click',()=>openLesson(card.dataset.lessonId));
+    card.addEventListener('keydown',e=>{ if(e.key==='Enter') openLesson(card.dataset.lessonId); });
+    if(window.Animations?._scrollObserver) Animations._scrollObserver.observe(card);
+  });
+}
+
+function openLesson(id) {
+  const lesson = LESSONS.find(l=>l.id===id);
+  if(!lesson) return;
+  currentLessonId = id;
+  document.getElementById('modal-lesson-title').textContent = lesson.icon + ' ' + lesson.title;
+  document.getElementById('lesson-steps-list').innerHTML = lesson.steps.map((s,i)=>{
+    const status = getLessonStatus(id);
+    const cls = status==='completed'?'done':i===0&&status==='in-progress'?'current':'';
+    return `<li class="lesson-step ${cls}" data-step="${i}"><span>${s}</span></li>`;
+  }).join('');
+  if(getLessonStatus(id)==='not-started') setLessonStatus(id,'in-progress');
+  document.getElementById('lesson-modal').classList.add('open');
+  updateStats();
+  renderLessons(document.querySelector('.level-tab.active')?.dataset.level||'all');
+}
+
+document.getElementById('modal-mark-done')?.addEventListener('click',()=>{
+  if(currentLessonId){
+    setLessonStatus(currentLessonId,'completed');
+    document.getElementById('lesson-modal').classList.remove('open');
+    updateStats();
+    renderLessons(document.querySelector('.level-tab.active')?.dataset.level||'all');
+    if(window.DLQToast) DLQToast.show('🎉 Bài học hoàn thành! +20 điểm kinh nghiệm','success');
+  }
+});
+
+document.querySelectorAll('.level-tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.level-tab').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected','false');});
+    btn.classList.add('active'); btn.setAttribute('aria-selected','true');
+    renderLessons(btn.dataset.level);
+  });
+});
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const params = new URLSearchParams(location.search);
+  const lvl = params.get('level');
+  if(lvl){ const t=document.querySelector(`.level-tab[data-level="${lvl}"]`); if(t) t.click(); else renderLessons(); }
+  else renderLessons();
+  updateStats();
+});
+</script>
+</body>
+</html>

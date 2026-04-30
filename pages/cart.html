@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Giỏ hàng của bạn tại DLQ Music Store">
+  <title>Giỏ Hàng | DLQ Music Store</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+  <style>
+    .cart-page{padding:2rem 0 4rem}
+    .cart-page h1{font-size:var(--fs-3xl);margin-bottom:2rem;display:flex;align-items:center;gap:0.75rem}
+    .cart-layout{display:grid;grid-template-columns:1fr 360px;gap:2rem;align-items:start}
+    @media(max-width:900px){.cart-layout{grid-template-columns:1fr}}
+    .cart-items-wrap{background:var(--bg-card);border-radius:var(--radius-lg);border:1px solid rgba(255,255,255,0.08);overflow:hidden}
+    .cart-header{display:grid;grid-template-columns:3fr 1fr 1fr 1fr 40px;gap:1rem;padding:1rem 1.5rem;background:var(--bg-dark);font-size:0.8rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;letter-spacing:0.05em}
+    @media(max-width:600px){.cart-header{display:none}}
+    #cart-items{}
+    .cart-item{display:grid;grid-template-columns:3fr 1fr 1fr 1fr 40px;gap:1rem;align-items:center;padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.06);transition:var(--transition-fast)}
+    .cart-item:last-child{border-bottom:none}
+    .cart-item:hover{background:rgba(255,255,255,0.02)}
+    @media(max-width:600px){.cart-item{grid-template-columns:1fr;gap:0.5rem}}
+    .cart-item-info{display:flex;gap:1rem;align-items:center}
+    .cart-item-img{width:70px;height:70px;background:linear-gradient(135deg,var(--bg-card-hover),rgba(233,69,96,0.1));border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0}
+    .cart-item-name{font-weight:600;font-size:0.95rem;color:var(--text-primary);margin-bottom:0.25rem}
+    .cart-item-cat{font-size:0.8rem;color:var(--text-muted)}
+    .cart-item-price{font-weight:700;color:var(--accent)}
+    .qty-control{display:flex;align-items:center;gap:0.5rem}
+    .qty-btn{width:28px;height:28px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.2);background:var(--bg-dark);color:var(--text-primary);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:var(--transition-fast)}
+    .qty-btn:hover{border-color:var(--accent);color:var(--accent)}
+    .qty-value{min-width:30px;text-align:center;font-weight:700}
+    .cart-item-total{font-weight:700;color:var(--text-primary)}
+    .remove-item-btn{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.2rem;transition:var(--transition-fast);padding:0.25rem}
+    .remove-item-btn:hover{color:var(--danger)}
+    .cart-empty{text-align:center;padding:4rem 2rem;color:var(--text-muted)}
+    .cart-empty .empty-icon{font-size:5rem;margin-bottom:1rem}
+    /* Summary */
+    .order-summary{background:var(--bg-card);border-radius:var(--radius-lg);border:1px solid rgba(255,255,255,0.08);padding:1.5rem;position:sticky;top:100px}
+    .order-summary h2{font-size:var(--fs-xl);margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.1)}
+    .summary-row{display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;color:var(--text-secondary);font-size:0.95rem}
+    .summary-row.total{font-size:1.2rem;font-weight:700;color:var(--text-primary);border-top:1px solid rgba(255,255,255,0.1);margin-top:0.75rem;padding-top:0.75rem}
+    .summary-row.discount{color:var(--success)}
+    .coupon-box{margin:1rem 0;display:flex;gap:0.5rem}
+    #coupon-input{flex:1;padding:0.6rem 1rem;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem}
+    #coupon-input:focus{outline:none;border-color:var(--accent)}
+    #apply-coupon{padding:0.6rem 1rem;background:var(--accent);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:700;white-space:nowrap;transition:var(--transition-fast)}
+    #apply-coupon:hover{background:var(--accent-hover)}
+    .checkout-btn{width:100%;padding:1rem;background:linear-gradient(135deg,var(--accent),var(--accent-hover));color:#fff;border:none;border-radius:var(--radius-lg);font-size:1.1rem;font-weight:700;cursor:pointer;margin-top:1rem;transition:var(--transition-base);letter-spacing:0.03em}
+    .checkout-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-glow)}
+    #clear-cart{background:none;border:1px solid rgba(255,255,255,0.15);color:var(--text-muted);padding:0.6rem 1.2rem;border-radius:var(--radius-md);cursor:pointer;font-size:0.85rem;margin-top:0.75rem;width:100%;transition:var(--transition-fast)}
+    #clear-cart:hover{border-color:var(--danger);color:var(--danger)}
+    .cart-actions-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.75rem}
+    .cart-count-text{color:var(--text-muted);font-size:0.9rem}
+    .continue-shopping{color:var(--accent);text-decoration:none;font-size:0.9rem;display:flex;align-items:center;gap:0.25rem}
+    .continue-shopping:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+<div id="loading-screen" class="loading-screen">
+  <div class="loading-logo">DLQ</div>
+  <div class="loading-bars"><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div></div>
+  <p style="color:var(--text-muted);font-size:0.875rem">Đang tải DLQ Music Store...</p>
+</div>
+<div id="floating-notes" class="music-notes-container" aria-hidden="true"></div>
+
+<nav class="navbar" role="navigation">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo">
+      <div class="logo-mark">DLQ</div>
+      <div class="logo-text"><span class="logo-name">DLQ Music</span><span class="logo-tagline">NHẠC CỤ CHÍNH HÃNG</span></div>
+    </a>
+    <nav class="nav-links">
+      <a href="../index.html" class="nav-link">🏠 Trang chủ</a>
+      <a href="../pages/search-results.html" class="nav-link">🛍️ Sản phẩm</a>
+      <a href="../pages/interactive-play.html" class="nav-link">🎹 Thử online</a>
+      <a href="../pages/learning.html" class="nav-link">📚 Học nhạc</a>
+      <a href="../pages/community.html" class="nav-link">👥 Cộng đồng</a>
+      <a href="../pages/blog.html" class="nav-link">✍️ Blog</a>
+      <a href="../pages/repair-service.html" class="nav-link">🔧 Sửa chữa</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="nav-search" role="search">
+        <span>🔍</span>
+        <input type="search" placeholder="Tìm nhạc cụ..." aria-label="Tìm kiếm"
+          onkeydown="if(event.key==='Enter')window.location.href='../pages/search-results.html?q='+this.value">
+      </div>
+      <a href="../pages/profile.html" class="nav-icon-btn">👤</a>
+      <a href="../pages/cart.html" class="nav-icon-btn active" style="position:relative">🛒<span class="cart-badge" style="display:none">0</span></a>
+      <button class="hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu">
+  <a href="../index.html" class="nav-link">🏠 Trang chủ</a>
+  <a href="../pages/search-results.html" class="nav-link">🛍️ Sản phẩm</a>
+  <a href="../pages/interactive-play.html" class="nav-link">🎹 Thử nhạc cụ online</a>
+  <a href="../pages/learning.html" class="nav-link">📚 Học nhạc</a>
+  <a href="../pages/community.html" class="nav-link">👥 Cộng đồng</a>
+  <a href="../pages/blog.html" class="nav-link">✍️ Blog</a>
+  <a href="../pages/repair-service.html" class="nav-link">🔧 Sửa chữa</a>
+  <a href="../pages/profile.html" class="nav-link">👤 Tài khoản</a>
+  <a href="../pages/cart.html" class="nav-link">🛒 Giỏ hàng</a>
+</div>
+
+<main>
+  <div class="container cart-page">
+    <nav aria-label="Breadcrumb" style="margin-bottom:1.5rem;font-size:0.85rem;color:var(--text-muted)">
+      <a href="../index.html" style="color:var(--text-muted)">Trang chủ</a> › <span style="color:var(--text-primary)">Giỏ hàng</span>
+    </nav>
+    <h1>🛒 Giỏ Hàng <span id="cart-count-badge" style="font-size:1rem;background:var(--accent);color:#fff;padding:0.2rem 0.7rem;border-radius:var(--radius-full);font-weight:600;margin-left:0.5rem">0</span></h1>
+
+    <div class="cart-layout">
+      <div>
+        <div class="cart-actions-top">
+          <span class="cart-count-text" id="cart-items-count">0 sản phẩm</span>
+          <a href="../pages/search-results.html" class="continue-shopping">← Tiếp tục mua sắm</a>
+        </div>
+        <div class="cart-items-wrap">
+          <div class="cart-header">
+            <span>Sản phẩm</span>
+            <span>Đơn giá</span>
+            <span>Số lượng</span>
+            <span>Thành tiền</span>
+            <span></span>
+          </div>
+          <div id="cart-items">
+            <!-- Rendered by JS -->
+            <div class="cart-empty">
+              <div class="empty-icon">🛒</div>
+              <h3>Giỏ hàng trống</h3>
+              <p>Hãy thêm nhạc cụ yêu thích vào giỏ!</p>
+              <a href="../pages/search-results.html" class="btn btn-primary" style="margin-top:1rem">🎸 Khám phá sản phẩm</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="order-summary">
+          <h2>📋 Tóm tắt đơn hàng</h2>
+          <div class="summary-row">
+            <span>Tạm tính</span>
+            <span id="cart-subtotal">0 ₫</span>
+          </div>
+          <div class="summary-row">
+            <span>Phí vận chuyển</span>
+            <span id="cart-shipping">Miễn phí</span>
+          </div>
+          <div class="summary-row discount" id="discount-row" style="display:none">
+            <span>🎟️ Giảm giá</span>
+            <span id="cart-discount">-0 ₫</span>
+          </div>
+          <div class="summary-row total">
+            <span>Tổng cộng</span>
+            <span id="cart-total" style="color:var(--accent)">0 ₫</span>
+          </div>
+
+          <div style="margin-top:1.25rem">
+            <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:0.5rem">🎟️ Mã giảm giá:</p>
+            <div class="coupon-box">
+              <input type="text" id="coupon-input" placeholder="Nhập mã coupon..." aria-label="Mã giảm giá">
+              <button id="apply-coupon">Áp dụng</button>
+            </div>
+            <p id="coupon-msg" style="font-size:0.8rem;margin-top:0.35rem;display:none"></p>
+          </div>
+
+          <button class="checkout-btn" id="checkout-btn" onclick="window.location.href='../pages/checkout.html'">
+            💳 Tiến hành thanh toán
+          </button>
+          <button id="clear-cart">🗑️ Xóa toàn bộ giỏ hàng</button>
+
+          <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.08)">
+            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;font-size:0.8rem;color:var(--text-muted)">
+              <span>🔒 Thanh toán bảo mật</span>
+              <span>🚚 Giao hàng 2-3 ngày</span>
+              <span>↩️ Đổi trả 7 ngày</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Suggested products -->
+    <section style="margin-top:4rem">
+      <h2 style="margin-bottom:1.5rem">🎵 Có thể bạn cũng thích</h2>
+      <div id="suggested-products" class="products-grid">
+        <!-- Loaded by JS -->
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-mark" style="font-size:1.5rem;font-weight:900;color:var(--accent)">DLQ</div>
+        <p>DLQ Music Store – Nền tảng âm nhạc toàn diện #1 Việt Nam</p>
+      </div>
+      <div><h4>Liên kết</h4><ul>
+        <li><a href="../index.html">Trang chủ</a></li>
+        <li><a href="../pages/search-results.html">Sản phẩm</a></li>
+        <li><a href="../pages/repair-service.html">Sửa chữa</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 DLQ Music Store. All rights reserved. 🎵</p></div>
+  </div>
+</footer>
+
+<div class="chatbot-widget">
+  <div class="chatbot-box" id="chatbot-box" role="dialog">
+    <div class="chatbot-header">
+      <div class="chatbot-avatar">🤖</div>
+      <div class="chatbot-info"><h4>DLQ Bot</h4><p>Tư vấn nhạc cụ 24/7</p></div>
+      <button class="chatbot-close" id="chatbot-close">✕</button>
+    </div>
+    <div class="chatbot-messages" id="chatbot-messages" role="log" aria-live="polite"></div>
+    <div class="chatbot-quick-replies" id="chatbot-quick-replies"></div>
+    <div class="chatbot-input-area">
+      <input type="text" class="chatbot-input" id="chatbot-input" placeholder="Nhập câu hỏi..." aria-label="Nhập tin nhắn">
+      <button class="chatbot-send" id="chatbot-send">➤</button>
+    </div>
+  </div>
+  <button class="chatbot-toggle" id="chatbot-toggle">💬</button>
+</div>
+<div class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/audio-player.js"></script>
+<script src="../js/mood-system.js"></script>
+<script src="../js/animations.js"></script>
+<script src="../js/chatbot.js"></script>
+<script src="../js/cart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const fmt = n => new Intl.NumberFormat('vi-VN',{style:'currency',currency:'VND'}).format(n);
+  let discount = 0;
+  const coupons = { 'DLQ10': 0.1, 'NHACCU15': 0.15, 'SALE20': 0.2 };
+
+  function renderCart() {
+    const items = Storage.getCart ? Storage.getCart() : JSON.parse(localStorage.getItem('dlq_cart')||'[]');
+    const container = document.getElementById('cart-items');
+    const countEl = document.getElementById('cart-items-count');
+    const badge = document.getElementById('cart-count-badge');
+    if (!container) return;
+
+    if (!items.length) {
+      container.innerHTML = `<div class="cart-empty"><div class="empty-icon">🛒</div><h3>Giỏ hàng trống</h3><p>Hãy thêm nhạc cụ yêu thích vào giỏ!</p><a href="../pages/search-results.html" class="btn btn-primary" style="margin-top:1rem">🎸 Khám phá sản phẩm</a></div>`;
+      if (countEl) countEl.textContent = '0 sản phẩm';
+      if (badge) badge.textContent = '0';
+      updateSummary(0);
+      return;
+    }
+
+    const icons = {guitar:'🎸',piano:'🎹',drum:'🥁',ukulele:'🪗',violin:'🎻',keyboard:'🎹',bass:'🎸'};
+    container.innerHTML = items.map(item => `
+      <div class="cart-item" data-id="${item.id}">
+        <div class="cart-item-info">
+          <div class="cart-item-img">${icons[item.category]||'🎵'}</div>
+          <div><div class="cart-item-name">${item.name}</div><div class="cart-item-cat">${item.category||''}</div></div>
+        </div>
+        <div class="cart-item-price">${fmt(item.price)}</div>
+        <div class="qty-control">
+          <button class="qty-btn" data-action="dec" data-id="${item.id}" aria-label="Giảm số lượng">-</button>
+          <span class="qty-value">${item.quantity||1}</span>
+          <button class="qty-btn" data-action="inc" data-id="${item.id}" aria-label="Tăng số lượng">+</button>
+        </div>
+        <div class="cart-item-total">${fmt(item.price*(item.quantity||1))}</div>
+        <button class="remove-item-btn" data-id="${item.id}" aria-label="Xóa sản phẩm">🗑️</button>
+      </div>
+    `).join('');
+
+    const total = items.reduce((s,i)=>s+i.price*(i.quantity||1),0);
+    if (countEl) countEl.textContent = `${items.length} sản phẩm`;
+    if (badge) badge.textContent = items.reduce((s,i)=>s+(i.quantity||1),0);
+    updateSummary(total);
+
+    container.querySelectorAll('.qty-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const cart = JSON.parse(localStorage.getItem('dlq_cart')||'[]');
+        const idx = cart.findIndex(i=>i.id==btn.dataset.id);
+        if(idx<0) return;
+        if(btn.dataset.action==='inc') cart[idx].quantity=(cart[idx].quantity||1)+1;
+        else cart[idx].quantity=Math.max(1,(cart[idx].quantity||1)-1);
+        localStorage.setItem('dlq_cart',JSON.stringify(cart));
+        renderCart();
+      });
+    });
+    container.querySelectorAll('.remove-item-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const cart = JSON.parse(localStorage.getItem('dlq_cart')||'[]').filter(i=>i.id!=btn.dataset.id);
+        localStorage.setItem('dlq_cart',JSON.stringify(cart));
+        renderCart();
+        if(window.DLQToast) DLQToast.show('🗑️ Đã xóa sản phẩm','info');
+      });
+    });
+  }
+
+  function updateSummary(subtotal) {
+    const el = id => document.getElementById(id);
+    if(el('cart-subtotal')) el('cart-subtotal').textContent = fmt(subtotal);
+    const discountAmt = Math.round(subtotal * discount);
+    const shipping = subtotal > 500000 || subtotal === 0 ? 0 : 30000;
+    const total = subtotal - discountAmt + shipping;
+    if(el('cart-shipping')) el('cart-shipping').textContent = shipping === 0 ? 'Miễn phí 🎉' : fmt(shipping);
+    if(el('cart-total')) el('cart-total').textContent = fmt(Math.max(0,total));
+    if(discountAmt > 0) { if(el('discount-row')) el('discount-row').style.display='flex'; if(el('cart-discount')) el('cart-discount').textContent='-'+fmt(discountAmt); }
+    else { if(el('discount-row')) el('discount-row').style.display='none'; }
+  }
+
+  renderCart();
+
+  document.getElementById('apply-coupon')?.addEventListener('click',()=>{
+    const code = document.getElementById('coupon-input')?.value?.trim().toUpperCase();
+    const msg = document.getElementById('coupon-msg');
+    if(coupons[code]) {
+      discount = coupons[code];
+      if(msg){ msg.textContent=`✅ Mã giảm ${discount*100}% đã được áp dụng!`; msg.style.color='var(--success)'; msg.style.display='block'; }
+      renderCart();
+    } else {
+      if(msg){ msg.textContent='❌ Mã coupon không hợp lệ'; msg.style.color='var(--danger)'; msg.style.display='block'; }
+    }
+  });
+
+  document.getElementById('clear-cart')?.addEventListener('click',()=>{
+    if(confirm('Bạn có chắc muốn xóa toàn bộ giỏ hàng?')){
+      localStorage.setItem('dlq_cart','[]');
+      renderCart();
+      if(window.DLQToast) DLQToast.show('🗑️ Đã xóa toàn bộ giỏ hàng','info');
+    }
+  });
+
+  // Load suggested products
+  DLQData?.getProducts?.().then(products=>{
+    const container = document.getElementById('suggested-products');
+    if(!container||!products?.length) return;
+    const fmt2 = n=>new Intl.NumberFormat('vi-VN',{style:'currency',currency:'VND'}).format(n);
+    container.innerHTML = products.slice(0,4).map(p=>`
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <div style="width:100%;height:160px;background:linear-gradient(135deg,var(--bg-card),rgba(233,69,96,0.15));display:flex;align-items:center;justify-content:center;font-size:4rem">${{guitar:'🎸',piano:'🎹',drum:'🥁',ukulele:'🪗',violin:'🎻'}[p.category]||'🎵'}</div>
+        </div>
+        <div class="product-body">
+          <div class="product-name">${p.name}</div>
+          <div class="product-price"><span class="price-current">${fmt2(p.price)}</span></div>
+        </div>
+        <div class="product-footer">
+          <button class="btn btn-primary btn-sm" data-add-cart="${p.id}">🛒 Thêm</button>
+          <a href="../pages/product-detail.html?id=${p.id}" class="btn btn-ghost btn-sm">Chi tiết</a>
+        </div>
+      </div>`).join('');
+  }).catch(()=>{});
+});
+</script>
+</body>
+</html>

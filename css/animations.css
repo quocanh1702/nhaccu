@@ -1,0 +1,356 @@
+/* ===== DLQ Music Store - Animations CSS ===== */
+@import 'variables.css';
+
+/* ===== Scroll-triggered Animations ===== */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.animate-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.animate-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.animate-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.animate-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.animate-scale {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.animate-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Staggered animation delays */
+.animate-delay-1 { transition-delay: 0.1s; }
+.animate-delay-2 { transition-delay: 0.2s; }
+.animate-delay-3 { transition-delay: 0.3s; }
+.animate-delay-4 { transition-delay: 0.4s; }
+.animate-delay-5 { transition-delay: 0.5s; }
+.animate-delay-6 { transition-delay: 0.6s; }
+
+/* ===== Background Shift on Scroll ===== */
+.bg-shift-container {
+  transition: background 1s ease;
+}
+
+/* ===== Floating Music Notes ===== */
+.note-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  font-size: 1.2rem;
+  opacity: 0;
+  color: var(--accent);
+  animation: noteFloat 8s ease-in-out infinite;
+}
+
+@keyframes noteFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(100vh) rotate(0deg) scale(0.5);
+  }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.3; }
+  100% {
+    opacity: 0;
+    transform: translateY(-20vh) rotate(540deg) scale(1.5);
+  }
+}
+
+/* ===== Hover Sound Ring Effect ===== */
+.sound-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  opacity: 0;
+  transform: scale(0);
+  animation: soundRing 0.6s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes soundRing {
+  0% { transform: scale(0); opacity: 0.7; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+/* ===== Loading Screen ===== */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-dark);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-6);
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loading-logo {
+  font-size: 3rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--accent), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: pulse 1.5s ease infinite;
+}
+
+.loading-bars {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  height: 40px;
+}
+
+.loading-bar {
+  width: 6px;
+  background: linear-gradient(to top, var(--accent), var(--gold));
+  border-radius: 3px;
+  animation: loadingBounce 1s ease infinite;
+}
+.loading-bar:nth-child(1) { animation-delay: 0s; }
+.loading-bar:nth-child(2) { animation-delay: 0.15s; }
+.loading-bar:nth-child(3) { animation-delay: 0.3s; }
+.loading-bar:nth-child(4) { animation-delay: 0.45s; }
+.loading-bar:nth-child(5) { animation-delay: 0.6s; }
+
+@keyframes loadingBounce {
+  0%, 100% { height: 10px; }
+  50% { height: 40px; }
+}
+
+/* ===== Mood System Background Animations ===== */
+.mood-bg-chill {
+  background: radial-gradient(ellipse at 50% 50%, rgba(78,205,196,0.2) 0%, transparent 70%),
+              radial-gradient(ellipse at 80% 20%, rgba(45,106,143,0.15) 0%, transparent 50%),
+              var(--mood-chill-bg) !important;
+}
+
+.mood-bg-sad {
+  background: radial-gradient(ellipse at 30% 70%, rgba(124,92,191,0.2) 0%, transparent 70%),
+              radial-gradient(ellipse at 70% 30%, rgba(61,53,97,0.15) 0%, transparent 50%),
+              var(--mood-sad-bg) !important;
+}
+
+.mood-bg-energetic {
+  background: radial-gradient(ellipse at 50% 50%, rgba(255,107,53,0.2) 0%, transparent 70%),
+              radial-gradient(ellipse at 20% 80%, rgba(255,209,102,0.1) 0%, transparent 50%),
+              var(--mood-energetic-bg) !important;
+}
+
+/* ===== Ripple Click Effect ===== */
+.ripple-wrapper { position: relative; overflow: hidden; }
+
+.click-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(0);
+  animation: clickRipple 0.6s linear;
+  pointer-events: none;
+}
+
+@keyframes clickRipple {
+  to { transform: scale(4); opacity: 0; }
+}
+
+/* ===== Neon Glow Effect ===== */
+.neon-text {
+  text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent), 0 0 40px var(--accent);
+}
+
+.neon-box {
+  box-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent), 0 0 20px rgba(233,69,96,0.3);
+}
+
+/* ===== Progress Bar Animation ===== */
+.progress-bar-animated {
+  position: relative;
+  background: rgba(255,255,255,0.08);
+  border-radius: var(--radius-full);
+  height: 8px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: progressShimmer 2s infinite;
+}
+
+@keyframes progressShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ===== Card Flip Effect ===== */
+.flip-card {
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+
+.flip-card-front, .flip-card-back {
+  backface-visibility: hidden;
+}
+
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+}
+
+/* ===== Typing Cursor ===== */
+.typing-cursor::after {
+  content: '|';
+  animation: blink 0.7s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ===== Spotlight Effect ===== */
+.spotlight {
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.05) 0%, transparent 60%);
+}
+
+/* ===== Gradient Text Animation ===== */
+.gradient-text-animated {
+  background: linear-gradient(90deg, var(--accent), var(--gold), var(--accent));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientFlow 3s linear infinite;
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ===== Parallax Section ===== */
+.parallax-bg {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* ===== Counter Animation ===== */
+.counter-number {
+  display: inline-block;
+  transition: all 0.1s ease;
+}
+
+/* ===== Bounce In ===== */
+@keyframes bounceIn {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.bounce-in { animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards; }
+
+/* ===== Slide Up ===== */
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.slide-up { animation: slideUp 0.4s ease forwards; }
+
+/* ===== Fade In ===== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in { animation: fadeIn 0.5s ease forwards; }
+
+/* ===== Music Wave Equalizer ===== */
+.music-wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 24px;
+}
+
+.wave-bar {
+  width: 3px;
+  background: linear-gradient(to top, var(--accent), var(--gold));
+  border-radius: 2px;
+  animation: waveBounce 1s ease infinite alternate;
+}
+
+.wave-bar:nth-child(1) { animation-delay: 0s; }
+.wave-bar:nth-child(2) { animation-delay: 0.1s; }
+.wave-bar:nth-child(3) { animation-delay: 0.2s; }
+.wave-bar:nth-child(4) { animation-delay: 0.3s; }
+.wave-bar:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes waveBounce {
+  from { height: 4px; }
+  to { height: 20px; }
+}
+
+/* ===== Skeleton Loading ===== */
+@keyframes skeletonPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.skeleton-loader {
+  background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-card-hover) 50%, var(--bg-card) 75%);
+  background-size: 200% 100%;
+  animation: skeletonSlide 1.5s infinite;
+  border-radius: var(--radius-md);
+}
+
+@keyframes skeletonSlide {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

@@ -1,0 +1,131 @@
+/* ===== DLQ Music Store - Music Staff Menu ===== */
+
+/* Increase navbar height to fit staff menu with labels */
+.navbar:has(.staff-menu) .nav-container {
+  height: 80px;
+}
+
+/* ===== Staff Menu Container ===== */
+.staff-menu {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  height: 56px;
+  padding: 0 var(--sp-2);
+  overflow: visible;
+}
+
+/* ===== 5 Staff Lines ===== */
+.staff-lines {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.staff-line {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.18);
+  width: 100%;
+}
+
+/* ===== Notes List ===== */
+.notes-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  list-style: none;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Per-note vertical offsets (simulate notes on staff lines) ===== */
+.note-item:nth-child(1) { --note-offset: -12px; }
+.note-item:nth-child(2) { --note-offset:   6px; }
+.note-item:nth-child(3) { --note-offset:  -6px; }
+.note-item:nth-child(4) { --note-offset:  10px; }
+.note-item:nth-child(5) { --note-offset: -10px; }
+.note-item:nth-child(6) { --note-offset:   4px; }
+.note-item:nth-child(7) { --note-offset:  -4px; }
+
+/* ===== Note Link ===== */
+.note-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  top: var(--note-offset);
+  text-decoration: none;
+  padding: 4px 6px;
+  border-radius: var(--radius-md);
+  transition: top var(--transition-base);
+}
+
+/* ===== Note Symbol ===== */
+.note-symbol {
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--text-secondary);
+  transition: color var(--transition-base),
+              transform var(--transition-base),
+              filter var(--transition-base);
+  display: block;
+}
+
+/* ===== Note Label ===== */
+.note-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+  white-space: nowrap;
+  transition: color var(--transition-base);
+  letter-spacing: 0.3px;
+}
+
+/* ===== Hover & Active States ===== */
+.note-link:hover,
+.note-link.active {
+  top: calc(var(--note-offset) - 6px);
+}
+
+.note-link:hover .note-symbol {
+  color: var(--accent);
+  transform: scale(1.25);
+  filter: drop-shadow(0 0 8px rgba(233, 69, 96, 0.65));
+}
+
+.note-link:hover .note-label {
+  color: var(--accent);
+}
+
+.note-link.active .note-symbol {
+  color: var(--gold);
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 10px rgba(245, 166, 35, 0.7));
+}
+
+.note-link.active .note-label {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* ===== Responsive: hide staff menu on small screens ===== */
+@media (max-width: 900px) {
+  .staff-menu {
+    display: none;
+  }
+
+  /* Restore original navbar height when staff menu is hidden */
+  .navbar:has(.staff-menu) .nav-container {
+    height: var(--nav-height, 70px);
+  }
+}

@@ -1,0 +1,571 @@
+/* ===== DLQ Music Store - Interactive Instruments Styles ===== */
+@import 'variables.css';
+
+/* ===== Page Layout ===== */
+.interactive-page {
+  padding-top: 70px;
+  min-height: 100vh;
+}
+
+.instrument-selector {
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-8) var(--sp-6);
+  background: var(--bg-card);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  flex-wrap: wrap;
+}
+
+.instrument-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-6);
+  border-radius: var(--radius-lg);
+  border: 2px solid transparent;
+  background: rgba(255,255,255,0.05);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  min-width: 110px;
+}
+.instrument-tab:hover { border-color: rgba(233,69,96,0.3); background: rgba(233,69,96,0.05); }
+.instrument-tab.active { border-color: var(--accent); background: rgba(233,69,96,0.12); }
+.instrument-tab-icon { font-size: 2rem; }
+.instrument-tab-name { font-size: var(--fs-sm); font-weight: 600; }
+
+/* ===== Recording Controls ===== */
+.recording-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-4);
+  padding: var(--sp-4) var(--sp-6);
+  background: rgba(0,0,0,0.3);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.rec-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0.6rem 1.5rem;
+  border-radius: var(--radius-full);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+}
+.rec-btn-record { background: var(--accent); color: #fff; }
+.rec-btn-record.recording { animation: pulse 1s infinite; background: #ff0040; }
+.rec-btn-stop { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+.rec-btn-play { background: var(--success); color: #fff; }
+
+.rec-timer {
+  font-size: var(--fs-sm);
+  font-family: var(--font-mono);
+  color: var(--accent);
+  background: rgba(233,69,96,0.1);
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-full);
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.volume-control span { font-size: var(--fs-sm); color: var(--text-muted); }
+.volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100px;
+  height: 4px;
+  background: rgba(255,255,255,0.15);
+  border-radius: var(--radius-full);
+  outline: none;
+}
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+/* ===== Piano ===== */
+.piano-wrapper {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--sp-8) var(--sp-4);
+  overflow-x: auto;
+}
+.piano-wrapper.active { display: flex; }
+
+.piano-info {
+  text-align: center;
+  margin-bottom: var(--sp-6);
+}
+.piano-info h2 { font-size: var(--fs-2xl); margin-bottom: var(--sp-2); }
+.piano-info p { color: var(--text-secondary); font-size: var(--fs-sm); }
+
+.piano-keyboard-wrap {
+  overflow-x: auto;
+  width: 100%;
+  padding-bottom: var(--sp-4);
+}
+
+.piano-keyboard {
+  position: relative;
+  display: flex;
+  user-select: none;
+  min-width: max-content;
+  margin: 0 auto;
+  height: 200px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg), 0 0 40px rgba(0,0,0,0.5);
+}
+
+.piano-key {
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.08s ease, transform 0.08s ease;
+}
+
+/* White keys */
+.piano-key.white {
+  width: 44px;
+  height: 200px;
+  background: linear-gradient(to bottom, #f5f5f0, #ffffff);
+  border: 1px solid #999;
+  border-radius: 0 0 6px 6px;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 10px;
+}
+.piano-key.white:hover { background: linear-gradient(to bottom, #fff0f0, #ffe6e6); }
+.piano-key.white.active { background: linear-gradient(to bottom, #ffb3b3, #ff7f7f); transform: translateY(3px); }
+
+/* Black keys */
+.piano-key.black {
+  position: absolute;
+  width: 28px;
+  height: 130px;
+  background: linear-gradient(to bottom, #333, #111);
+  border-radius: 0 0 5px 5px;
+  z-index: 2;
+  margin-left: -14px;
+}
+.piano-key.black:hover { background: linear-gradient(to bottom, #444, #222); }
+.piano-key.black.active { background: linear-gradient(to bottom, #882222, #cc3333); transform: translateY(3px); }
+
+.key-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #999;
+  font-family: var(--font-mono);
+}
+.piano-key.black .key-label { color: #888; font-size: 9px; }
+
+/* Piano octave controls */
+.piano-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-top: var(--sp-4);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+.octave-btn {
+  padding: 0.4rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: var(--fs-sm);
+}
+.octave-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Keyboard hint */
+.keyboard-hint {
+  margin-top: var(--sp-4);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  justify-content: center;
+}
+.key-hint-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+.kbd {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+/* ===== Guitar ===== */
+.guitar-wrapper {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--sp-8) var(--sp-4);
+}
+.guitar-wrapper.active { display: flex; }
+
+.guitar-info {
+  text-align: center;
+  margin-bottom: var(--sp-6);
+}
+
+.guitar-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  padding: var(--sp-8);
+  border: 1px solid rgba(255,255,255,0.07);
+}
+
+.guitar-fretboard {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  background: linear-gradient(to right, #6b3a1f, #8b4a25, #7a4020);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+}
+
+.fretboard-nut {
+  position: absolute;
+  left: 0;
+  top: 0; bottom: 0;
+  width: 14px;
+  background: linear-gradient(to bottom, #ffe5b4, #d4a04c);
+  z-index: 3;
+}
+
+.fret-line {
+  position: absolute;
+  top: 10px; bottom: 10px;
+  width: 2px;
+  background: rgba(200,200,200,0.4);
+  z-index: 2;
+}
+
+.guitar-string {
+  position: absolute;
+  left: 14px; right: 0;
+  height: 2px;
+  cursor: pointer;
+  z-index: 4;
+  transition: filter 0.1s ease;
+}
+.guitar-string::before {
+  content: '';
+  position: absolute;
+  inset: -6px 0;
+}
+.guitar-string:hover { filter: brightness(1.5); }
+.guitar-string.vibrating { animation: stringVibrate 0.4s ease; }
+
+/* String thicknesses */
+.guitar-string[data-string="0"] { height: 2px; background: linear-gradient(to right, #e8e8e8, #ccc); top: 20px; }
+.guitar-string[data-string="1"] { height: 2.5px; background: linear-gradient(to right, #d4d4d4, #b0b0b0); top: 56px; }
+.guitar-string[data-string="2"] { height: 3px; background: linear-gradient(to right, #c0c0c0, #999); top: 92px; }
+.guitar-string[data-string="3"] { height: 4px; background: linear-gradient(to right, #c8ab6e, #9a6b2a); top: 128px; }
+.guitar-string[data-string="4"] { height: 5px; background: linear-gradient(to right, #b89a5a, #8a5b1a); top: 164px; }
+.guitar-string[data-string="5"] { height: 6px; background: linear-gradient(to right, #a88540, #7a4c10); top: 200px; }
+
+.string-label {
+  position: absolute;
+  left: 20px;
+  font-size: var(--fs-xs);
+  color: rgba(255,255,255,0.7);
+  font-weight: 700;
+  z-index: 5;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+/* Fret dots */
+.fret-dot {
+  position: absolute;
+  width: 12px; height: 12px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.guitar-chord-display {
+  display: flex;
+  gap: var(--sp-3);
+  margin-top: var(--sp-6);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.chord-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-3) var(--sp-4);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-width: 60px;
+}
+.chord-btn:hover { background: rgba(233,69,96,0.15); border-color: var(--accent); }
+.chord-name { font-size: var(--fs-sm); font-weight: 700; color: var(--text-primary); }
+.chord-type { font-size: var(--fs-xs); color: var(--text-muted); }
+
+/* ===== Drum Kit ===== */
+.drum-wrapper {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--sp-8) var(--sp-4);
+}
+.drum-wrapper.active { display: flex; }
+
+.drum-info {
+  text-align: center;
+  margin-bottom: var(--sp-6);
+}
+
+.drum-kit {
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  height: 450px;
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255,255,255,0.07);
+  overflow: hidden;
+}
+
+.drum-pad {
+  position: absolute;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-align: center;
+  transition: filter 0.08s ease, transform 0.08s ease;
+  border: 3px solid rgba(0,0,0,0.3);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+  user-select: none;
+}
+
+.drum-pad:hover { filter: brightness(1.2); }
+.drum-pad:active, .drum-pad.hit { transform: scale(0.94); filter: brightness(1.5); }
+
+.drum-pad .pad-key {
+  background: rgba(0,0,0,0.3);
+  border-radius: var(--radius-sm);
+  padding: 1px 5px;
+  font-size: 9px;
+  font-family: var(--font-mono);
+}
+
+/* Drum pad positions & colors */
+.drum-kick {
+  width: 130px; height: 130px;
+  background: radial-gradient(circle at 40% 40%, #5a3a8a, #2a1060);
+  bottom: 30px; left: 50%;
+  transform: translateX(-50%);
+  color: #c8a8ff;
+}
+.drum-kick:active, .drum-kick.hit { transform: translateX(-50%) scale(0.94); }
+
+.drum-snare {
+  width: 95px; height: 95px;
+  background: radial-gradient(circle at 40% 40%, #8a6020, #4a3000);
+  bottom: 130px; left: 25%;
+  transform: translateX(-50%);
+  color: #ffe0a0;
+}
+.drum-snare:active, .drum-snare.hit { transform: translateX(-50%) scale(0.94); }
+
+.drum-hihat {
+  width: 75px; height: 75px;
+  background: radial-gradient(circle at 40% 40%, #7a7a20, #404010);
+  bottom: 200px; left: 20%;
+  transform: translateX(-50%);
+  color: #ffff90;
+}
+.drum-hihat:active, .drum-hihat.hit { transform: translateX(-50%) scale(0.94); }
+
+.drum-hihat-open {
+  width: 75px; height: 75px;
+  background: radial-gradient(circle at 40% 40%, #9a9a30, #505018);
+  bottom: 200px; left: 12%;
+  transform: translateX(-50%);
+  color: #ffffa0;
+}
+.drum-hihat-open:active, .drum-hihat-open.hit { transform: translateX(-50%) scale(0.94); }
+
+.drum-crash {
+  width: 85px; height: 85px;
+  background: radial-gradient(circle at 40% 40%, #206a7a, #103040);
+  top: 30px; left: 10%;
+  transform: translateX(-50%);
+  color: #90e0ff;
+}
+.drum-crash:active, .drum-crash.hit { transform: translateX(-50%) scale(0.94); }
+
+.drum-ride {
+  width: 95px; height: 95px;
+  background: radial-gradient(circle at 40% 40%, #207a40, #104020);
+  top: 30px; right: 10%;
+  transform: translateX(50%);
+  color: #90ffc0;
+}
+.drum-ride:active, .drum-ride.hit { transform: translateX(50%) scale(0.94); }
+
+.drum-tom1 {
+  width: 80px; height: 80px;
+  background: radial-gradient(circle at 40% 40%, #8a2020, #500000);
+  top: 40px; left: 35%;
+  transform: translateX(-50%);
+  color: #ffa0a0;
+}
+.drum-tom1:active, .drum-tom1.hit { transform: translateX(-50%) scale(0.94); }
+
+.drum-tom2 {
+  width: 80px; height: 80px;
+  background: radial-gradient(circle at 40% 40%, #8a4020, #502000);
+  top: 40px; right: 35%;
+  transform: translateX(50%);
+  color: #ffc0a0;
+}
+.drum-tom2:active, .drum-tom2.hit { transform: translateX(50%) scale(0.94); }
+
+.drum-floor {
+  width: 100px; height: 100px;
+  background: radial-gradient(circle at 40% 40%, #5a2060, #2a0030);
+  bottom: 100px; right: 15%;
+  transform: translateX(50%);
+  color: #e0a0ff;
+}
+.drum-floor:active, .drum-floor.hit { transform: translateX(50%) scale(0.94); }
+
+/* Drum ripple effect */
+.drum-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transform: scale(0);
+  animation: rippleEffect 0.4s ease-out;
+  pointer-events: none;
+}
+
+/* Beat Pattern */
+.beat-pattern {
+  margin-top: var(--sp-6);
+  width: 100%;
+  max-width: 700px;
+}
+
+.beat-pattern-title {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  margin-bottom: var(--sp-3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.beat-grid {
+  display: grid;
+  grid-template-rows: repeat(9, 30px);
+  grid-template-columns: 80px repeat(16, 1fr);
+  gap: 3px;
+  background: var(--bg-card);
+  padding: var(--sp-3);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+}
+
+.beat-label {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  padding-right: var(--sp-2);
+}
+
+.beat-cell {
+  background: rgba(255,255,255,0.04);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+.beat-cell:hover { background: rgba(233,69,96,0.2); }
+.beat-cell.active { background: var(--accent); }
+.beat-cell.current { box-shadow: 0 0 0 2px rgba(255,255,255,0.4); }
+
+/* Metronome */
+.metronome-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-top: var(--sp-4);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.bpm-control {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+}
+.bpm-input {
+  width: 60px;
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-md);
+  padding: 0.3rem 0.5rem;
+  color: var(--text-primary);
+  text-align: center;
+  font-size: var(--fs-sm);
+}
+
+/* ===== Ripple Animation ===== */
+@keyframes rippleEffect {
+  to { transform: scale(3); opacity: 0; }
+}
+
+@keyframes stringVibrate {
+  0%, 100% { transform: scaleY(1); }
+  25% { transform: scaleY(1.5) skewX(1deg); }
+  50% { transform: scaleY(0.8) skewX(-1deg); }
+  75% { transform: scaleY(1.3) skewX(0.5deg); }
+}

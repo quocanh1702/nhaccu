@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dịch vụ sửa chữa nhạc cụ DLQ – Đặt lịch online, theo dõi tiến độ, báo giá tự động. Sửa guitar, piano, trống tại TP.HCM.">
+  <meta name="keywords" content="sửa chữa nhạc cụ, sửa guitar, sửa piano, đặt lịch sửa, DLQ repair">
+  <title>Dịch Vụ Sửa Chữa Nhạc Cụ | DLQ Music Store</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+  <style>
+    /* ===== REPAIR SERVICE STYLES ===== */
+    .repair-hero {
+      background: linear-gradient(135deg, var(--bg-dark) 0%, rgba(255,165,0,0.12) 50%, var(--primary-light) 100%);
+      padding: 4rem 0 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .repair-hero::before {
+      content: '🔧';
+      position: absolute;
+      font-size: 14rem;
+      opacity: 0.04;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .repair-hero h1 { font-size: var(--fs-4xl); margin-bottom: 0.5rem; }
+    .repair-hero p { color: var(--text-muted); font-size: 1.05rem; max-width: 560px; margin: 0 auto; }
+
+    /* Stats bar */
+    .repair-stats-bar {
+      background: var(--bg-card);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 1rem 0;
+    }
+    .repair-stats-inner {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+    .repair-stat { text-align: center; }
+    .repair-stat strong { display: block; font-size: var(--fs-2xl); font-weight: 900; color: orange; }
+    .repair-stat span { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* Main layout */
+    .repair-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 2.5rem;
+      padding: 3rem 0 5rem;
+      align-items: start;
+    }
+    @media (max-width: 960px) { .repair-layout { grid-template-columns: 1fr; } }
+
+    /* Services grid */
+    .services-section { margin-bottom: 3rem; }
+    .services-section h2 { font-size: var(--fs-2xl); font-weight: 800; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+    .service-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: var(--transition-base);
+      cursor: pointer;
+      text-align: center;
+    }
+    .service-card:hover { border-color: orange; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255,165,0,0.15); }
+    .service-card.selected { border-color: orange; background: rgba(255,165,0,0.08); }
+    .service-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+    .service-name { font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; }
+    .service-price { color: orange; font-weight: 800; font-size: 1rem; margin-bottom: 0.25rem; }
+    .service-time { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* Booking form */
+    .booking-form-section { margin-bottom: 3rem; }
+    .booking-form-section h2 { font-size: var(--fs-2xl); font-weight: 800; margin-bottom: 1.5rem; }
+    .booking-steps {
+      display: flex;
+      gap: 0;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .booking-steps::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: rgba(255,255,255,0.1);
+      z-index: 0;
+    }
+    .step-item {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .step-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin: 0 auto 0.5rem;
+      transition: var(--transition-fast);
+      font-size: 0.9rem;
+    }
+    .step-circle.active { background: orange; border-color: orange; color: var(--bg-dark); }
+    .step-circle.done { background: var(--success); border-color: var(--success); color: #fff; }
+    .step-label { font-size: 0.78rem; color: var(--text-muted); }
+    .step-item.active .step-label { color: orange; font-weight: 700; }
+
+    /* Form */
+    .booking-form { background: var(--bg-card); border-radius: var(--radius-xl); padding: 2rem; border: 1px solid rgba(255,255,255,0.08); }
+    .form-step { display: none; }
+    .form-step.active { display: block; animation: fadeIn 0.3s ease; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.875rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.4rem; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--bg-dark);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      font-family: var(--font-primary);
+      transition: var(--transition-fast);
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { outline: none; border-color: orange; }
+    .form-group textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+    .form-group select option { background: var(--bg-dark); }
+
+    /* Date picker slots */
+    .date-slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 0.5rem; }
+    @media (max-width: 500px) { .date-slots { grid-template-columns: repeat(3, 1fr); } }
+    .date-slot {
+      padding: 0.6rem 0.5rem;
+      background: var(--bg-dark);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-md);
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      font-size: 0.82rem;
+    }
+    .date-slot:hover { border-color: orange; color: orange; }
+    .date-slot.selected { background: rgba(255,165,0,0.15); border-color: orange; color: orange; font-weight: 700; }
+    .date-slot.disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+
+    /* Time slots */
+    .time-slots { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+    .time-slot {
+      padding: 0.45rem 0.9rem;
+      background: var(--bg-dark);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: var(--transition-fast);
+    }
+    .time-slot:hover { border-color: orange; color: orange; }
+    .time-slot.selected { background: rgba(255,165,0,0.15); border-color: orange; color: orange; font-weight: 700; }
+
+    .form-nav { display: flex; justify-content: space-between; margin-top: 1.5rem; gap: 1rem; }
+
+    /* Quote preview */
+    .quote-preview {
+      background: rgba(255,165,0,0.08);
+      border: 1px solid rgba(255,165,0,0.25);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .quote-preview h4 { color: orange; margin-bottom: 0.75rem; font-size: 0.95rem; }
+    .quote-row { display: flex; justify-content: space-between; margin-bottom: 0.4rem; font-size: 0.9rem; }
+    .quote-row span { color: var(--text-muted); }
+    .quote-row strong { color: var(--text-primary); }
+    .quote-total { border-top: 1px solid rgba(255,165,0,0.2); padding-top: 0.75rem; margin-top: 0.75rem; display: flex; justify-content: space-between; font-size: 1rem; }
+    .quote-total strong { color: orange; font-size: 1.1rem; }
+
+    /* Success screen */
+    .booking-success {
+      display: none;
+      text-align: center;
+      padding: 3rem 2rem;
+      animation: fadeIn 0.5s ease;
+    }
+    .booking-success.show { display: block; }
+    .success-icon { font-size: 5rem; margin-bottom: 1rem; }
+    .tracking-id { font-size: 1.5rem; font-weight: 900; color: orange; letter-spacing: 0.1em; font-family: monospace; background: rgba(255,165,0,0.1); padding: 0.5rem 1.5rem; border-radius: var(--radius-full); display: inline-block; }
+
+    /* Tracking section */
+    .tracking-section { margin-bottom: 3rem; }
+    .tracking-section h2 { font-size: var(--fs-2xl); font-weight: 800; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+    .tracking-input-row { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .tracking-input-row input { flex: 1; padding: 0.75rem 1rem; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius-lg); color: var(--text-primary); font-size: 0.95rem; }
+    .tracking-input-row input:focus { outline: none; border-color: orange; }
+    .tracking-input-row button { padding: 0.75rem 1.5rem; background: orange; color: var(--bg-dark); border: none; border-radius: var(--radius-lg); font-weight: 700; cursor: pointer; transition: var(--transition-fast); white-space: nowrap; }
+    .tracking-input-row button:hover { background: #e6900a; }
+
+    /* Tracking result */
+    .tracking-result { display: none; animation: fadeIn 0.4s ease; }
+    .tracking-result.show { display: block; }
+    .tracking-card { background: var(--bg-card); border-radius: var(--radius-xl); padding: 1.75rem; border: 1px solid rgba(255,165,0,0.2); }
+    .tracking-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem; }
+    .tracking-id-badge { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; }
+    .tracking-id-value { font-size: 1.2rem; font-weight: 900; color: orange; font-family: monospace; }
+    .tracking-status-badge { padding: 0.4rem 1rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 700; }
+    .status-checking { background: rgba(255,165,0,0.15); color: orange; }
+    .status-repairing { background: rgba(100,149,237,0.15); color: cornflowerblue; }
+    .status-done { background: rgba(40,167,69,0.15); color: var(--success); }
+    .status-waiting { background: rgba(255,255,255,0.08); color: var(--text-muted); }
+
+    /* Progress timeline */
+    .repair-timeline { position: relative; padding: 0.5rem 0; }
+    .timeline-line {
+      position: absolute;
+      left: 20px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: rgba(255,255,255,0.08);
+    }
+    .timeline-progress {
+      position: absolute;
+      left: 20px;
+      top: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, orange, rgba(255,165,0,0.3));
+      transition: height 0.8s ease;
+    }
+    .timeline-step {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+      padding: 0.75rem 0;
+      position: relative;
+      z-index: 1;
+    }
+    .timeline-dot {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      transition: var(--transition-base);
+      border: 2px solid rgba(255,255,255,0.1);
+      background: var(--bg-dark);
+    }
+    .timeline-dot.done { background: rgba(40,167,69,0.2); border-color: var(--success); }
+    .timeline-dot.active { background: rgba(255,165,0,0.2); border-color: orange; animation: pulse 2s infinite; }
+    .timeline-dot.pending { opacity: 0.5; }
+    .timeline-content { flex: 1; padding-top: 0.5rem; }
+    .timeline-title { font-weight: 700; color: var(--text-primary); margin-bottom: 0.15rem; }
+    .timeline-content.pending .timeline-title { color: var(--text-muted); }
+    .timeline-desc { font-size: 0.82rem; color: var(--text-muted); }
+    .timeline-time { font-size: 0.78rem; color: orange; font-weight: 600; margin-top: 0.15rem; }
+
+    /* Sidebar */
+    .repair-sidebar {}
+    .sidebar-card { background: var(--bg-card); border-radius: var(--radius-xl); padding: 1.5rem; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 1.5rem; }
+    .sidebar-card h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 700; margin-bottom: 1.1rem; }
+    .faq-item { padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); cursor: pointer; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); display: flex; justify-content: space-between; gap: 0.5rem; }
+    .faq-a { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.5; display: none; }
+    .faq-a.open { display: block; animation: fadeIn 0.2s ease; }
+
+    .tech-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .tech-item { display: flex; gap: 0.75rem; align-items: center; padding: 0.6rem; border-radius: var(--radius-md); background: rgba(255,255,255,0.03); }
+    .tech-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .tech-name { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); }
+    .tech-role { font-size: 0.78rem; color: var(--text-muted); }
+    .tech-exp { font-size: 0.75rem; color: orange; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="loading-screen" class="loading-screen">
+  <div class="loading-logo">DLQ</div>
+  <div class="loading-bars">
+    <div class="loading-bar"></div><div class="loading-bar"></div>
+    <div class="loading-bar"></div><div class="loading-bar"></div>
+    <div class="loading-bar"></div>
+  </div>
+  <p style="color:var(--text-muted);font-size:0.875rem">Đang tải Dịch vụ Sửa chữa...</p>
+</div>
+
+<div id="floating-notes" class="music-notes-container" aria-hidden="true"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo" aria-label="DLQ Music Store home">
+      <div class="logo-mark" aria-hidden="true">DLQ</div>
+      <div class="logo-text">
+        <span class="logo-name">DLQ Music</span>
+        <span class="logo-tagline">NHẠC CỤ CHÍNH HÃNG</span>
+      </div>
+    </a>
+    <nav class="nav-links">
+      <a href="../index.html" class="nav-link">🏠 Trang chủ</a>
+      <a href="search-results.html" class="nav-link">🛍️ Sản phẩm</a>
+      <a href="interactive-play.html" class="nav-link">🎹 Thử online</a>
+      <a href="learning.html" class="nav-link">📚 Học nhạc</a>
+      <a href="community.html" class="nav-link">👥 Cộng đồng</a>
+      <a href="blog.html" class="nav-link">✍️ Blog</a>
+      <a href="repair-service.html" class="nav-link active">🔧 Sửa chữa</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="nav-search" role="search">
+        <span>🔍</span>
+        <input type="search" placeholder="Tìm nhạc cụ..." aria-label="Tìm kiếm"
+          onkeydown="if(event.key==='Enter')window.location.href='search-results.html?q='+this.value">
+      </div>
+      <a href="profile.html" class="nav-icon-btn" aria-label="Tài khoản">👤</a>
+      <a href="cart.html" class="nav-icon-btn" aria-label="Giỏ hàng" style="position:relative">
+        🛒<span class="cart-badge" style="display:none">0</span>
+      </a>
+      <button class="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" role="dialog" aria-label="Mobile navigation">
+  <a href="../index.html" class="nav-link">🏠 Trang chủ</a>
+  <a href="search-results.html" class="nav-link">🛍️ Sản phẩm</a>
+  <a href="interactive-play.html" class="nav-link">🎹 Thử nhạc cụ online</a>
+  <a href="learning.html" class="nav-link">📚 Học nhạc</a>
+  <a href="community.html" class="nav-link">👥 Cộng đồng</a>
+  <a href="blog.html" class="nav-link">✍️ Blog</a>
+  <a href="repair-service.html" class="nav-link active">🔧 Dịch vụ sửa chữa</a>
+</div>
+
+<!-- HERO -->
+<section class="repair-hero">
+  <div class="container">
+    <h1>Dịch Vụ Sửa Chữa Nhạc Cụ 🔧</h1>
+    <p>Đặt lịch online, theo dõi tiến độ real-time, báo giá tự động. Kỹ thuật viên 5+ năm kinh nghiệm.</p>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="repair-stats-bar">
+  <div class="container">
+    <div class="repair-stats-inner">
+      <div class="repair-stat">
+        <strong>2,500+</strong>
+        <span>Nhạc cụ đã sửa</span>
+      </div>
+      <div class="repair-stat">
+        <strong>98%</strong>
+        <span>Khách hàng hài lòng</span>
+      </div>
+      <div class="repair-stat">
+        <strong>24h</strong>
+        <span>Thời gian sửa trung bình</span>
+      </div>
+      <div class="repair-stat">
+        <strong>6 tháng</strong>
+        <span>Bảo hành sau sửa</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="container">
+  <div class="repair-layout">
+    <!-- Left -->
+    <div>
+
+      <!-- Services -->
+      <section class="services-section">
+        <h2>🛠️ Dịch Vụ Sửa Chữa</h2>
+        <div class="services-grid">
+          <div class="service-card" data-service="strings-replace" data-price="80000" data-time="30 phút" onclick="selectService(this)">
+            <div class="service-icon">🎸</div>
+            <div class="service-name">Thay dây đàn</div>
+            <div class="service-price">80,000đ</div>
+            <div class="service-time">⏱️ ~30 phút</div>
+          </div>
+          <div class="service-card" data-service="action-setup" data-price="200000" data-time="2–3 giờ" onclick="selectService(this)">
+            <div class="service-icon">⚙️</div>
+            <div class="service-name">Setup Action / Intonation</div>
+            <div class="service-price">200,000đ</div>
+            <div class="service-time">⏱️ 2–3 giờ</div>
+          </div>
+          <div class="service-card" data-service="fret-polish" data-price="150000" data-time="1–2 giờ" onclick="selectService(this)">
+            <div class="service-icon">✨</div>
+            <div class="service-name">Đánh bóng phím đàn</div>
+            <div class="service-price">150,000đ</div>
+            <div class="service-time">⏱️ 1–2 giờ</div>
+          </div>
+          <div class="service-card" data-service="electronics" data-price="350000" data-time="1–4 giờ" onclick="selectService(this)">
+            <div class="service-icon">🔌</div>
+            <div class="service-name">Sửa điện tử / Jack</div>
+            <div class="service-price">350,000đ+</div>
+            <div class="service-time">⏱️ 1–4 giờ</div>
+          </div>
+          <div class="service-card" data-service="piano-tune" data-price="500000" data-time="2–3 giờ" onclick="selectService(this)">
+            <div class="service-icon">🎹</div>
+            <div class="service-name">Lên dây piano cơ</div>
+            <div class="service-price">500,000đ</div>
+            <div class="service-time">⏱️ 2–3 giờ</div>
+          </div>
+          <div class="service-card" data-service="drum-head" data-price="120000" data-time="30 phút" onclick="selectService(this)">
+            <div class="service-icon">🥁</div>
+            <div class="service-name">Thay mặt trống</div>
+            <div class="service-price">120,000đ/mặt</div>
+            <div class="service-time">⏱️ ~30 phút</div>
+          </div>
+          <div class="service-card" data-service="neck-reset" data-price="800000" data-time="2–3 ngày" onclick="selectService(this)">
+            <div class="service-icon">🪵</div>
+            <div class="service-name">Cân chỉnh cần đàn</div>
+            <div class="service-price">800,000đ+</div>
+            <div class="service-time">⏱️ 2–3 ngày</div>
+          </div>
+          <div class="service-card" data-service="cleaning" data-price="100000" data-time="1 giờ" onclick="selectService(this)">
+            <div class="service-icon">🧹</div>
+            <div class="service-name">Vệ sinh tổng thể</div>
+            <div class="service-price">100,000đ</div>
+            <div class="service-time">⏱️ ~1 giờ</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Booking form -->
+      <section class="booking-form-section" id="booking-section">
+        <h2>📅 Đặt Lịch Sửa Chữa</h2>
+
+        <!-- Steps indicator -->
+        <div class="booking-steps" role="list" aria-label="Các bước đặt lịch">
+          <div class="step-item" id="step-1-item" role="listitem">
+            <div class="step-circle active" id="step-1-circle">1</div>
+            <div class="step-label">Thông tin</div>
+          </div>
+          <div class="step-item" id="step-2-item" role="listitem">
+            <div class="step-circle" id="step-2-circle">2</div>
+            <div class="step-label">Chọn lịch</div>
+          </div>
+          <div class="step-item" id="step-3-item" role="listitem">
+            <div class="step-circle" id="step-3-circle">3</div>
+            <div class="step-label">Xác nhận</div>
+          </div>
+        </div>
+
+        <div class="booking-form">
+          <!-- Step 1: Info -->
+          <div class="form-step active" id="form-step-1">
+            <h3 style="margin-bottom:1.25rem;font-size:1.1rem">📋 Thông tin nhạc cụ & vấn đề</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="customer-name">Họ và tên *</label>
+                <input type="text" id="customer-name" placeholder="Nguyễn Văn A" required>
+              </div>
+              <div class="form-group">
+                <label for="customer-phone">Số điện thoại *</label>
+                <input type="tel" id="customer-phone" placeholder="0901 234 567" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="instrument-type">Loại nhạc cụ *</label>
+                <select id="instrument-type" required>
+                  <option value="">-- Chọn nhạc cụ --</option>
+                  <option value="guitar-acoustic">Guitar Acoustic</option>
+                  <option value="guitar-electric">Guitar Electric</option>
+                  <option value="guitar-classic">Guitar Classic</option>
+                  <option value="piano-electric">Piano Điện</option>
+                  <option value="piano-acoustic">Piano Cơ</option>
+                  <option value="keyboard">Keyboard</option>
+                  <option value="drum-electric">Trống Điện</option>
+                  <option value="drum-acoustic">Trống Acoustic</option>
+                  <option value="ukulele">Ukulele</option>
+                  <option value="violin">Violin</option>
+                  <option value="other">Khác</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="instrument-brand">Thương hiệu</label>
+                <input type="text" id="instrument-brand" placeholder="Yamaha, Fender, Roland...">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="issue-type">Loại dịch vụ *</label>
+              <select id="issue-type" required>
+                <option value="">-- Chọn dịch vụ --</option>
+                <option value="strings-replace">Thay dây đàn</option>
+                <option value="action-setup">Setup Action / Intonation</option>
+                <option value="fret-polish">Đánh bóng phím đàn</option>
+                <option value="electronics">Sửa điện tử / Jack</option>
+                <option value="piano-tune">Lên dây piano cơ</option>
+                <option value="drum-head">Thay mặt trống</option>
+                <option value="neck-reset">Cân chỉnh cần đàn</option>
+                <option value="cleaning">Vệ sinh tổng thể</option>
+                <option value="other">Khác (mô tả bên dưới)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="issue-desc">Mô tả vấn đề *</label>
+              <textarea id="issue-desc" placeholder="Mô tả chi tiết vấn đề bạn gặp phải: đàn bị gì, hiện tượng như thế nào, xảy ra từ khi nào..." required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="image-upload">Ảnh nhạc cụ (nếu có)</label>
+              <input type="file" id="image-upload" accept="image/*" multiple style="padding:0.5rem">
+              <p style="font-size:0.78rem;color:var(--text-muted);margin-top:0.3rem">Tải ảnh lên giúp kỹ thuật viên đánh giá sơ bộ và báo giá chính xác hơn</p>
+            </div>
+            <div class="form-nav">
+              <div></div>
+              <button class="btn btn-primary" onclick="nextStep(2)" style="background:orange;border-color:orange">Tiếp theo →</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Date & Time -->
+          <div class="form-step" id="form-step-2">
+            <h3 style="margin-bottom:1.25rem;font-size:1.1rem">📅 Chọn ngày & giờ</h3>
+            <div class="form-group">
+              <label>Chọn ngày (tuần này)</label>
+              <div class="date-slots">
+                <div class="date-slot disabled">Thứ 2<br><small>29/4</small></div>
+                <div class="date-slot" onclick="selectDate(this, '30/04')">Thứ 3<br><small>30/4</small></div>
+                <div class="date-slot" onclick="selectDate(this, '01/05')">Thứ 4<br><small>01/5</small></div>
+                <div class="date-slot" onclick="selectDate(this, '02/05')">Thứ 5<br><small>02/5</small></div>
+                <div class="date-slot" onclick="selectDate(this, '03/05')">Thứ 6<br><small>03/5</small></div>
+                <div class="date-slot" onclick="selectDate(this, '04/05')">Thứ 7<br><small>04/5</small></div>
+                <div class="date-slot" onclick="selectDate(this, '05/05')">CN<br><small>05/5</small></div>
+                <div class="date-slot" onclick="selectDate(this, '06/05')">Thứ 2<br><small>06/5</small></div>
+              </div>
+            </div>
+            <div class="form-group" style="margin-top:1.25rem">
+              <label>Chọn giờ</label>
+              <div class="time-slots">
+                <div class="time-slot" onclick="selectTime(this, '08:00')">08:00</div>
+                <div class="time-slot" onclick="selectTime(this, '09:00')">09:00</div>
+                <div class="time-slot" onclick="selectTime(this, '10:00')">10:00</div>
+                <div class="time-slot" onclick="selectTime(this, '11:00')">11:00</div>
+                <div class="time-slot" onclick="selectTime(this, '13:00')">13:00</div>
+                <div class="time-slot" onclick="selectTime(this, '14:00')">14:00</div>
+                <div class="time-slot" onclick="selectTime(this, '15:00')">15:00</div>
+                <div class="time-slot" onclick="selectTime(this, '16:00')">16:00</div>
+                <div class="time-slot" onclick="selectTime(this, '17:00')">17:00</div>
+                <div class="time-slot" onclick="selectTime(this, '18:00')">18:00</div>
+                <div class="time-slot" onclick="selectTime(this, '19:00')">19:00</div>
+                <div class="time-slot" onclick="selectTime(this, '20:00')">20:00</div>
+              </div>
+            </div>
+            <div class="form-group" style="margin-top:1rem">
+              <label for="delivery-method">Hình thức mang đàn</label>
+              <select id="delivery-method">
+                <option value="instore">🏪 Đến trực tiếp showroom</option>
+                <option value="pickup">🚚 DLQ đến lấy (phí ship 30,000đ)</option>
+                <option value="ship">📦 Gửi bưu điện</option>
+              </select>
+            </div>
+            <div class="form-nav">
+              <button class="btn btn-outline" onclick="prevStep(1)">← Quay lại</button>
+              <button class="btn btn-primary" onclick="nextStep(3)" style="background:orange;border-color:orange">Tiếp theo →</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Confirm -->
+          <div class="form-step" id="form-step-3">
+            <h3 style="margin-bottom:1.25rem;font-size:1.1rem">✅ Xác nhận & Báo giá tạm tính</h3>
+
+            <div class="quote-preview" id="quote-box">
+              <h4>💰 Báo giá tạm tính (có thể thay đổi sau kiểm tra)</h4>
+              <div class="quote-row">
+                <span>Dịch vụ:</span>
+                <strong id="quote-service">Chưa chọn</strong>
+              </div>
+              <div class="quote-row">
+                <span>Nhạc cụ:</span>
+                <strong id="quote-instrument">Chưa điền</strong>
+              </div>
+              <div class="quote-row">
+                <span>Ngày hẹn:</span>
+                <strong id="quote-date">Chưa chọn</strong>
+              </div>
+              <div class="quote-row">
+                <span>Giờ hẹn:</span>
+                <strong id="quote-time">Chưa chọn</strong>
+              </div>
+              <div class="quote-total">
+                <span>Ước tính chi phí:</span>
+                <strong id="quote-price">Liên hệ để báo giá</strong>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="extra-note">Ghi chú thêm</label>
+              <textarea id="extra-note" placeholder="Bạn có yêu cầu đặc biệt gì không? Dị ứng dung môi, màu sắc muốn giữ nguyên..." style="min-height:70px"></textarea>
+            </div>
+
+            <div class="form-group" style="display:flex;align-items:flex-start;gap:0.5rem">
+              <input type="checkbox" id="agree-terms" style="margin-top:3px;flex-shrink:0">
+              <label for="agree-terms" style="font-size:0.875rem;color:var(--text-muted);cursor:pointer">
+                Tôi đồng ý với <a href="#" style="color:var(--accent)">điều khoản dịch vụ</a> và xác nhận thông tin trên là chính xác.
+              </label>
+            </div>
+
+            <div class="form-nav">
+              <button class="btn btn-outline" onclick="prevStep(2)">← Quay lại</button>
+              <button class="btn btn-primary" onclick="submitBooking()" style="background:orange;border-color:orange">📅 Đặt lịch ngay</button>
+            </div>
+          </div>
+
+          <!-- Success -->
+          <div class="booking-success" id="booking-success">
+            <div class="success-icon">🎉</div>
+            <h3 style="font-size:var(--fs-2xl);margin-bottom:0.5rem">Đặt lịch thành công!</h3>
+            <p style="color:var(--text-muted);margin-bottom:1.25rem">Mã theo dõi của bạn:</p>
+            <div class="tracking-id" id="success-tracking-id">DLQ-2026-XXXX</div>
+            <p style="color:var(--text-muted);font-size:0.9rem;margin:1rem 0">
+              Kỹ thuật viên sẽ liên hệ xác nhận trong vòng <strong>30 phút</strong>.<br>
+              Lưu mã này để theo dõi tiến độ sửa chữa.
+            </p>
+            <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap">
+              <button class="btn btn-primary" onclick="scrollToTracking()" style="background:orange;border-color:orange">📍 Theo dõi ngay</button>
+              <button class="btn btn-outline" onclick="resetForm()">📅 Đặt lịch khác</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tracking Section -->
+      <section class="tracking-section" id="tracking-section">
+        <h2>📍 Theo Dõi Tiến Độ Sửa Chữa</h2>
+        <div class="tracking-input-row">
+          <input type="text" id="tracking-input" placeholder="Nhập mã theo dõi: DLQ-2026-XXXX" aria-label="Mã theo dõi">
+          <button onclick="trackRepair()">🔍 Theo dõi</button>
+        </div>
+
+        <!-- Sample tracking result -->
+        <div class="tracking-result" id="tracking-result">
+          <div class="tracking-card">
+            <div class="tracking-header">
+              <div>
+                <div class="tracking-id-badge">Mã theo dõi</div>
+                <div class="tracking-id-value" id="tracking-id-display">DLQ-2026-0421</div>
+              </div>
+              <span class="tracking-status-badge status-repairing" id="tracking-status-badge">🔧 Đang sửa</span>
+            </div>
+
+            <div style="display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:1.5rem;font-size:0.875rem">
+              <div>
+                <span style="color:var(--text-muted);display:block;margin-bottom:0.2rem">Nhạc cụ</span>
+                <strong id="tr-instrument">Guitar Acoustic Yamaha F310</strong>
+              </div>
+              <div>
+                <span style="color:var(--text-muted);display:block;margin-bottom:0.2rem">Dịch vụ</span>
+                <strong id="tr-service">Setup Action + Thay dây</strong>
+              </div>
+              <div>
+                <span style="color:var(--text-muted);display:block;margin-bottom:0.2rem">Ngày nhận</span>
+                <strong id="tr-date">30/04/2026</strong>
+              </div>
+              <div>
+                <span style="color:var(--text-muted);display:block;margin-bottom:0.2rem">Dự kiến xong</span>
+                <strong id="tr-done" style="color:orange">01/05/2026</strong>
+              </div>
+            </div>
+
+            <div class="repair-timeline" style="padding-left:1.25rem">
+              <div class="timeline-line"></div>
+              <div class="timeline-progress" id="timeline-progress" style="height:60%"></div>
+
+              <div class="timeline-step">
+                <div class="timeline-dot done">✅</div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Tiếp nhận nhạc cụ</div>
+                  <div class="timeline-desc">Đàn đã được kiểm tra tại showroom</div>
+                  <div class="timeline-time">30/04/2026 – 09:15</div>
+                </div>
+              </div>
+
+              <div class="timeline-step">
+                <div class="timeline-dot done">✅</div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Kiểm tra & báo giá chính thức</div>
+                  <div class="timeline-desc">Chi phí ước tính: 280,000đ. Khách đã xác nhận.</div>
+                  <div class="timeline-time">30/04/2026 – 10:30</div>
+                </div>
+              </div>
+
+              <div class="timeline-step">
+                <div class="timeline-dot active">🔧</div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Đang sửa chữa</div>
+                  <div class="timeline-desc">Kỹ thuật viên Minh Hoàng đang thực hiện setup action và thay dây</div>
+                  <div class="timeline-time">30/04/2026 – 14:00 (đang diễn ra)</div>
+                </div>
+              </div>
+
+              <div class="timeline-step">
+                <div class="timeline-dot pending">4</div>
+                <div class="timeline-content pending">
+                  <div class="timeline-title">Kiểm tra chất lượng</div>
+                  <div class="timeline-desc">Thử âm thanh, intonation sau khi sửa</div>
+                  <div class="timeline-time">Dự kiến: 30/04/2026 – 16:00</div>
+                </div>
+              </div>
+
+              <div class="timeline-step">
+                <div class="timeline-dot pending">5</div>
+                <div class="timeline-content pending">
+                  <div class="timeline-title">Hoàn thành – Sẵn sàng nhận</div>
+                  <div class="timeline-desc">Thông báo qua SMS/Zalo khi hoàn thành</div>
+                  <div class="timeline-time">Dự kiến: 01/05/2026</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top:1.5rem;padding:1rem;background:rgba(255,255,255,0.03);border-radius:var(--radius-lg);font-size:0.875rem;color:var(--text-muted)">
+              💬 <strong style="color:var(--text-primary)">Ghi chú kỹ thuật viên:</strong> "Cần đàn bị cong nhẹ, sẽ điều chỉnh truss rod và setup lại. Dây cũ khá mòn, thay dây mới loại D'Addario EJ16. Dự kiến âm thanh cải thiện đáng kể."
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /left -->
+
+    <!-- Sidebar -->
+    <aside class="repair-sidebar">
+
+      <!-- Quick contact -->
+      <div class="sidebar-card" style="background:linear-gradient(135deg,rgba(255,165,0,0.15),rgba(255,165,0,0.05));border-color:rgba(255,165,0,0.2)">
+        <h3>📞 Liên hệ nhanh</h3>
+        <div style="display:flex;flex-direction:column;gap:0.75rem">
+          <a href="tel:0901234567" style="display:flex;align-items:center;gap:0.75rem;text-decoration:none;color:var(--text-primary);padding:0.6rem;background:rgba(255,255,255,0.04);border-radius:var(--radius-md)">
+            <span style="font-size:1.4rem">📞</span>
+            <div>
+              <div style="font-weight:700">0901 234 567</div>
+              <div style="font-size:0.78rem;color:var(--text-muted)">Gọi hỗ trợ ngay</div>
+            </div>
+          </a>
+          <a href="https://zalo.me/0901234567" target="_blank" style="display:flex;align-items:center;gap:0.75rem;text-decoration:none;color:var(--text-primary);padding:0.6rem;background:rgba(255,255,255,0.04);border-radius:var(--radius-md)">
+            <span style="font-size:1.4rem">💬</span>
+            <div>
+              <div style="font-weight:700">Chat Zalo</div>
+              <div style="font-size:0.78rem;color:var(--text-muted)">Phản hồi trong 5 phút</div>
+            </div>
+          </a>
+          <div style="display:flex;align-items:center;gap:0.75rem;padding:0.6rem;background:rgba(255,255,255,0.04);border-radius:var(--radius-md)">
+            <span style="font-size:1.4rem">📍</span>
+            <div>
+              <div style="font-weight:700;font-size:0.9rem">123 Nguyễn Huệ, Q.1</div>
+              <div style="font-size:0.78rem;color:var(--text-muted)">Mở 8:00–21:00 hằng ngày</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technicians -->
+      <div class="sidebar-card">
+        <h3>👨‍🔧 Kỹ thuật viên</h3>
+        <div class="tech-list">
+          <div class="tech-item">
+            <div class="tech-icon">🎸</div>
+            <div>
+              <div class="tech-name">Minh Hoàng</div>
+              <div class="tech-role">Chuyên gia Guitar</div>
+              <div class="tech-exp">8 năm kinh nghiệm</div>
+            </div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">🎹</div>
+            <div>
+              <div class="tech-name">Thanh Tùng</div>
+              <div class="tech-role">Chuyên gia Piano</div>
+              <div class="tech-exp">12 năm kinh nghiệm</div>
+            </div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">🥁</div>
+            <div>
+              <div class="tech-name">Văn Đức</div>
+              <div class="tech-role">Chuyên gia Trống</div>
+              <div class="tech-exp">6 năm kinh nghiệm</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Warranty -->
+      <div class="sidebar-card">
+        <h3>🛡️ Cam kết dịch vụ</h3>
+        <div style="display:flex;flex-direction:column;gap:0.75rem">
+          <div style="display:flex;gap:0.6rem;align-items:flex-start;font-size:0.875rem">
+            <span style="color:var(--success)">✅</span>
+            <span style="color:var(--text-secondary)"><strong>Bảo hành 6 tháng</strong> sau khi sửa</span>
+          </div>
+          <div style="display:flex;gap:0.6rem;align-items:flex-start;font-size:0.875rem">
+            <span style="color:var(--success)">✅</span>
+            <span style="color:var(--text-secondary)"><strong>Báo giá trước</strong> khi sửa, không phát sinh thêm</span>
+          </div>
+          <div style="display:flex;gap:0.6rem;align-items:flex-start;font-size:0.875rem">
+            <span style="color:var(--success)">✅</span>
+            <span style="color:var(--text-secondary)"><strong>Hoàn tiền 100%</strong> nếu không hài lòng</span>
+          </div>
+          <div style="display:flex;gap:0.6rem;align-items:flex-start;font-size:0.875rem">
+            <span style="color:var(--success)">✅</span>
+            <span style="color:var(--text-secondary)"><strong>Theo dõi real-time</strong> qua mã tracking</span>
+          </div>
+          <div style="display:flex;gap:0.6rem;align-items:flex-start;font-size:0.875rem">
+            <span style="color:var(--success)">✅</span>
+            <span style="color:var(--text-secondary)"><strong>Lấy đàn tận nơi</strong> trong bán kính 10km</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="sidebar-card">
+        <h3>❓ Câu hỏi thường gặp</h3>
+        <div class="faq-list">
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q">Mất bao lâu để sửa? <span>+</span></div>
+            <div class="faq-a">Thay dây/vệ sinh: 30 phút – 1 giờ. Setup action: 2–3 giờ. Sửa cần đàn/điện tử: 1–3 ngày. Bạn sẽ được báo thời gian cụ thể khi đặt lịch.</div>
+          </div>
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q">Có thể lấy đàn tại nhà không? <span>+</span></div>
+            <div class="faq-a">Có! DLQ hỗ trợ lấy đàn tận nơi trong bán kính 10km từ showroom với phí ship 30,000đ/lượt.</div>
+          </div>
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q">Giá sửa có cố định không? <span>+</span></div>
+            <div class="faq-a">Bảng giá hiển thị là ước tính. Sau khi kiểm tra thực tế, kỹ thuật viên sẽ báo giá chính xác và chờ bạn xác nhận trước khi sửa.</div>
+          </div>
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q">Bảo hành sau sửa như thế nào? <span>+</span></div>
+            <div class="faq-a">Tất cả dịch vụ được bảo hành 6 tháng. Nếu phát sinh vấn đề từ quá trình sửa, DLQ sẽ sửa miễn phí.</div>
+          </div>
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q">Thanh toán như thế nào? <span>+</span></div>
+            <div class="faq-a">Thanh toán sau khi nhận đàn về. Chấp nhận tiền mặt, chuyển khoản, MoMo, ZaloPay.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent reviews -->
+      <div class="sidebar-card">
+        <h3>⭐ Đánh giá gần đây</h3>
+        <div style="display:flex;flex-direction:column;gap:1rem">
+          <div style="padding:0.75rem;background:rgba(255,255,255,0.03);border-radius:var(--radius-md)">
+            <div style="display:flex;justify-content:space-between;margin-bottom:0.3rem">
+              <strong style="font-size:0.875rem">Phương Linh</strong>
+              <span style="color:var(--gold);font-size:0.85rem">⭐⭐⭐⭐⭐</span>
+            </div>
+            <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.5">"Setup đàn rất chuyên nghiệp, action thấp hẳn, chơi mượt hơn nhiều. Sẽ quay lại!"</p>
+          </div>
+          <div style="padding:0.75rem;background:rgba(255,255,255,0.03);border-radius:var(--radius-md)">
+            <div style="display:flex;justify-content:space-between;margin-bottom:0.3rem">
+              <strong style="font-size:0.875rem">Đức Anh</strong>
+              <span style="color:var(--gold);font-size:0.85rem">⭐⭐⭐⭐⭐</span>
+            </div>
+            <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.5">"Piano được lên dây chuẩn, anh thợ nhiệt tình tư vấn thêm cách bảo quản. Dịch vụ 5 sao."</p>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">DLQ Music</div>
+        <p>Nền tảng âm nhạc toàn diện – Nhạc cụ chính hãng, học nhạc trực tuyến, cộng đồng âm nhạc sôi động.</p>
+        <div class="footer-social">
+          <a href="#" class="social-link" aria-label="Facebook">📘</a>
+          <a href="#" class="social-link" aria-label="YouTube">▶️</a>
+          <a href="#" class="social-link" aria-label="Instagram">📸</a>
+          <a href="#" class="social-link" aria-label="TikTok">🎵</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Nhạc cụ</h4>
+        <ul>
+          <li><a href="search-results.html?cat=guitar">Guitar Acoustic</a></li>
+          <li><a href="search-results.html?cat=piano">Piano & Keyboard</a></li>
+          <li><a href="search-results.html?cat=drum">Trống & Bộ gõ</a></li>
+          <li><a href="search-results.html?cat=ukulele">Ukulele</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Dịch vụ</h4>
+        <ul>
+          <li><a href="learning.html">Học nhạc online</a></li>
+          <li><a href="repair-service.html">Sửa chữa nhạc cụ</a></li>
+          <li><a href="interactive-play.html">Thử nhạc cụ online</a></li>
+          <li><a href="community.html">Cộng đồng</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Liên hệ</h4>
+        <ul>
+          <li>📍 123 Nguyễn Huệ, Q.1, TP.HCM</li>
+          <li>📞 <a href="tel:0901234567">0901 234 567</a></li>
+          <li>✉️ <a href="mailto:hello@dlqmusic.vn">hello@dlqmusic.vn</a></li>
+          <li>⏰ 8:00 – 21:00 mỗi ngày</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 DLQ Music Store. Tất cả quyền được bảo lưu.</p>
+      <div class="footer-links">
+        <a href="#">Chính sách bảo mật</a>
+        <a href="#">Điều khoản sử dụng</a>
+        <a href="#">Chính sách vận chuyển</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/animations.js"></script>
+<script src="../js/main.js"></script>
+<script>
+  let currentStep = 1;
+  let selectedDate = '';
+  let selectedTime = '';
+  let selectedService = { name: '', price: '', time: '' };
+
+  // Select service card
+  function selectService(card) {
+    document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedService = {
+      name: card.querySelector('.service-name').textContent,
+      price: card.querySelector('.service-price').textContent,
+      time: card.querySelector('.service-time').textContent
+    };
+    // sync select
+    const issueSelect = document.getElementById('issue-type');
+    if (issueSelect) issueSelect.value = card.dataset.service || '';
+    document.getElementById('booking-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    showToast('Đã chọn: ' + selectedService.name, 'success');
+  }
+
+  function selectDate(el, date) {
+    document.querySelectorAll('.date-slot').forEach(s => s.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedDate = date;
+  }
+
+  function selectTime(el, time) {
+    document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedTime = time;
+  }
+
+  function nextStep(step) {
+    // Validate current step
+    if (currentStep === 1) {
+      const name = document.getElementById('customer-name').value.trim();
+      const phone = document.getElementById('customer-phone').value.trim();
+      const type = document.getElementById('instrument-type').value;
+      const issue = document.getElementById('issue-desc').value.trim();
+      if (!name || !phone || !type || !issue) {
+        showToast('Vui lòng điền đầy đủ thông tin bắt buộc (*)', 'error');
+        return;
+      }
+    }
+    if (currentStep === 2) {
+      if (!selectedDate) { showToast('Vui lòng chọn ngày hẹn', 'error'); return; }
+      if (!selectedTime) { showToast('Vui lòng chọn giờ hẹn', 'error'); return; }
+      // Update quote
+      const service = document.getElementById('issue-type').value;
+      const serviceLabels = {
+        'strings-replace': 'Thay dây đàn – 80,000đ',
+        'action-setup': 'Setup Action/Intonation – 200,000đ',
+        'fret-polish': 'Đánh bóng phím – 150,000đ',
+        'electronics': 'Sửa điện tử/Jack – 350,000đ+',
+        'piano-tune': 'Lên dây piano – 500,000đ',
+        'drum-head': 'Thay mặt trống – 120,000đ/mặt',
+        'neck-reset': 'Cân chỉnh cần đàn – 800,000đ+',
+        'cleaning': 'Vệ sinh tổng thể – 100,000đ',
+        'other': 'Khác (báo giá sau kiểm tra)'
+      };
+      const instrument = document.getElementById('instrument-type').value.replace('-', ' ');
+      const brand = document.getElementById('instrument-brand').value;
+      document.getElementById('quote-service').textContent = serviceLabels[service] || selectedService.name || service;
+      document.getElementById('quote-instrument').textContent = (instrument + (brand ? ' – ' + brand : '')).trim();
+      document.getElementById('quote-date').textContent = selectedDate;
+      document.getElementById('quote-time').textContent = selectedTime;
+      document.getElementById('quote-price').textContent = selectedService.price || 'Báo giá sau khi kiểm tra';
+    }
+    goToStep(step);
+  }
+
+  function prevStep(step) { goToStep(step); }
+
+  function goToStep(step) {
+    document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+    document.getElementById('form-step-' + step).classList.add('active');
+    // Update circles
+    for (let i = 1; i <= 3; i++) {
+      const circle = document.getElementById('step-' + i + '-circle');
+      circle.classList.remove('active', 'done');
+      if (i < step) { circle.classList.add('done'); circle.textContent = '✓'; }
+      else if (i === step) { circle.classList.add('active'); circle.textContent = i; }
+      else { circle.textContent = i; }
+    }
+    currentStep = step;
+  }
+
+  function submitBooking() {
+    if (!document.getElementById('agree-terms').checked) {
+      showToast('Vui lòng đồng ý điều khoản dịch vụ', 'error');
+      return;
+    }
+    // Generate tracking ID
+    const trackId = 'DLQ-2026-' + Math.floor(1000 + Math.random() * 9000);
+    document.getElementById('success-tracking-id').textContent = trackId;
+    document.getElementById('tracking-input').value = trackId;
+
+    // Hide form steps, show success
+    document.querySelectorAll('.form-step').forEach(s => s.style.display = 'none');
+    document.querySelector('.booking-steps').style.display = 'none';
+    document.getElementById('booking-success').classList.add('show');
+    showToast('🎉 Đặt lịch thành công! Mã: ' + trackId, 'success');
+  }
+
+  function resetForm() {
+    document.querySelectorAll('.form-step').forEach(s => { s.style.display = ''; s.classList.remove('active'); });
+    document.querySelector('.booking-steps').style.display = '';
+    document.getElementById('booking-success').classList.remove('show');
+    document.getElementById('form-step-1').classList.add('active');
+    goToStep(1);
+    document.getElementById('customer-name').value = '';
+    document.getElementById('customer-phone').value = '';
+    document.getElementById('issue-desc').value = '';
+    selectedDate = ''; selectedTime = '';
+  }
+
+  function scrollToTracking() {
+    document.getElementById('tracking-section').scrollIntoView({ behavior: 'smooth' });
+    trackRepair();
+  }
+
+  function trackRepair() {
+    const input = document.getElementById('tracking-input').value.trim();
+    if (!input) { showToast('Vui lòng nhập mã theo dõi', 'error'); return; }
+    document.getElementById('tracking-id-display').textContent = input;
+    const result = document.getElementById('tracking-result');
+    result.classList.add('show');
+    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    showToast('Đã tìm thấy đơn sửa chữa!', 'success');
+  }
+
+  function toggleFaq(item) {
+    const ans = item.querySelector('.faq-a');
+    const icon = item.querySelector('.faq-q span');
+    const isOpen = ans.classList.toggle('open');
+    icon.textContent = isOpen ? '−' : '+';
+  }
+
+  function showToast(msg, type = 'success') {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.className = 'toast show ' + type;
+    setTimeout(() => toast.classList.remove('show'), 3500);
+  }
+</script>
+</body>
+</html>

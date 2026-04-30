@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DLQ Music Store - Nhạc cụ chính hãng, giá tốt, tư vấn chuyên nghiệp. Guitar, Piano, Trống, Ukulele và nhiều hơn nữa.">
+  <meta name="keywords" content="nhạc cụ, guitar, piano, trống, ukulele, violin, DLQ music">
+  <title>DLQ Music Store - Nhạc Cụ Chính Hãng</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/menu.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="loading-screen" class="loading-screen">
+  <div class="loading-logo">DLQ</div>
+  <div class="loading-bars">
+    <div class="loading-bar"></div>
+    <div class="loading-bar"></div>
+    <div class="loading-bar"></div>
+    <div class="loading-bar"></div>
+    <div class="loading-bar"></div>
+  </div>
+  <p style="color:var(--text-muted);font-size:0.875rem">Đang tải DLQ Music Store...</p>
+</div>
+
+<!-- Floating Notes Container -->
+<div id="floating-notes" class="music-notes-container" aria-hidden="true"></div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo" aria-label="DLQ Music Store home">
+      <div class="logo-mark" aria-hidden="true">DLQ</div>
+      <div class="logo-text">
+        <span class="logo-name">DLQ Music</span>
+        <span class="logo-tagline">NHẠC CỤ CHÍNH HÃNG</span>
+      </div>
+    </a>
+
+    <nav class="staff-menu" aria-label="Site navigation">
+      <div class="staff-lines" aria-hidden="true">
+        <div class="staff-line"></div>
+        <div class="staff-line"></div>
+        <div class="staff-line"></div>
+        <div class="staff-line"></div>
+        <div class="staff-line"></div>
+      </div>
+      <ul class="notes-list">
+        <li class="note-item">
+          <a href="index.html" class="note-link active">
+            <span class="note-symbol">♩</span>
+            <span class="note-label">Trang chủ</span>
+          </a>
+        </li>
+        <li class="note-item">
+          <a href="pages/search-results.html" class="note-link">
+            <span class="note-symbol">♪</span>
+            <span class="note-label">Sản phẩm</span>
+          </a>
+        </li>
+        <li class="note-item">
+          <a href="pages/interactive-play.html" class="note-link">
+            <span class="note-symbol">♫</span>
+            <span class="note-label">Thử online</span>
+          </a>
+        </li>
+        <li class="note-item">
+          <a href="pages/learning.html" class="note-link">
+            <span class="note-symbol">♬</span>
+            <span class="note-label">Học nhạc</span>
+          </a>
+        </li>
+        <li class="note-item">
+          <a href="pages/community.html" class="note-link">
+            <span class="note-symbol">♩</span>
+            <span class="note-label">Cộng đồng</span>
+          </a>
+        </li>
+        <li class="note-item">
+          <a href="pages/blog.html" class="note-link">
+            <span class="note-symbol">♪</span>
+            <span class="note-label">Blog</span>
+          </a>
+        </li>
+        <li class="note-item">
+          <a href="pages/repair-service.html" class="note-link">
+            <span class="note-symbol">♫</span>
+            <span class="note-label">Sửa chữa</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <div class="nav-search" role="search">
+        <span aria-hidden="true">🔍</span>
+        <input type="search" placeholder="Tìm nhạc cụ..." aria-label="Tìm kiếm"
+          onkeydown="if(event.key==='Enter')window.location.href='pages/search-results.html?q='+this.value">
+      </div>
+      <a href="pages/profile.html" class="nav-icon-btn" aria-label="Tài khoản" title="Tài khoản">👤</a>
+      <a href="pages/cart.html" class="nav-icon-btn" aria-label="Giỏ hàng" title="Giỏ hàng" style="position:relative">
+        🛒
+        <span class="cart-badge" style="display:none">0</span>
+      </a>
+      <button class="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" role="dialog" aria-label="Mobile navigation">
+  <a href="index.html" class="nav-link">🏠 Trang chủ</a>
+  <a href="pages/search-results.html" class="nav-link">🛍️ Sản phẩm</a>
+  <a href="pages/interactive-play.html" class="nav-link">🎹 Thử nhạc cụ online</a>
+  <a href="pages/learning.html" class="nav-link">📚 Học nhạc</a>
+  <a href="pages/community.html" class="nav-link">👥 Cộng đồng</a>
+  <a href="pages/blog.html" class="nav-link">✍️ Blog</a>
+  <a href="pages/repair-service.html" class="nav-link">🔧 Dịch vụ sửa chữa</a>
+  <a href="pages/profile.html" class="nav-link">👤 Tài khoản</a>
+  <a href="pages/cart.html" class="nav-link">🛒 Giỏ hàng</a>
+</div>
+
+<!-- ===== HERO SECTION ===== -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-text animate-on-scroll">
+        <div class="hero-badge">
+          <span>🎵</span> Nền tảng âm nhạc toàn diện #1 Việt Nam
+        </div>
+        <h1 class="hero-title" id="hero-title">
+          Nhạc Cụ Chính Hãng<br>
+          <span class="text-accent">Giá Tốt</span> – Setup<br>
+          Chuẩn Chơi Ngay
+        </h1>
+        <p class="hero-desc">
+          Guitar, Piano, Trống, Ukulele và hơn 500+ nhạc cụ chính hãng.
+          Thử nhạc cụ online, học nhạc ngay tại nhà, kết nối cộng đồng âm nhạc.
+        </p>
+        <div class="hero-cta">
+          <a href="pages/search-results.html" class="btn btn-primary btn-lg">
+            🎸 Khám phá ngay
+          </a>
+          <a href="pages/interactive-play.html" class="btn btn-secondary btn-lg">
+            🎹 Thử nhạc cụ online
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number" data-count="500">0</span>
+            <span class="stat-label">Sản phẩm</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" data-count="10000">0</span>
+            <span class="stat-label">Khách hàng</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" data-count="5">0</span>
+            <span class="stat-label">Năm kinh nghiệm</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" data-count="4">0</span>
+            <span class="stat-label">Chi nhánh</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual animate-right">
+        <div class="hero-img-wrap">
+          <div style="width:100%;aspect-ratio:1;background:linear-gradient(135deg,var(--bg-card),rgba(233,69,96,0.2));border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;font-size:10rem;border:1px solid rgba(255,255,255,0.07)">
+            🎸
+          </div>
+          <div class="hero-float-card card-1">
+            <span class="float-icon">⭐</span>
+            <div class="float-text">
+              <strong>4.9/5</strong>
+              <span>128 đánh giá hôm nay</span>
+            </div>
+          </div>
+          <div class="hero-float-card card-2">
+            <span class="float-icon">🚀</span>
+            <div class="float-text">
+              <strong>Giao nhanh 2h</strong>
+              <span>Nội thành HCM/HN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MUSIC MOOD SYSTEM ===== -->
+<section class="section-sm" aria-labelledby="mood-title">
+  <div class="container">
+    <div class="mood-system animate-on-scroll">
+      <h2 class="mood-title gradient-text-animated" id="mood-title">🎭 Music Mood System</h2>
+      <p class="mood-subtitle">Chọn tâm trạng của bạn – Web sẽ tự động điều chỉnh màu sắc, nhạc nền và gợi ý nhạc cụ phù hợp</p>
+
+      <div class="mood-options" role="group" aria-label="Chọn tâm trạng">
+        <button class="mood-btn chill" data-mood="chill" aria-pressed="false">
+          <span class="mood-emoji">😌</span>
+          <span class="mood-name">Chill</span>
+          <span class="mood-desc">Thư giãn, nhẹ nhàng</span>
+        </button>
+        <button class="mood-btn sad" data-mood="sad" aria-pressed="false">
+          <span class="mood-emoji">😢</span>
+          <span class="mood-name">Sad</span>
+          <span class="mood-desc">Sâu lắng, cảm xúc</span>
+        </button>
+        <button class="mood-btn energetic" data-mood="energetic" aria-pressed="false">
+          <span class="mood-emoji">🔥</span>
+          <span class="mood-name">Energetic</span>
+          <span class="mood-desc">Năng lượng, bùng cháy</span>
+        </button>
+      </div>
+
+      <div id="mood-message" style="display:none;margin-top:1.5rem;padding:1rem 1.5rem;background:rgba(255,255,255,0.05);border-radius:var(--radius-lg);align-items:center;gap:0.75rem;color:var(--text-secondary);font-size:0.875rem;border:1px solid rgba(255,255,255,0.08)"></div>
+    </div>
+
+    <!-- Mood-based Products -->
+    <div id="mood-products" class="products-grid" style="margin-top:2rem" aria-live="polite">
+      <!-- Loaded by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ===== CATEGORIES ===== -->
+<section class="section animate-on-scroll" aria-labelledby="categories-title">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:3rem">
+      <h2 class="section-title" id="categories-title">Danh Mục <span class="title-accent">Nhạc Cụ</span></h2>
+      <p class="section-subtitle">Khám phá bộ sưu tập nhạc cụ đa dạng từ beginner đến professional</p>
+    </div>
+    <div class="category-grid" id="category-grid" role="list">
+      <a href="pages/search-results.html?category=guitar" class="category-card" role="listitem">
+        <span class="category-icon" aria-hidden="true">🎸</span>
+        <div class="category-name">Guitar</div>
+        <div class="category-count">Acoustic, Classic, Electric</div>
+      </a>
+      <a href="pages/search-results.html?category=piano" class="category-card" role="listitem">
+        <span class="category-icon" aria-hidden="true">🎹</span>
+        <div class="category-name">Piano & Keyboard</div>
+        <div class="category-count">Digital, Upright, Grand</div>
+      </a>
+      <a href="pages/search-results.html?category=drum" class="category-card" role="listitem">
+        <span class="category-icon" aria-hidden="true">🥁</span>
+        <div class="category-name">Trống & Bộ gõ</div>
+        <div class="category-count">Acoustic, Electronic</div>
+      </a>
+      <a href="pages/search-results.html?category=ukulele" class="category-card" role="listitem">
+        <span class="category-icon" aria-hidden="true">🪗</span>
+        <div class="category-name">Ukulele</div>
+        <div class="category-count">Soprano, Concert, Tenor</div>
+      </a>
+      <a href="pages/search-results.html?category=violin" class="category-card" role="listitem">
+        <span class="category-icon" aria-hidden="true">🎻</span>
+        <div class="category-name">Violin & Cello</div>
+        <div class="category-count">Strings & Classical</div>
+      </a>
+      <a href="pages/search-results.html?category=wind" class="category-card" role="listitem">
+        <span class="category-icon" aria-hidden="true">🎺</span>
+        <div class="category-name">Nhạc Cụ Hơi</div>
+        <div class="category-count">Trumpet, Flute, Sax</div>
+      </a>
+      <a href="pages/search-results.html?category=accessories" class="category-card" role="listitem">
+        <span class="category-icon" aria-hidden="true">🎵</span>
+        <div class="category-name">Phụ Kiện</div>
+        <div class="category-count">Dây, bao, capo, phím...</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURED PRODUCTS ===== -->
+<section class="section" style="background:rgba(0,0,0,0.2)" aria-labelledby="featured-title">
+  <div class="container">
+    <div class="flex justify-between items-center" style="margin-bottom:3rem;flex-wrap:wrap;gap:1rem">
+      <div>
+        <h2 class="section-title" id="featured-title">Sản Phẩm <span class="title-accent">Nổi Bật</span></h2>
+        <p style="color:var(--text-secondary)">Các nhạc cụ được yêu thích nhất tuần này</p>
+      </div>
+      <a href="pages/search-results.html" class="btn btn-ghost">Xem tất cả →</a>
+    </div>
+    <div class="products-grid" id="featured-products" aria-live="polite">
+      <!-- Skeleton loading -->
+      <div class="product-card"><div class="skeleton-loader" style="height:200px"></div><div class="product-body"><div class="skeleton-loader" style="height:14px;margin-bottom:8px"></div><div class="skeleton-loader" style="height:18px;margin-bottom:8px"></div><div class="skeleton-loader" style="height:24px;width:50%"></div></div></div>
+      <div class="product-card"><div class="skeleton-loader" style="height:200px"></div><div class="product-body"><div class="skeleton-loader" style="height:14px;margin-bottom:8px"></div><div class="skeleton-loader" style="height:18px;margin-bottom:8px"></div><div class="skeleton-loader" style="height:24px;width:50%"></div></div></div>
+      <div class="product-card"><div class="skeleton-loader" style="height:200px"></div><div class="product-body"><div class="skeleton-loader" style="height:14px;margin-bottom:8px"></div><div class="skeleton-loader" style="height:18px;margin-bottom:8px"></div><div class="skeleton-loader" style="height:24px;width:50%"></div></div></div>
+      <div class="product-card"><div class="skeleton-loader" style="height:200px"></div><div class="product-body"><div class="skeleton-loader" style="height:14px;margin-bottom:8px"></div><div class="skeleton-loader" style="height:18px;margin-bottom:8px"></div><div class="skeleton-loader" style="height:24px;width:50%"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROMO BANNER ===== -->
+<section class="section-sm" aria-label="Khuyến mãi">
+  <div class="container">
+    <div class="promo-banner animate-on-scroll">
+      <div class="promo-text">
+        <h2>🔥 Flash Sale Tháng này – Giảm đến <span class="text-accent">30%</span></h2>
+        <p>Combo nhạc cụ + phụ kiện cho người mới bắt đầu. Số lượng có hạn!</p>
+        <div class="promo-countdown" data-countdown="2025-12-31T23:59:59"></div>
+        <a href="pages/search-results.html?sale=true" class="btn btn-gold">Xem ưu đãi ngay 🎯</a>
+      </div>
+      <div style="text-align:center;font-size:6rem;opacity:0.8" aria-hidden="true">🎸</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AI RECOMMENDATIONS ===== -->
+<section class="section" aria-labelledby="ai-title">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:3rem">
+      <h2 class="section-title" id="ai-title">🤖 Gợi Ý <span class="title-accent">Dành Cho Bạn</span></h2>
+      <p class="section-subtitle">Được cá nhân hóa dựa trên sở thích và hành vi của bạn</p>
+    </div>
+    <div class="products-grid" id="ai-recommendations" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- ===== WHY CHOOSE DLQ ===== -->
+<section class="section" style="background:rgba(0,0,0,0.15)" aria-labelledby="features-title">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:3rem">
+      <h2 class="section-title" id="features-title">Tại Sao Chọn <span class="title-accent">DLQ Music</span>?</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-item animate-on-scroll">
+        <div class="feature-icon-wrap">🛡️</div>
+        <div class="feature-text">
+          <h4>Hàng Chính Hãng 100%</h4>
+          <p>Mọi sản phẩm đều được nhập trực tiếp từ hãng, có tem bảo hành đầy đủ.</p>
+        </div>
+      </div>
+      <div class="feature-item animate-on-scroll animate-delay-1">
+        <div class="feature-icon-wrap">🚀</div>
+        <div class="feature-text">
+          <h4>Giao Hàng Nhanh</h4>
+          <p>Giao hỏa tốc 2 giờ nội thành, toàn quốc 1-3 ngày. Đóng gói chống sốc.</p>
+        </div>
+      </div>
+      <div class="feature-item animate-on-scroll animate-delay-2">
+        <div class="feature-icon-wrap">🔧</div>
+        <div class="feature-text">
+          <h4>Setup Chuẩn Trước Khi Giao</h4>
+          <p>Lên dây, cân chỉnh action - nhạc cụ sẵn sàng chơi ngay khi bạn nhận hàng.</p>
+        </div>
+      </div>
+      <div class="feature-item animate-on-scroll animate-delay-3">
+        <div class="feature-icon-wrap">💬</div>
+        <div class="feature-text">
+          <h4>Tư Vấn Chuyên Nghiệp</h4>
+          <p>Đội ngũ nhân viên là nhạc sĩ, tư vấn chọn đàn theo ngân sách và mục tiêu.</p>
+        </div>
+      </div>
+      <div class="feature-item animate-on-scroll animate-delay-4">
+        <div class="feature-icon-wrap">📚</div>
+        <div class="feature-text">
+          <h4>Learning Hub Miễn Phí</h4>
+          <p>Hàng chục bài học từ Beginner đến Advanced, video tutorial, bài tập thực hành.</p>
+        </div>
+      </div>
+      <div class="feature-item animate-on-scroll animate-delay-5">
+        <div class="feature-icon-wrap">🎮</div>
+        <div class="feature-text">
+          <h4>Thử Nhạc Cụ Online</h4>
+          <p>Piano, Guitar, Trống ảo – trải nghiệm trước khi quyết định mua.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== INTERACTIVE PROMO ===== -->
+<section class="section animate-on-scroll" aria-labelledby="interactive-title">
+  <div class="container">
+    <div style="background:linear-gradient(135deg,var(--bg-card),rgba(233,69,96,0.1));border-radius:var(--radius-xl);padding:4rem;text-align:center;border:1px solid rgba(233,69,96,0.2)">
+      <div style="font-size:4rem;margin-bottom:1.5rem" aria-hidden="true">🎹🎸🥁</div>
+      <h2 class="section-title" id="interactive-title">Thử Nhạc Cụ <span class="title-accent">Online</span></h2>
+      <p style="color:var(--text-secondary);max-width:500px;margin:1rem auto 2rem">
+        Bấm phím piano phát âm chuẩn pitch, gảy dây guitar rung âm thật,
+        đánh trống và tạo beat ngay trên trình duyệt – miễn phí, không cần cài đặt!
+      </p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <a href="pages/interactive-play.html?instrument=piano" class="btn btn-primary btn-lg">🎹 Piano Ảo</a>
+        <a href="pages/interactive-play.html?instrument=guitar" class="btn btn-secondary btn-lg">🎸 Guitar Ảo</a>
+        <a href="pages/interactive-play.html?instrument=drum" class="btn btn-ghost btn-lg">🥁 Trống Ảo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BLOG PREVIEW ===== -->
+<section class="section" aria-labelledby="blog-title">
+  <div class="container">
+    <div class="flex justify-between items-center" style="margin-bottom:3rem;flex-wrap:wrap;gap:1rem">
+      <div>
+        <h2 class="section-title" id="blog-title">Bài Viết <span class="title-accent">Nổi Bật</span></h2>
+        <p style="color:var(--text-secondary)">Hướng dẫn, review và tips hữu ích cho người chơi nhạc</p>
+      </div>
+      <a href="pages/blog.html" class="btn btn-ghost">Xem tất cả →</a>
+    </div>
+    <div class="blog-grid" id="blog-preview">
+      <!-- Loaded by JS -->
+      <a href="pages/blog-detail.html?id=1" class="blog-card animate-on-scroll">
+        <div style="height:200px;background:linear-gradient(135deg,var(--bg-card),rgba(233,69,96,0.15));display:flex;align-items:center;justify-content:center;font-size:4rem">🎸</div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <span class="blog-category">Guitar</span>
+            <span class="blog-date">15/01/2025</span>
+          </div>
+          <h3 class="blog-title">Top 10 Guitar Acoustic Cho Người Mới Bắt Đầu 2025</h3>
+          <p class="blog-excerpt">Chọn guitar đầu tiên rất quan trọng. Chúng tôi đã test 20+ mẫu guitar acoustic...</p>
+        </div>
+      </a>
+      <a href="pages/blog-detail.html?id=2" class="blog-card animate-on-scroll animate-delay-1">
+        <div style="height:200px;background:linear-gradient(135deg,var(--bg-card),rgba(245,166,35,0.15));display:flex;align-items:center;justify-content:center;font-size:4rem">🎹</div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <span class="blog-category">Piano</span>
+            <span class="blog-date">20/01/2025</span>
+          </div>
+          <h3 class="blog-title">Cách Chọn Piano Điện Phù Hợp: Hướng Dẫn Đầy Đủ</h3>
+          <p class="blog-excerpt">Piano điện ngày càng phổ biến với nhiều model và mức giá khác nhau...</p>
+        </div>
+      </a>
+      <a href="pages/blog-detail.html?id=3" class="blog-card animate-on-scroll animate-delay-2">
+        <div style="height:200px;background:linear-gradient(135deg,var(--bg-card),rgba(40,167,69,0.15));display:flex;align-items:center;justify-content:center;font-size:4rem">⚡</div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <span class="blog-category">Guitar</span>
+            <span class="blog-date">01/02/2025</span>
+          </div>
+          <h3 class="blog-title">So Sánh Acoustic vs Electric Guitar: Nên Chọn Cái Nào?</h3>
+          <p class="blog-excerpt">Acoustic hay Electric - câu hỏi mà mọi guitarist đều phải trả lời khi mới bắt đầu...</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="section" style="background:rgba(0,0,0,0.2)" aria-labelledby="reviews-title">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:3rem">
+      <h2 class="section-title" id="reviews-title">Khách Hàng <span class="title-accent">Nói Gì?</span></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card animate-on-scroll">
+        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+        <p class="testimonial-text">"Mua Guitar Yamaha F310 tại DLQ, nhân viên setup sẵn, mình mở ra chơi luôn không cần chỉnh gì. Giao hàng siêu nhanh, đóng gói cẩn thận!"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">A</div>
+          <div>
+            <div class="author-name">Nguyễn Văn Anh</div>
+            <div class="author-detail">🎸 Guitar Acoustic • TP.HCM</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card animate-on-scroll animate-delay-1">
+        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+        <p class="testimonial-text">"Piano Yamaha P-125 chất lượng tốt, âm thanh rất giống piano thật. Nhân viên DLQ tư vấn rất nhiệt tình, giúp mình chọn được sản phẩm phù hợp."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">H</div>
+          <div>
+            <div class="author-name">Trần Thị Hương</div>
+            <div class="author-detail">🎹 Piano Điện • Hà Nội</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card animate-on-scroll animate-delay-2">
+        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+        <p class="testimonial-text">"Mua lần thứ 3 tại DLQ rồi, lần nào cũng hài lòng. Sản phẩm chính hãng, giá hợp lý. Feature thử nhạc cụ online rất hay, mình test trước khi quyết định mua."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">M</div>
+          <div>
+            <div class="author-name">Lê Minh Tuấn</div>
+            <div class="author-detail">🥁 Drum Kit • Đà Nẵng</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NEWSLETTER ===== -->
+<section class="section" aria-labelledby="newsletter-title">
+  <div class="container">
+    <div class="newsletter-section animate-on-scroll">
+      <div style="font-size:2.5rem;margin-bottom:1rem" aria-hidden="true">🎵</div>
+      <h2 class="section-title" id="newsletter-title">Nhận Ưu Đãi Độc Quyền</h2>
+      <p style="color:var(--text-secondary)">Đăng ký nhận thông báo về sản phẩm mới, khuyến mãi và tips học nhạc</p>
+      <form class="newsletter-form" id="newsletter-form" novalidate>
+        <input type="email" class="newsletter-input" placeholder="Nhập email của bạn..."
+          required aria-label="Email đăng ký nhận tin">
+        <button type="submit" class="btn btn-primary">Đăng ký</button>
+      </form>
+      <p style="font-size:0.75rem;color:var(--text-muted);margin-top:1rem">
+        📩 Chúng tôi không gửi spam. Hủy đăng ký bất kỳ lúc nào.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo" style="margin-bottom:1rem">
+          <div class="logo-mark">DLQ</div>
+          <div class="logo-text">
+            <span class="logo-name">DLQ Music</span>
+            <span class="logo-tagline">NHẠC CỤ CHÍNH HÃNG</span>
+          </div>
+        </div>
+        <p>Nền tảng âm nhạc toàn diện – mua sắm, học nhạc, thử nhạc cụ online và kết nối cộng đồng âm nhạc Việt Nam.</p>
+        <div class="footer-social" aria-label="Mạng xã hội">
+          <a href="#" class="social-btn" aria-label="Facebook">f</a>
+          <a href="#" class="social-btn" aria-label="TikTok">T</a>
+          <a href="#" class="social-btn" aria-label="YouTube">▶</a>
+          <a href="#" class="social-btn" aria-label="Instagram">📸</a>
+          <a href="#" class="social-btn" aria-label="Zalo">Z</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Nhạc Cụ</h4>
+        <ul>
+          <li><a href="pages/search-results.html?category=guitar">Guitar Acoustic</a></li>
+          <li><a href="pages/search-results.html?category=guitar">Guitar Electric</a></li>
+          <li><a href="pages/search-results.html?category=piano">Piano & Keyboard</a></li>
+          <li><a href="pages/search-results.html?category=drum">Trống & Bộ gõ</a></li>
+          <li><a href="pages/search-results.html?category=ukulele">Ukulele</a></li>
+          <li><a href="pages/search-results.html?category=violin">Violin & Cello</a></li>
+          <li><a href="pages/search-results.html?category=accessories">Phụ kiện</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Dịch Vụ</h4>
+        <ul>
+          <li><a href="pages/interactive-play.html">Thử nhạc cụ online</a></li>
+          <li><a href="pages/learning.html">Học nhạc</a></li>
+          <li><a href="pages/repair-service.html">Sửa chữa nhạc cụ</a></li>
+          <li><a href="pages/community.html">Cộng đồng âm nhạc</a></li>
+          <li><a href="pages/blog.html">Blog & Tips</a></li>
+          <li><a href="#">Tư vấn trực tuyến</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Liên Hệ</h4>
+        <ul>
+          <li><a href="tel:0901234567">📞 0901-234-567</a></li>
+          <li><a href="mailto:dlqmusic@gmail.com">📧 dlqmusic@gmail.com</a></li>
+          <li><a href="#">📍 123 Nguyễn Huệ, Q.1, TP.HCM</a></li>
+          <li><a href="#">⏰ 8:00 - 21:00 (Thứ 2 - CN)</a></li>
+          <li><a href="#">💬 Zalo: 0901-234-567</a></li>
+        </ul>
+        <div style="margin-top:1rem">
+          <h4>Chính Sách</h4>
+          <ul>
+            <li><a href="#">Vận chuyển</a></li>
+            <li><a href="#">Đổi trả – Hoàn tiền</a></li>
+            <li><a href="#">Bảo hành</a></li>
+            <li><a href="#">Bảo mật thông tin</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 DLQ Music Store. All rights reserved. 🎵</p>
+      <p>Made with ❤️ for music lovers in Vietnam</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== CHATBOT WIDGET ===== -->
+<div class="chatbot-widget" aria-label="Chat hỗ trợ">
+  <div class="chatbot-box" id="chatbot-box" role="dialog" aria-label="Chat với DLQ Bot">
+    <div class="chatbot-header">
+      <div class="chatbot-avatar" aria-hidden="true">🤖</div>
+      <div class="chatbot-info">
+        <h4>DLQ Bot</h4>
+        <p>Tư vấn nhạc cụ 24/7</p>
+      </div>
+      <button class="chatbot-close" id="chatbot-close" aria-label="Đóng chat">✕</button>
+    </div>
+    <div class="chatbot-messages" id="chatbot-messages" role="log" aria-live="polite"></div>
+    <div class="chatbot-quick-replies" id="chatbot-quick-replies" role="group" aria-label="Câu hỏi nhanh"></div>
+    <div class="chatbot-input-area">
+      <input type="text" class="chatbot-input" id="chatbot-input"
+        placeholder="Nhập câu hỏi của bạn..." aria-label="Nhập tin nhắn">
+      <button class="chatbot-send" id="chatbot-send" aria-label="Gửi tin nhắn">➤</button>
+    </div>
+  </div>
+  <button class="chatbot-toggle" id="chatbot-toggle" aria-label="Mở chat hỗ trợ">💬</button>
+</div>
+
+<!-- ===== TOAST CONTAINER ===== -->
+<div class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="js/storage.js"></script>
+<script src="js/main.js"></script>
+<script src="js/audio-player.js"></script>
+<script src="js/mood-system.js"></script>
+<script src="js/ai-recommend.js"></script>
+<script src="js/animations.js"></script>
+<script src="js/chatbot.js"></script>
+
+<script>
+// Load featured products on homepage
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const products = await DLQData.getProducts({ featured: true });
+    const container = document.getElementById('featured-products');
+    if (container && products.length) {
+      container.innerHTML = products.slice(0,8).map(p => `
+        <div class="product-card animate-on-scroll">
+          <div class="product-img-wrap">
+            <div style="width:100%;height:200px;background:linear-gradient(135deg,var(--bg-card),rgba(${p.category==='guitar'?'233,69,96':p.category==='piano'?'245,166,35':'78,205,196'},0.2));display:flex;align-items:center;justify-content:center;font-size:5rem">
+              ${p.category==='guitar'?'🎸':p.category==='piano'?'🎹':p.category==='drum'?'🥁':p.category==='ukulele'?'🪗':p.category==='violin'?'🎻':'🎵'}
+            </div>
+            ${p.badge?`<div class="product-badges"><span class="badge badge-${p.badge}">${{hot:'🔥 Hot',new:'🆕 Mới',sale:'💸 Sale',best:'⭐ Best'}[p.badge]||p.badge}</span></div>`:''}
+            <div class="product-quick-actions">
+              <button class="quick-btn" data-wishlist="${p.id}" title="Yêu thích">❤️</button>
+              <button class="quick-btn" title="Xem nhanh" onclick="window.open('pages/product-detail.html?id=${p.id}')">👁️</button>
+              <button class="quick-btn" data-add-cart="${p.id}" title="Thêm vào giỏ">🛒</button>
+            </div>
+          </div>
+          <div class="product-body">
+            <div class="product-category">${{guitar:'Guitar',piano:'Piano',drum:'Trống',ukulele:'Ukulele',violin:'Violin',keyboard:'Keyboard',bass:'Bass'}[p.category]||p.category}</div>
+            <div class="product-name">${p.name}</div>
+            <div class="product-rating">
+              <span class="stars">${'⭐'.repeat(Math.round(p.rating))}</span>
+              <span class="rating-count">(${p.reviews||0})</span>
+            </div>
+            <div class="product-price">
+              <span class="price-current">${new Intl.NumberFormat('vi-VN',{style:'currency',currency:'VND'}).format(p.price)}</span>
+              ${p.oldPrice?`<span class="price-original">${new Intl.NumberFormat('vi-VN',{style:'currency',currency:'VND'}).format(p.oldPrice)}</span>`:''}
+            </div>
+          </div>
+          <div class="product-footer">
+            <button class="btn btn-primary btn-sm" data-add-cart="${p.id}">🛒 Thêm vào giỏ</button>
+            <a href="pages/product-detail.html?id=${p.id}" class="btn btn-ghost btn-sm">Chi tiết</a>
+          </div>
+        </div>
+      `).join('');
+      // Observe new elements
+      container.querySelectorAll('.animate-on-scroll').forEach(el => {
+        if (window.Animations?._scrollObserver) Animations._scrollObserver.observe(el);
+      });
+    }
+  } catch(e) { console.warn('Products load error:', e); }
+});
+</script>
+</body>
+</html>

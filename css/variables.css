@@ -1,0 +1,128 @@
+/* ===== DLQ Music Store - CSS Variables ===== */
+:root {
+  /* Primary Brand Colors */
+  --primary: #1a1a2e;
+  --primary-light: #16213e;
+  --accent: #e94560;
+  --accent-hover: #c73652;
+  --gold: #f5a623;
+  --gold-light: #ffc65c;
+
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #b8c1cc;
+  --text-muted: #6c757d;
+  --text-dark: #1a1a2e;
+
+  /* Background Colors */
+  --bg-dark: #0f0f1a;
+  --bg-card: #1e1e30;
+  --bg-card-hover: #252540;
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+
+  /* Status Colors */
+  --success: #28a745;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --info: #17a2b8;
+
+  /* Mood Colors - Chill */
+  --mood-chill-primary: #2d6a8f;
+  --mood-chill-secondary: #4ecdc4;
+  --mood-chill-accent: #95e1d3;
+  --mood-chill-bg: #0d2137;
+  --mood-chill-text: #e0f4f1;
+
+  /* Mood Colors - Sad */
+  --mood-sad-primary: #3d3561;
+  --mood-sad-secondary: #7c5cbf;
+  --mood-sad-accent: #b8a9e8;
+  --mood-sad-bg: #1a1428;
+  --mood-sad-text: #d4ccf0;
+
+  /* Mood Colors - Energetic */
+  --mood-energetic-primary: #b5290b;
+  --mood-energetic-secondary: #ff6b35;
+  --mood-energetic-accent: #ffd166;
+  --mood-energetic-bg: #1f0a05;
+  --mood-energetic-text: #ffe8d6;
+
+  /* Typography */
+  --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-mono: 'Courier New', monospace;
+
+  /* Font Sizes */
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: 1.25rem;
+  --fs-2xl: 1.5rem;
+  --fs-3xl: 1.875rem;
+  --fs-4xl: 2.25rem;
+  --fs-5xl: 3rem;
+
+  /* Spacing */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --sp-10: 2.5rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+  --sp-20: 5rem;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
+  --shadow-glow: 0 0 20px rgba(233, 69, 96, 0.4);
+  --shadow-gold: 0 0 20px rgba(245, 166, 35, 0.4);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+
+  /* Z-index */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+}
+
+/* Mood Theme Classes */
+body.mood-chill {
+  --primary: var(--mood-chill-primary);
+  --accent: var(--mood-chill-secondary);
+  --bg-dark: var(--mood-chill-bg);
+  --bg-card: #0e2d40;
+  --text-primary: var(--mood-chill-text);
+}
+
+body.mood-sad {
+  --primary: var(--mood-sad-primary);
+  --accent: var(--mood-sad-secondary);
+  --bg-dark: var(--mood-sad-bg);
+  --bg-card: #221a38;
+  --text-primary: var(--mood-sad-text);
+}
+
+body.mood-energetic {
+  --primary: var(--mood-energetic-primary);
+  --accent: var(--mood-energetic-secondary);
+  --bg-dark: var(--mood-energetic-bg);
+  --bg-card: #2a1208;
+  --text-primary: var(--mood-energetic-text);
+}
