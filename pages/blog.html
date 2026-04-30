@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Blog DLQ Music - Hướng dẫn chọn nhạc cụ, tips chơi đàn, so sánh sản phẩm, chăm sóc nhạc cụ">
+  <meta name="keywords" content="blog nhạc cụ, hướng dẫn guitar, chọn piano, bảo dưỡng nhạc cụ, DLQ music">
+  <title>Blog Âm Nhạc | DLQ Music Store</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+  <style>
+    /* ===== BLOG PAGE STYLES ===== */
+    .blog-hero {
+      background: linear-gradient(135deg, var(--bg-dark) 0%, rgba(233,69,96,0.15) 50%, var(--primary-light) 100%);
+      padding: 4rem 0 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .blog-hero::before {
+      content: '✍️';
+      position: absolute;
+      font-size: 12rem;
+      opacity: 0.04;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .blog-hero h1 { font-size: var(--fs-4xl); margin-bottom: 0.5rem; }
+    .blog-hero p { color: var(--text-muted); font-size: 1.05rem; max-width: 520px; margin: 0 auto 1.5rem; }
+
+    /* Search */
+    .blog-search-bar {
+      max-width: 480px;
+      margin: 0 auto;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .blog-search-bar input {
+      flex: 1;
+      padding: 0.75rem 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-full);
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+    .blog-search-bar input:focus { outline: none; border-color: var(--accent); }
+    .blog-search-bar button {
+      padding: 0.75rem 1.5rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition-fast);
+    }
+    .blog-search-bar button:hover { background: var(--accent-hover); }
+
+    /* Layout */
+    .blog-layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 2.5rem;
+      padding: 3rem 0 5rem;
+      align-items: start;
+    }
+    @media (max-width: 900px) { .blog-layout { grid-template-columns: 1fr; } }
+
+    /* Category filter */
+    .category-tabs {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .cat-tab {
+      padding: 0.45rem 1.1rem;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(255,255,255,0.12);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: var(--transition-fast);
+    }
+    .cat-tab:hover, .cat-tab.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(233,69,96,0.1);
+    }
+
+    /* Featured Post */
+    .featured-post {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      transition: var(--transition-base);
+    }
+    .featured-post:hover { border-color: rgba(255,255,255,0.18); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    @media (max-width: 700px) { .featured-post { grid-template-columns: 1fr; } }
+    .featured-image {
+      min-height: 260px;
+      background: linear-gradient(135deg, #1a0533, rgba(233,69,96,0.3));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7rem;
+      position: relative;
+    }
+    .featured-badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.3rem 0.8rem;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .featured-content { padding: 2rem; display: flex; flex-direction: column; justify-content: center; }
+    .featured-meta { display: flex; gap: 1rem; margin-bottom: 0.75rem; font-size: 0.8rem; color: var(--text-muted); flex-wrap: wrap; align-items: center; }
+    .featured-cat { color: var(--accent); font-weight: 700; }
+    .featured-content h2 { font-size: var(--fs-2xl); font-weight: 800; margin-bottom: 0.75rem; color: var(--text-primary); line-height: 1.3; }
+    .featured-content p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.25rem; }
+    .read-more-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.6rem 1.25rem;
+      background: var(--accent);
+      color: #fff;
+      border-radius: var(--radius-full);
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: var(--transition-fast);
+      width: fit-content;
+    }
+    .read-more-btn:hover { background: var(--accent-hover); transform: translateX(2px); }
+
+    /* Post Grid */
+    .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .post-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: var(--transition-base);
+      display: flex;
+      flex-direction: column;
+    }
+    .post-card:hover { border-color: rgba(255,255,255,0.18); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+    .post-thumb {
+      height: 180px;
+      background: linear-gradient(135deg, var(--bg-dark), rgba(233,69,96,0.12));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      position: relative;
+    }
+    .post-cat-badge {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      padding: 0.2rem 0.65rem;
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+    .badge-guitar { background: rgba(255,165,0,0.2); color: orange; }
+    .badge-piano { background: rgba(100,149,237,0.2); color: cornflowerblue; }
+    .badge-drum { background: rgba(233,69,96,0.2); color: var(--accent); }
+    .badge-tips { background: rgba(40,167,69,0.2); color: var(--success); }
+    .badge-review { background: rgba(255,215,0,0.2); color: var(--gold); }
+    .badge-guide { background: rgba(138,43,226,0.2); color: #b04fec; }
+
+    .post-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
+    .post-meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.6rem; }
+    .post-title { font-size: 1.05rem; font-weight: 700; color: var(--text-primary); line-height: 1.4; margin-bottom: 0.6rem; }
+    .post-excerpt { font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; flex: 1; margin-bottom: 1rem; }
+    .post-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.75rem; }
+    .post-stats { display: flex; gap: 1rem; font-size: 0.78rem; color: var(--text-muted); }
+    .post-link {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .post-link:hover { text-decoration: underline; }
+
+    /* Load more */
+    .load-more-wrap { text-align: center; margin-top: 2.5rem; }
+
+    /* Sidebar */
+    .blog-sidebar {}
+    .sidebar-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 1.5rem;
+    }
+    .sidebar-card h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 700; margin-bottom: 1.1rem; display: flex; align-items: center; gap: 0.4rem; }
+    .recent-posts { display: flex; flex-direction: column; gap: 1rem; }
+    .recent-post { display: flex; gap: 0.75rem; align-items: flex-start; cursor: pointer; }
+    .recent-thumb { width: 56px; height: 56px; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--bg-dark), rgba(233,69,96,0.15)); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; flex-shrink: 0; }
+    .recent-info h4 { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); line-height: 1.4; margin-bottom: 0.2rem; }
+    .recent-info span { font-size: 0.75rem; color: var(--text-muted); }
+    .recent-post:hover .recent-info h4 { color: var(--accent); }
+
+    .tags-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .blog-tag {
+      padding: 0.3rem 0.8rem;
+      border-radius: var(--radius-full);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    .blog-tag:hover { border-color: var(--accent); color: var(--accent); background: rgba(233,69,96,0.08); }
+
+    .newsletter-form { display: flex; flex-direction: column; gap: 0.75rem; }
+    .newsletter-form input {
+      padding: 0.7rem 1rem;
+      background: var(--bg-dark);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+    }
+    .newsletter-form input:focus { outline: none; border-color: var(--accent); }
+    .newsletter-form button {
+      padding: 0.7rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    .newsletter-form button:hover { background: var(--accent-hover); }
+  </style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="loading-screen" class="loading-screen">
+  <div class="loading-logo">DLQ</div>
+  <div class="loading-bars">
+    <div class="loading-bar"></div><div class="loading-bar"></div>
+    <div class="loading-bar"></div><div class="loading-bar"></div>
+    <div class="loading-bar"></div>
+  </div>
+  <p style="color:var(--text-muted);font-size:0.875rem">Đang tải Blog...</p>
+</div>
+
+<div id="floating-notes" class="music-notes-container" aria-hidden="true"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo" aria-label="DLQ Music Store home">
+      <div class="logo-mark" aria-hidden="true">DLQ</div>
+      <div class="logo-text">
+        <span class="logo-name">DLQ Music</span>
+        <span class="logo-tagline">NHẠC CỤ CHÍNH HÃNG</span>
+      </div>
+    </a>
+    <nav class="nav-links" aria-label="Site navigation">
+      <a href="../index.html" class="nav-link">🏠 Trang chủ</a>
+      <a href="search-results.html" class="nav-link">🛍️ Sản phẩm</a>
+      <a href="interactive-play.html" class="nav-link">🎹 Thử online</a>
+      <a href="learning.html" class="nav-link">📚 Học nhạc</a>
+      <a href="community.html" class="nav-link">👥 Cộng đồng</a>
+      <a href="blog.html" class="nav-link active">✍️ Blog</a>
+      <a href="repair-service.html" class="nav-link">🔧 Sửa chữa</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="nav-search" role="search">
+        <span aria-hidden="true">🔍</span>
+        <input type="search" placeholder="Tìm nhạc cụ..." aria-label="Tìm kiếm"
+          onkeydown="if(event.key==='Enter')window.location.href='search-results.html?q='+this.value">
+      </div>
+      <a href="profile.html" class="nav-icon-btn" aria-label="Tài khoản" title="Tài khoản">👤</a>
+      <a href="cart.html" class="nav-icon-btn" aria-label="Giỏ hàng" title="Giỏ hàng" style="position:relative">
+        🛒<span class="cart-badge" style="display:none">0</span>
+      </a>
+      <button class="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" role="dialog" aria-label="Mobile navigation">
+  <a href="../index.html" class="nav-link">🏠 Trang chủ</a>
+  <a href="search-results.html" class="nav-link">🛍️ Sản phẩm</a>
+  <a href="interactive-play.html" class="nav-link">🎹 Thử nhạc cụ online</a>
+  <a href="learning.html" class="nav-link">📚 Học nhạc</a>
+  <a href="community.html" class="nav-link">👥 Cộng đồng</a>
+  <a href="blog.html" class="nav-link active">✍️ Blog</a>
+  <a href="repair-service.html" class="nav-link">🔧 Dịch vụ sửa chữa</a>
+</div>
+
+<!-- HERO -->
+<section class="blog-hero">
+  <div class="container">
+    <h1>Blog Âm Nhạc ✍️</h1>
+    <p>Hướng dẫn chọn nhạc cụ, tips luyện tập, review sản phẩm và câu chuyện âm nhạc</p>
+    <div class="blog-search-bar">
+      <input type="search" id="blog-search" placeholder="Tìm bài viết..." aria-label="Tìm bài viết">
+      <button onclick="searchBlog()">Tìm kiếm</button>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<main class="container">
+  <div class="blog-layout">
+
+    <!-- Left: Posts -->
+    <div class="blog-main">
+
+      <!-- Category Tabs -->
+      <div class="category-tabs" role="tablist" aria-label="Danh mục blog">
+        <button class="cat-tab active" data-cat="all" role="tab" aria-selected="true">Tất cả</button>
+        <button class="cat-tab" data-cat="guitar" role="tab">🎸 Guitar</button>
+        <button class="cat-tab" data-cat="piano" role="tab">🎹 Piano</button>
+        <button class="cat-tab" data-cat="drum" role="tab">🥁 Trống</button>
+        <button class="cat-tab" data-cat="tips" role="tab">💡 Mẹo hay</button>
+        <button class="cat-tab" data-cat="review" role="tab">⭐ Review</button>
+        <button class="cat-tab" data-cat="guide" role="tab">📖 Hướng dẫn</button>
+      </div>
+
+      <!-- Featured Post -->
+      <article class="featured-post" id="featured-post">
+        <div class="featured-image">
+          🎸
+          <span class="featured-badge">NỔI BẬT</span>
+        </div>
+        <div class="featured-content">
+          <div class="featured-meta">
+            <span class="featured-cat">🎸 Guitar</span>
+            <span>📅 28/04/2026</span>
+            <span>⏱️ 8 phút đọc</span>
+          </div>
+          <h2>Top 10 Guitar Acoustic Tốt Nhất Cho Người Mới Bắt Đầu 2026</h2>
+          <p>Bạn mới bắt đầu học guitar và chưa biết chọn đàn nào? Bài viết này tổng hợp 10 cây guitar acoustic phù hợp nhất với người mới, từ tầm giá 1.5 triệu đến 5 triệu đồng.</p>
+          <a href="blog-detail.html?id=1" class="read-more-btn">Đọc tiếp →</a>
+        </div>
+      </article>
+
+      <!-- Posts Grid -->
+      <div class="posts-grid" id="posts-grid">
+
+        <!-- Post 1 -->
+        <article class="post-card" data-cat="piano">
+          <div class="post-thumb">
+            🎹
+            <span class="post-cat-badge badge-piano">Piano</span>
+          </div>
+          <div class="post-body">
+            <div class="post-meta">
+              <span>📅 25/04/2026</span>
+              <span>⏱️ 6 phút</span>
+            </div>
+            <h3 class="post-title">Cách Chọn Piano Điện Phù Hợp Với Ngân Sách Của Bạn</h3>
+            <p class="post-excerpt">Từ keyboard entry-level 2 triệu đến digital piano 20+ triệu, bài viết giúp bạn chọn đúng sản phẩm theo nhu cầu và túi tiền.</p>
+            <div class="post-footer">
+              <div class="post-stats">
+                <span>👁️ 2.3k</span>
+                <span>💬 34</span>
+              </div>
+              <a href="blog-detail.html?id=2" class="post-link">Đọc thêm →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 2 -->
+        <article class="post-card" data-cat="guitar">
+          <div class="post-thumb">
+            🎵
+            <span class="post-cat-badge badge-guitar">Guitar</span>
+          </div>
+          <div class="post-body">
+            <div class="post-meta">
+              <span>📅 22/04/2026</span>
+              <span>⏱️ 10 phút</span>
+            </div>
+            <h3 class="post-title">Acoustic vs Electric Guitar – Nên Chọn Loại Nào Khi Mới Học?</h3>
+            <p class="post-excerpt">So sánh chi tiết giữa guitar acoustic và electric về âm thanh, độ khó, giá cả và trường hợp phù hợp cho người mới bắt đầu.</p>
+            <div class="post-footer">
+              <div class="post-stats">
+                <span>👁️ 4.1k</span>
+                <span>💬 67</span>
+              </div>
+              <a href="blog-detail.html?id=3" class="post-link">Đọc thêm →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 3 -->
+        <article class="post-card" data-cat="tips">
+          <div class="post-thumb">
+            🔧
+            <span class="post-cat-badge badge-tips">Mẹo hay</span>
+          </div>
+          <div class="post-body">
+            <div class="post-meta">
+              <span>📅 18/04/2026</span>
+              <span>⏱️ 5 phút</span>
+            </div>
+            <h3 class="post-title">7 Cách Bảo Dưỡng Nhạc Cụ Đơn Giản Tại Nhà</h3>
+            <p class="post-excerpt">Nhạc cụ của bạn bền hơn, âm thanh tốt hơn nếu được chăm sóc đúng cách. Hướng dẫn chi tiết từng bước bảo dưỡng guitar, piano, trống.</p>
+            <div class="post-footer">
+              <div class="post-stats">
+                <span>👁️ 3.8k</span>
+                <span>💬 45</span>
+              </div>
+              <a href="blog-detail.html?id=4" class="post-link">Đọc thêm →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 4 -->
+        <article class="post-card" data-cat="review">
+          <div class="post-thumb">
+            ⭐
+            <span class="post-cat-badge badge-review">Review</span>
+          </div>
+          <div class="post-body">
+            <div class="post-meta">
+              <span>📅 15/04/2026</span>
+              <span>⏱️ 7 phút</span>
+            </div>
+            <h3 class="post-title">Review Chi Tiết Yamaha F310 – Vua Guitar Giá Rẻ Năm 2026</h3>
+            <p class="post-excerpt">Yamaha F310 đã thống trị thị trường guitar tầm trung nhiều năm liền. Hãy cùng DLQ phân tích ưu nhược điểm của cây đàn huyền thoại này.</p>
+            <div class="post-footer">
+              <div class="post-stats">
+                <span>👁️ 5.6k</span>
+                <span>💬 89</span>
+              </div>
+              <a href="blog-detail.html?id=5" class="post-link">Đọc thêm →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 5 -->
+        <article class="post-card" data-cat="drum">
+          <div class="post-thumb">
+            🥁
+            <span class="post-cat-badge badge-drum">Trống</span>
+          </div>
+          <div class="post-body">
+            <div class="post-meta">
+              <span>📅 12/04/2026</span>
+              <span>⏱️ 9 phút</span>
+            </div>
+            <h3 class="post-title">Trống Điện vs Trống Acoustic – So Sánh Toàn Diện 2026</h3>
+            <p class="post-excerpt">Nếu bạn muốn chơi trống nhưng băn khoăn giữa trống điện và trống cơ, bài viết này sẽ giúp bạn đưa ra quyết định sáng suốt.</p>
+            <div class="post-footer">
+              <div class="post-stats">
+                <span>👁️ 1.9k</span>
+                <span>💬 28</span>
+              </div>
+              <a href="blog-detail.html?id=6" class="post-link">Đọc thêm →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 6 -->
+        <article class="post-card" data-cat="guide">
+          <div class="post-thumb">
+            📖
+            <span class="post-cat-badge badge-guide">Hướng dẫn</span>
+          </div>
+          <div class="post-body">
+            <div class="post-meta">
+              <span>📅 08/04/2026</span>
+              <span>⏱️ 12 phút</span>
+            </div>
+            <h3 class="post-title">Lộ Trình Học Guitar Từ 0 Lên Chuyên Nghiệp Trong 12 Tháng</h3>
+            <p class="post-excerpt">Hướng dẫn học guitar bài bản theo từng tháng, từ cầm đàn đúng cách đến chơi được những bài nhạc yêu thích. Áp dụng được ngay hôm nay!</p>
+            <div class="post-footer">
+              <div class="post-stats">
+                <span>👁️ 8.2k</span>
+                <span>💬 134</span>
+              </div>
+              <a href="blog-detail.html?id=7" class="post-link">Đọc thêm →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 7 -->
+        <article class="post-card" data-cat="guitar">
+          <div class="post-thumb">
+            🎸
+            <span class="post-cat-badge badge-guitar">Guitar</span>
+          </div>
+          <div class="post-body">
+            <div class="post-meta">
+              <span>📅 04/04/2026</span>
+              <span>⏱️ 6 phút</span>
+            </div>
+            <h3 class="post-title">Cách Lên Dây Đàn Guitar Chuẩn – Không Cần Tuner Cũng Được</h3>
+            <p class="post-excerpt">Nhiều người nghĩ phải có tuner mới lên dây được. Thực ra có 3 cách lên dây chính xác chỉ cần tai nghe và kỹ thuật đúng.</p>
+            <div class="post-footer">
+              <div class="post-stats">
+                <span>👁️ 3.4k</span>
+                <span>💬 52</span>
+              </div>
+              <a href="blog-detail.html?id=8" class="post-link">Đọc thêm →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 8 -->
+        <article class="post-card" data-cat="piano">
+          <div class="post-thumb">
+            🎵
+            <span class="post-cat-badge badge-piano">Piano</span>
+          </div>
+          <div class="post-body">
+            <div class="post-meta">
+              <span>📅 01/04/2026</span>
+              <span>⏱️ 8 phút</span>
+            </div>
+            <h3 class="post-title">5 Bài Tập Ngón Tay Piano Giúp Bạn Tiến Bộ Nhanh Hơn Gấp Đôi</h3>
+            <p class="post-excerpt">Hanon, Czerny hay Scales? Bài viết phân tích từng loại bài tập và hướng dẫn thực hành đúng cách để cải thiện kỹ thuật piano hiệu quả.</p>
+            <div class="post-footer">
+              <div class="post-stats">
+                <span>👁️ 2.7k</span>
+                <span>💬 41</span>
+              </div>
+              <a href="blog-detail.html?id=9" class="post-link">Đọc thêm →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 9 -->
+        <article class="post-card" data-cat="tips">
+          <div class="post-thumb">
+            💡
+            <span class="post-cat-badge badge-tips">Mẹo hay</span>
+          </div>
+          <div class="post-body">
+            <div class="post-meta">
+              <span>📅 27/03/2026</span>
+              <span>⏱️ 4 phút</span>
+            </div>
+            <h3 class="post-title">Nhạc Cụ Bị Mốc Sau Mùa Mưa – Xử Lý Như Thế Nào?</h3>
+            <p class="post-excerpt">Độ ẩm cao là kẻ thù số 1 của nhạc cụ. Đây là cách xử lý và bảo quản nhạc cụ đúng cách để tránh hư hỏng trong mùa mưa.</p>
+            <div class="post-footer">
+              <div class="post-stats">
+                <span>👁️ 1.5k</span>
+                <span>💬 19</span>
+              </div>
+              <a href="blog-detail.html?id=10" class="post-link">Đọc thêm →</a>
+            </div>
+          </div>
+        </article>
+
+      </div><!-- /posts-grid -->
+
+      <div class="load-more-wrap">
+        <button class="btn btn-outline" id="load-more-btn" onclick="loadMorePosts()">
+          Xem thêm bài viết ↓
+        </button>
+      </div>
+
+    </div><!-- /blog-main -->
+
+    <!-- Right: Sidebar -->
+    <aside class="blog-sidebar">
+
+      <!-- Recent Posts -->
+      <div class="sidebar-card">
+        <h3>📰 Bài viết gần đây</h3>
+        <div class="recent-posts">
+          <a href="blog-detail.html?id=1" class="recent-post" style="text-decoration:none">
+            <div class="recent-thumb">🎸</div>
+            <div class="recent-info">
+              <h4>Top 10 Guitar Cho Người Mới 2026</h4>
+              <span>28/04/2026</span>
+            </div>
+          </a>
+          <a href="blog-detail.html?id=2" class="recent-post" style="text-decoration:none">
+            <div class="recent-thumb">🎹</div>
+            <div class="recent-info">
+              <h4>Cách Chọn Piano Phù Hợp Ngân Sách</h4>
+              <span>25/04/2026</span>
+            </div>
+          </a>
+          <a href="blog-detail.html?id=3" class="recent-post" style="text-decoration:none">
+            <div class="recent-thumb">🎵</div>
+            <div class="recent-info">
+              <h4>Acoustic vs Electric Guitar</h4>
+              <span>22/04/2026</span>
+            </div>
+          </a>
+          <a href="blog-detail.html?id=4" class="recent-post" style="text-decoration:none">
+            <div class="recent-thumb">🔧</div>
+            <div class="recent-info">
+              <h4>7 Cách Bảo Dưỡng Nhạc Cụ Tại Nhà</h4>
+              <span>18/04/2026</span>
+            </div>
+          </a>
+          <a href="blog-detail.html?id=5" class="recent-post" style="text-decoration:none">
+            <div class="recent-thumb">⭐</div>
+            <div class="recent-info">
+              <h4>Review Yamaha F310 2026</h4>
+              <span>15/04/2026</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Popular Tags -->
+      <div class="sidebar-card">
+        <h3>🏷️ Chủ đề phổ biến</h3>
+        <div class="tags-list">
+          <span class="blog-tag">#guitar</span>
+          <span class="blog-tag">#piano</span>
+          <span class="blog-tag">#nguoimoi</span>
+          <span class="blog-tag">#acoustic</span>
+          <span class="blog-tag">#electric</span>
+          <span class="blog-tag">#yamaha</span>
+          <span class="blog-tag">#roland</span>
+          <span class="blog-tag">#baodưỡng</span>
+          <span class="blog-tag">#hocnhac</span>
+          <span class="blog-tag">#trống</span>
+          <span class="blog-tag">#ukulele</span>
+          <span class="blog-tag">#tips</span>
+          <span class="blog-tag">#review</span>
+          <span class="blog-tag">#sothietkham</span>
+        </div>
+      </div>
+
+      <!-- Categories Stats -->
+      <div class="sidebar-card">
+        <h3>📂 Danh mục</h3>
+        <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:0.6rem">
+          <li style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" class="recent-post" onclick="filterByCategory('guitar')">
+            <span>🎸 Guitar</span>
+            <span style="background:rgba(255,165,0,0.15);color:orange;padding:0.1rem 0.6rem;border-radius:var(--radius-full);font-size:0.78rem;font-weight:700">24</span>
+          </li>
+          <li style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" class="recent-post" onclick="filterByCategory('piano')">
+            <span>🎹 Piano & Keyboard</span>
+            <span style="background:rgba(100,149,237,0.15);color:cornflowerblue;padding:0.1rem 0.6rem;border-radius:var(--radius-full);font-size:0.78rem;font-weight:700">18</span>
+          </li>
+          <li style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" class="recent-post" onclick="filterByCategory('drum')">
+            <span>🥁 Trống & Bộ gõ</span>
+            <span style="background:rgba(233,69,96,0.15);color:var(--accent);padding:0.1rem 0.6rem;border-radius:var(--radius-full);font-size:0.78rem;font-weight:700">11</span>
+          </li>
+          <li style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" class="recent-post" onclick="filterByCategory('tips')">
+            <span>💡 Mẹo hay</span>
+            <span style="background:rgba(40,167,69,0.15);color:var(--success);padding:0.1rem 0.6rem;border-radius:var(--radius-full);font-size:0.78rem;font-weight:700">32</span>
+          </li>
+          <li style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" class="recent-post" onclick="filterByCategory('review')">
+            <span>⭐ Review sản phẩm</span>
+            <span style="background:rgba(255,215,0,0.15);color:var(--gold);padding:0.1rem 0.6rem;border-radius:var(--radius-full);font-size:0.78rem;font-weight:700">15</span>
+          </li>
+          <li style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" class="recent-post" onclick="filterByCategory('guide')">
+            <span>📖 Hướng dẫn</span>
+            <span style="background:rgba(138,43,226,0.15);color:#b04fec;padding:0.1rem 0.6rem;border-radius:var(--radius-full);font-size:0.78rem;font-weight:700">27</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="sidebar-card" style="background:linear-gradient(135deg,rgba(233,69,96,0.15),rgba(255,215,0,0.08))">
+        <h3>📧 Nhận thông báo bài mới</h3>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem">Đăng ký để nhận bài viết hàng tuần về nhạc cụ và âm nhạc.</p>
+        <div class="newsletter-form" id="newsletter-form">
+          <input type="email" id="nl-email" placeholder="Email của bạn..." aria-label="Email đăng ký newsletter">
+          <button onclick="subscribeNewsletter()">📬 Đăng ký miễn phí</button>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="sidebar-card">
+        <h3>⚡ Liên kết nhanh</h3>
+        <div style="display:flex;flex-direction:column;gap:0.6rem">
+          <a href="interactive-play.html" style="color:var(--text-secondary);text-decoration:none;font-size:0.9rem;display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.05)">🎹 Thử nhạc cụ online</a>
+          <a href="learning.html" style="color:var(--text-secondary);text-decoration:none;font-size:0.9rem;display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.05)">📚 Khóa học miễn phí</a>
+          <a href="repair-service.html" style="color:var(--text-secondary);text-decoration:none;font-size:0.9rem;display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.05)">🔧 Đặt lịch sửa chữa</a>
+          <a href="community.html" style="color:var(--text-secondary);text-decoration:none;font-size:0.9rem;display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0">👥 Cộng đồng DLQ</a>
+        </div>
+      </div>
+
+    </aside>
+  </div><!-- /blog-layout -->
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">DLQ Music</div>
+        <p>Nền tảng âm nhạc toàn diện – Nhạc cụ chính hãng, học nhạc trực tuyến, cộng đồng âm nhạc sôi động.</p>
+        <div class="footer-social">
+          <a href="#" class="social-link" aria-label="Facebook">📘</a>
+          <a href="#" class="social-link" aria-label="YouTube">▶️</a>
+          <a href="#" class="social-link" aria-label="Instagram">📸</a>
+          <a href="#" class="social-link" aria-label="TikTok">🎵</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Nhạc cụ</h4>
+        <ul>
+          <li><a href="search-results.html?cat=guitar">Guitar Acoustic</a></li>
+          <li><a href="search-results.html?cat=guitar">Guitar Electric</a></li>
+          <li><a href="search-results.html?cat=piano">Piano & Keyboard</a></li>
+          <li><a href="search-results.html?cat=drum">Trống & Bộ gõ</a></li>
+          <li><a href="search-results.html?cat=ukulele">Ukulele</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Dịch vụ</h4>
+        <ul>
+          <li><a href="learning.html">Học nhạc online</a></li>
+          <li><a href="repair-service.html">Sửa chữa nhạc cụ</a></li>
+          <li><a href="interactive-play.html">Thử nhạc cụ online</a></li>
+          <li><a href="community.html">Cộng đồng</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Liên hệ</h4>
+        <ul>
+          <li>📍 123 Nguyễn Huệ, Q.1, TP.HCM</li>
+          <li>📞 <a href="tel:0901234567">0901 234 567</a></li>
+          <li>✉️ <a href="mailto:hello@dlqmusic.vn">hello@dlqmusic.vn</a></li>
+          <li>⏰ 8:00 – 21:00 mỗi ngày</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 DLQ Music Store. Tất cả quyền được bảo lưu.</p>
+      <div class="footer-links">
+        <a href="#">Chính sách bảo mật</a>
+        <a href="#">Điều khoản sử dụng</a>
+        <a href="#">Chính sách vận chuyển</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast notification -->
+<div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+<!-- Scripts -->
+<script src="../js/storage.js"></script>
+<script src="../js/animations.js"></script>
+<script src="../js/main.js"></script>
+<script>
+  // Category filtering
+  const catTabs = document.querySelectorAll('.cat-tab');
+  const posts = document.querySelectorAll('#posts-grid .post-card');
+
+  catTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      catTabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      filterByCategory(tab.dataset.cat);
+    });
+  });
+
+  function filterByCategory(cat) {
+    posts.forEach(post => {
+      if (cat === 'all' || post.dataset.cat === cat) {
+        post.style.display = 'flex';
+        post.style.animation = 'fadeIn 0.3s ease';
+      } else {
+        post.style.display = 'none';
+      }
+    });
+    // sync tab
+    catTabs.forEach(t => {
+      if (t.dataset.cat === cat) { t.classList.add('active'); }
+      else { t.classList.remove('active'); }
+    });
+  }
+
+  function searchBlog() {
+    const q = document.getElementById('blog-search').value.toLowerCase().trim();
+    if (!q) return;
+    posts.forEach(post => {
+      const title = post.querySelector('.post-title').textContent.toLowerCase();
+      const excerpt = post.querySelector('.post-excerpt').textContent.toLowerCase();
+      if (title.includes(q) || excerpt.includes(q)) {
+        post.style.display = 'flex';
+      } else {
+        post.style.display = 'none';
+      }
+    });
+  }
+
+  document.getElementById('blog-search').addEventListener('keydown', e => {
+    if (e.key === 'Enter') searchBlog();
+  });
+
+  function loadMorePosts() {
+    const btn = document.getElementById('load-more-btn');
+    btn.textContent = '✅ Đã tải hết bài viết';
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+    showToast('Đã hiển thị tất cả bài viết!', 'success');
+  }
+
+  function subscribeNewsletter() {
+    const email = document.getElementById('nl-email').value.trim();
+    if (!email || !email.includes('@')) {
+      showToast('Vui lòng nhập email hợp lệ', 'error');
+      return;
+    }
+    document.getElementById('newsletter-form').innerHTML =
+      '<p style="color:var(--success);font-size:0.9rem;text-align:center">✅ Đăng ký thành công! Cảm ơn bạn 🎵</p>';
+    showToast('Đăng ký newsletter thành công!', 'success');
+  }
+
+  function showToast(msg, type = 'success') {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.className = 'toast show ' + type;
+    setTimeout(() => { toast.classList.remove('show'); }, 3000);
+  }
+</script>
+</body>
+</html>

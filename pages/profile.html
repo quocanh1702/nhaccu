@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Trang cá nhân DLQ Music – Lịch sử mua hàng, wishlist, nhạc cụ sở hữu, thành tích học nhạc">
+  <title>Trang Cá Nhân | DLQ Music Store</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+  <style>
+    /* ===== PROFILE PAGE STYLES ===== */
+    .profile-hero {
+      background: linear-gradient(135deg, var(--bg-dark) 0%, rgba(100,149,237,0.12) 50%, var(--primary-light) 100%);
+      padding: 3rem 0;
+    }
+    .profile-hero-inner {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+    .profile-avatar-wrap { position: relative; flex-shrink: 0; }
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--gold));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      border: 4px solid rgba(255,255,255,0.15);
+      cursor: pointer;
+      transition: var(--transition-base);
+    }
+    .profile-avatar:hover { transform: scale(1.05); }
+    .avatar-edit-btn {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .profile-info { flex: 1; min-width: 200px; }
+    .profile-name { font-size: var(--fs-3xl); font-weight: 900; color: var(--text-primary); margin-bottom: 0.25rem; }
+    .profile-level {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.9rem;
+      border-radius: var(--radius-full);
+      background: rgba(233,69,96,0.15);
+      color: var(--accent);
+      border: 1px solid rgba(233,69,96,0.3);
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .profile-joined { font-size: 0.82rem; color: var(--text-muted); }
+    .profile-stats-row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 0.75rem;
+    }
+    .profile-stat { text-align: center; }
+    .profile-stat strong { display: block; font-size: var(--fs-xl); font-weight: 900; color: var(--text-primary); }
+    .profile-stat span { font-size: 0.78rem; color: var(--text-muted); }
+    .profile-actions { display: flex; gap: 0.75rem; align-items: flex-end; margin-left: auto; flex-wrap: wrap; }
+
+    /* Tabs */
+    .profile-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid rgba(255,255,255,0.08);
+      margin-bottom: 2rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .profile-tabs::-webkit-scrollbar { display: none; }
+    .profile-tab {
+      padding: 0.75rem 1.5rem;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: var(--transition-fast);
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .profile-tab:hover { color: var(--text-primary); }
+    .profile-tab.active { color: var(--text-primary); border-bottom-color: var(--accent); }
+
+    .tab-pane { display: none; animation: fadeIn 0.3s ease; }
+    .tab-pane.active { display: block; }
+
+    /* Order history */
+    .order-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .order-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: var(--transition-base);
+    }
+    .order-card:hover { border-color: rgba(255,255,255,0.15); }
+    .order-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .order-id { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.15rem; }
+    .order-date { font-size: 0.85rem; color: var(--text-muted); }
+    .order-status {
+      padding: 0.3rem 0.9rem;
+      border-radius: var(--radius-full);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    .status-delivered { background: rgba(40,167,69,0.15); color: var(--success); }
+    .status-shipping { background: rgba(100,149,237,0.15); color: cornflowerblue; }
+    .status-processing { background: rgba(255,165,0,0.15); color: orange; }
+    .status-cancelled { background: rgba(220,53,69,0.15); color: var(--danger); }
+    .order-items { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .order-item { display: flex; gap: 0.75rem; align-items: center; }
+    .order-item-thumb { width: 60px; height: 60px; border-radius: var(--radius-md); background: linear-gradient(135deg,var(--bg-dark),rgba(233,69,96,0.1)); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; flex-shrink: 0; }
+    .order-item-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.15rem; }
+    .order-item-info span { font-size: 0.8rem; color: var(--text-muted); }
+    .order-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.75rem; }
+    .order-total { font-size: 0.9rem; color: var(--text-muted); }
+    .order-total strong { color: var(--accent); font-size: 1rem; font-weight: 800; }
+    .order-actions { display: flex; gap: 0.5rem; }
+    .order-actions button { padding: 0.4rem 0.9rem; border-radius: var(--radius-full); border: 1px solid rgba(255,255,255,0.12); background: none; color: var(--text-muted); cursor: pointer; font-size: 0.82rem; transition: var(--transition-fast); }
+    .order-actions button:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Wishlist */
+    .wishlist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; }
+    .wishlist-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: var(--transition-base);
+      position: relative;
+    }
+    .wishlist-card:hover { border-color: rgba(255,255,255,0.18); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+    .wishlist-thumb { height: 160px; background: linear-gradient(135deg,var(--bg-dark),rgba(233,69,96,0.1)); display: flex; align-items: center; justify-content: center; font-size: 5rem; position: relative; }
+    .wishlist-remove { position: absolute; top: 0.6rem; right: 0.6rem; width: 28px; height: 28px; border-radius: 50%; background: rgba(220,53,69,0.2); border: 1px solid rgba(220,53,69,0.3); color: var(--danger); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; transition: var(--transition-fast); }
+    .wishlist-remove:hover { background: var(--danger); color: #fff; }
+    .wishlist-info { padding: 1rem; }
+    .wishlist-name { font-size: 0.9rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; line-height: 1.4; }
+    .wishlist-price { color: var(--accent); font-weight: 800; margin-bottom: 0.75rem; }
+    .wishlist-info .btn { width: 100%; font-size: 0.85rem; padding: 0.5rem; }
+
+    /* My instruments */
+    .instruments-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem; }
+    .instrument-owned {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: var(--transition-base);
+    }
+    .instrument-owned:hover { border-color: rgba(255,255,255,0.18); }
+    .inst-header { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1rem; }
+    .inst-icon { font-size: 2.5rem; flex-shrink: 0; }
+    .inst-name { font-weight: 700; color: var(--text-primary); margin-bottom: 0.15rem; }
+    .inst-brand { font-size: 0.8rem; color: var(--accent); font-weight: 600; }
+    .inst-since { font-size: 0.78rem; color: var(--text-muted); }
+    .inst-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .inst-tag { padding: 0.2rem 0.6rem; border-radius: var(--radius-full); background: rgba(255,255,255,0.06); font-size: 0.75rem; color: var(--text-secondary); }
+
+    /* Learning progress */
+    .progress-overview { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .progress-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: 1.25rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+    }
+    .progress-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .progress-value { font-size: var(--fs-2xl); font-weight: 900; color: var(--accent); }
+    .progress-label { font-size: 0.78rem; color: var(--text-muted); }
+
+    .achievement-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+    .achievement-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: 1.25rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+      transition: var(--transition-base);
+    }
+    .achievement-card:hover { transform: translateY(-2px); }
+    .achievement-card.locked { opacity: 0.4; filter: grayscale(0.8); }
+    .achievement-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .achievement-name { font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.15rem; }
+    .achievement-desc { font-size: 0.75rem; color: var(--text-muted); }
+
+    .lesson-progress-list { display: flex; flex-direction: column; gap: 1rem; }
+    .lesson-progress-item {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: 1.25rem;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .lesson-progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem; }
+    .lesson-progress-title { font-weight: 700; color: var(--text-primary); font-size: 0.95rem; }
+    .lesson-progress-pct { font-size: 0.85rem; color: var(--accent); font-weight: 700; }
+    .progress-bar-wrap { height: 8px; background: rgba(255,255,255,0.08); border-radius: var(--radius-full); overflow: hidden; margin-bottom: 0.5rem; }
+    .progress-bar-fill { height: 100%; border-radius: var(--radius-full); background: linear-gradient(90deg,var(--accent),var(--gold)); transition: width 1s ease; }
+    .lesson-progress-meta { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* Settings */
+    .settings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+    .settings-card { background: var(--bg-card); border-radius: var(--radius-xl); padding: 1.5rem; border: 1px solid rgba(255,255,255,0.08); }
+    .settings-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+    .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .settings-row:last-child { border-bottom: none; }
+    .settings-label { font-size: 0.875rem; color: var(--text-secondary); }
+    .toggle-switch { position: relative; width: 44px; height: 24px; cursor: pointer; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; inset: 0; background: rgba(255,255,255,0.15); border-radius: 24px; transition: var(--transition-fast); }
+    .toggle-slider::before { content: ''; position: absolute; height: 18px; width: 18px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: var(--transition-fast); }
+    .toggle-switch input:checked + .toggle-slider { background: var(--accent); }
+    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+    /* Login prompt */
+    .login-prompt {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+    .login-prompt .icon { font-size: 5rem; margin-bottom: 1rem; }
+    .login-prompt h2 { font-size: var(--fs-2xl); margin-bottom: 0.5rem; }
+    .login-prompt p { color: var(--text-muted); margin-bottom: 1.5rem; }
+    .login-form-card {
+      max-width: 420px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .auth-tabs { display: flex; gap: 0; border-bottom: 2px solid rgba(255,255,255,0.08); margin-bottom: 1.5rem; }
+    .auth-tab { flex: 1; padding: 0.65rem; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.95rem; font-weight: 600; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: var(--transition-fast); }
+    .auth-tab.active { color: var(--text-primary); border-bottom-color: var(--accent); }
+    .auth-form { display: none; }
+    .auth-form.active { display: block; animation: fadeIn 0.3s ease; }
+    .auth-input { width: 100%; padding: 0.75rem 1rem; background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius-md); color: var(--text-primary); font-size: 0.95rem; margin-bottom: 0.75rem; }
+    .auth-input:focus { outline: none; border-color: var(--accent); }
+    .auth-divider { text-align: center; color: var(--text-muted); font-size: 0.85rem; margin: 1rem 0; position: relative; }
+    .auth-divider::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.08); }
+    .auth-divider span { background: var(--bg-card); padding: 0 0.75rem; position: relative; }
+    .social-login { display: flex; gap: 0.75rem; }
+    .social-login button { flex: 1; padding: 0.65rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius-md); color: var(--text-primary); cursor: pointer; font-size: 0.875rem; transition: var(--transition-fast); }
+    .social-login button:hover { background: rgba(255,255,255,0.1); }
+  </style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="loading-screen" class="loading-screen">
+  <div class="loading-logo">DLQ</div>
+  <div class="loading-bars">
+    <div class="loading-bar"></div><div class="loading-bar"></div>
+    <div class="loading-bar"></div><div class="loading-bar"></div>
+    <div class="loading-bar"></div>
+  </div>
+</div>
+
+<div id="floating-notes" class="music-notes-container" aria-hidden="true"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo" aria-label="DLQ Music Store home">
+      <div class="logo-mark" aria-hidden="true">DLQ</div>
+      <div class="logo-text">
+        <span class="logo-name">DLQ Music</span>
+        <span class="logo-tagline">NHẠC CỤ CHÍNH HÃNG</span>
+      </div>
+    </a>
+    <nav class="nav-links">
+      <a href="../index.html" class="nav-link">🏠 Trang chủ</a>
+      <a href="search-results.html" class="nav-link">🛍️ Sản phẩm</a>
+      <a href="interactive-play.html" class="nav-link">🎹 Thử online</a>
+      <a href="learning.html" class="nav-link">📚 Học nhạc</a>
+      <a href="community.html" class="nav-link">👥 Cộng đồng</a>
+      <a href="blog.html" class="nav-link">✍️ Blog</a>
+      <a href="repair-service.html" class="nav-link">🔧 Sửa chữa</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="nav-search" role="search">
+        <span>🔍</span>
+        <input type="search" placeholder="Tìm nhạc cụ..." aria-label="Tìm kiếm"
+          onkeydown="if(event.key==='Enter')window.location.href='search-results.html?q='+this.value">
+      </div>
+      <a href="profile.html" class="nav-icon-btn active" aria-label="Tài khoản">👤</a>
+      <a href="cart.html" class="nav-icon-btn" aria-label="Giỏ hàng" style="position:relative">
+        🛒<span class="cart-badge" style="display:none">0</span>
+      </a>
+      <button class="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" role="dialog" aria-label="Mobile navigation">
+  <a href="../index.html" class="nav-link">🏠 Trang chủ</a>
+  <a href="search-results.html" class="nav-link">🛍️ Sản phẩm</a>
+  <a href="interactive-play.html" class="nav-link">🎹 Thử nhạc cụ online</a>
+  <a href="learning.html" class="nav-link">📚 Học nhạc</a>
+  <a href="community.html" class="nav-link">👥 Cộng đồng</a>
+  <a href="blog.html" class="nav-link">✍️ Blog</a>
+  <a href="repair-service.html" class="nav-link">🔧 Dịch vụ sửa chữa</a>
+</div>
+
+<!-- Page content (shown when logged in) -->
+<div id="profile-content" style="display:none">
+
+  <!-- PROFILE HERO -->
+  <section class="profile-hero">
+    <div class="container">
+      <div class="profile-hero-inner">
+        <div class="profile-avatar-wrap">
+          <div class="profile-avatar" onclick="document.getElementById('avatar-input').click()" title="Thay đổi ảnh đại diện" role="button" aria-label="Thay đổi ảnh đại diện" tabindex="0">
+            <span id="profile-emoji">😊</span>
+          </div>
+          <div class="avatar-edit-btn" aria-hidden="true">✏️</div>
+          <input type="file" id="avatar-input" accept="image/*" style="display:none" onchange="changeAvatar(this)">
+        </div>
+        <div class="profile-info">
+          <h1 class="profile-name" id="profile-display-name">Nguyễn Âm Nhạc</h1>
+          <div class="profile-level">🎵 Trung cấp – Intermediate</div>
+          <div class="profile-joined">📅 Tham gia từ tháng 01/2025</div>
+          <div class="profile-stats-row">
+            <div class="profile-stat">
+              <strong>12</strong>
+              <span>Đơn hàng</span>
+            </div>
+            <div class="profile-stat">
+              <strong>3</strong>
+              <span>Nhạc cụ</span>
+            </div>
+            <div class="profile-stat">
+              <strong>28</strong>
+              <span>Bài học xong</span>
+            </div>
+            <div class="profile-stat">
+              <strong>156</strong>
+              <span>Điểm XP</span>
+            </div>
+          </div>
+        </div>
+        <div class="profile-actions">
+          <button class="btn btn-outline" onclick="openTab('settings')">⚙️ Cài đặt</button>
+          <button class="btn btn-primary" onclick="logout()">🚪 Đăng xuất</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROFILE TABS -->
+  <div class="container" style="padding-top:2rem;padding-bottom:5rem">
+    <div class="profile-tabs" role="tablist" aria-label="Trang cá nhân">
+      <button class="profile-tab active" data-tab="orders" onclick="openTab('orders')" role="tab" aria-selected="true">
+        🛒 Đơn hàng <span style="background:var(--accent);color:#fff;padding:0.1rem 0.5rem;border-radius:var(--radius-full);font-size:0.72rem;margin-left:0.3rem">12</span>
+      </button>
+      <button class="profile-tab" data-tab="wishlist" onclick="openTab('wishlist')" role="tab">❤️ Yêu thích <span style="background:rgba(220,53,69,0.2);color:var(--danger);padding:0.1rem 0.5rem;border-radius:var(--radius-full);font-size:0.72rem;margin-left:0.3rem">5</span></button>
+      <button class="profile-tab" data-tab="instruments" onclick="openTab('instruments')" role="tab">🎸 Nhạc cụ của tôi</button>
+      <button class="profile-tab" data-tab="learning" onclick="openTab('learning')" role="tab">📚 Thành tích học</button>
+      <button class="profile-tab" data-tab="settings" onclick="openTab('settings')" role="tab">⚙️ Cài đặt</button>
+    </div>
+
+    <!-- Tab: Orders -->
+    <div class="tab-pane active" id="tab-orders">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+        <h2 style="font-size:var(--fs-xl);font-weight:800">Lịch sử đơn hàng</h2>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+          <select style="padding:0.5rem 1rem;background:var(--bg-card);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.875rem" aria-label="Lọc trạng thái đơn hàng">
+            <option>Tất cả trạng thái</option>
+            <option>Đã giao</option>
+            <option>Đang giao</option>
+            <option>Đang xử lý</option>
+          </select>
+        </div>
+      </div>
+      <div class="order-list">
+
+        <!-- Order 1 -->
+        <div class="order-card">
+          <div class="order-header">
+            <div>
+              <div class="order-id">Mã đơn: #DLQ-2026-04210</div>
+              <div class="order-date">📅 28/04/2026 – 14:32</div>
+            </div>
+            <span class="order-status status-delivered">✅ Đã giao</span>
+          </div>
+          <div class="order-items">
+            <div class="order-item">
+              <div class="order-item-thumb">🎸</div>
+              <div class="order-item-info">
+                <h4>Guitar Acoustic Yamaha F310</h4>
+                <span>Số lượng: 1 × 2,500,000đ</span>
+              </div>
+            </div>
+          </div>
+          <div class="order-footer">
+            <div class="order-total">Tổng: <strong>2,500,000đ</strong></div>
+            <div class="order-actions">
+              <button onclick="reorder()">🔄 Mua lại</button>
+              <button onclick="reviewProduct(1)">⭐ Đánh giá</button>
+              <button onclick="window.location.href='product-detail.html?id=1'">👁️ Xem sản phẩm</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order 2 -->
+        <div class="order-card">
+          <div class="order-header">
+            <div>
+              <div class="order-id">Mã đơn: #DLQ-2026-03185</div>
+              <div class="order-date">📅 15/03/2026 – 10:15</div>
+            </div>
+            <span class="order-status status-delivered">✅ Đã giao</span>
+          </div>
+          <div class="order-items">
+            <div class="order-item">
+              <div class="order-item-thumb">🎵</div>
+              <div class="order-item-info">
+                <h4>Bộ dây đàn D'Addario EJ16</h4>
+                <span>Số lượng: 3 × 120,000đ</span>
+              </div>
+            </div>
+            <div class="order-item">
+              <div class="order-item-thumb">🎼</div>
+              <div class="order-item-info">
+                <h4>Capo Kyser KG6B</h4>
+                <span>Số lượng: 1 × 180,000đ</span>
+              </div>
+            </div>
+          </div>
+          <div class="order-footer">
+            <div class="order-total">Tổng: <strong>540,000đ</strong></div>
+            <div class="order-actions">
+              <button onclick="reorder()">🔄 Mua lại</button>
+              <button onclick="reviewProduct(2)">⭐ Đánh giá</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order 3 -->
+        <div class="order-card">
+          <div class="order-header">
+            <div>
+              <div class="order-id">Mã đơn: #DLQ-2026-04238</div>
+              <div class="order-date">📅 30/04/2026 – 08:45</div>
+            </div>
+            <span class="order-status status-shipping">🚚 Đang giao</span>
+          </div>
+          <div class="order-items">
+            <div class="order-item">
+              <div class="order-item-thumb">🎹</div>
+              <div class="order-item-info">
+                <h4>Piano Điện Yamaha P-125</h4>
+                <span>Số lượng: 1 × 15,000,000đ</span>
+              </div>
+            </div>
+          </div>
+          <div class="order-footer">
+            <div class="order-total">Tổng: <strong>15,000,000đ</strong></div>
+            <div class="order-actions">
+              <button onclick="trackOrder()">📍 Theo dõi</button>
+              <button onclick="cancelOrder()">❌ Hủy đơn</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Tab: Wishlist -->
+    <div class="tab-pane" id="tab-wishlist">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+        <h2 style="font-size:var(--fs-xl);font-weight:800">Sản phẩm yêu thích ❤️</h2>
+        <span style="font-size:0.85rem;color:var(--text-muted)">5 sản phẩm</span>
+      </div>
+      <div class="wishlist-grid" id="wishlist-grid">
+        <div class="wishlist-card">
+          <div class="wishlist-thumb">
+            🎸
+            <button class="wishlist-remove" onclick="removeWishlist(this)" aria-label="Xóa khỏi danh sách yêu thích">✕</button>
+          </div>
+          <div class="wishlist-info">
+            <div class="wishlist-name">Guitar Fender CD-60S</div>
+            <div class="wishlist-price">3,200,000đ</div>
+            <button class="btn btn-primary" onclick="addToCartWishlist('Guitar Fender CD-60S', 3200000)">🛒 Thêm vào giỏ</button>
+          </div>
+        </div>
+        <div class="wishlist-card">
+          <div class="wishlist-thumb">
+            🎹
+            <button class="wishlist-remove" onclick="removeWishlist(this)" aria-label="Xóa khỏi danh sách yêu thích">✕</button>
+          </div>
+          <div class="wishlist-info">
+            <div class="wishlist-name">Piano Roland FP-30X</div>
+            <div class="wishlist-price">18,500,000đ</div>
+            <button class="btn btn-primary" onclick="addToCartWishlist('Piano Roland FP-30X', 18500000)">🛒 Thêm vào giỏ</button>
+          </div>
+        </div>
+        <div class="wishlist-card">
+          <div class="wishlist-thumb">
+            🥁
+            <button class="wishlist-remove" onclick="removeWishlist(this)" aria-label="Xóa khỏi danh sách yêu thích">✕</button>
+          </div>
+          <div class="wishlist-info">
+            <div class="wishlist-name">Trống Roland TD-1K</div>
+            <div class="wishlist-price">12,000,000đ</div>
+            <button class="btn btn-primary" onclick="addToCartWishlist('Trống Roland TD-1K', 12000000)">🛒 Thêm vào giỏ</button>
+          </div>
+        </div>
+        <div class="wishlist-card">
+          <div class="wishlist-thumb">
+            🎵
+            <button class="wishlist-remove" onclick="removeWishlist(this)" aria-label="Xóa khỏi danh sách yêu thích">✕</button>
+          </div>
+          <div class="wishlist-info">
+            <div class="wishlist-name">Ukulele Kala KA-15S</div>
+            <div class="wishlist-price">850,000đ</div>
+            <button class="btn btn-primary" onclick="addToCartWishlist('Ukulele Kala KA-15S', 850000)">🛒 Thêm vào giỏ</button>
+          </div>
+        </div>
+        <div class="wishlist-card">
+          <div class="wishlist-thumb">
+            🎻
+            <button class="wishlist-remove" onclick="removeWishlist(this)" aria-label="Xóa khỏi danh sách yêu thích">✕</button>
+          </div>
+          <div class="wishlist-info">
+            <div class="wishlist-name">Violin Stentor Student I</div>
+            <div class="wishlist-price">2,200,000đ</div>
+            <button class="btn btn-primary" onclick="addToCartWishlist('Violin Stentor Student I', 2200000)">🛒 Thêm vào giỏ</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: My Instruments -->
+    <div class="tab-pane" id="tab-instruments">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+        <h2 style="font-size:var(--fs-xl);font-weight:800">Nhạc cụ của tôi 🎸</h2>
+        <button class="btn btn-primary" onclick="addInstrumentPrompt()" style="font-size:0.875rem;padding:0.5rem 1.2rem">+ Thêm nhạc cụ</button>
+      </div>
+      <div class="instruments-grid">
+        <div class="instrument-owned">
+          <div class="inst-header">
+            <div class="inst-icon">🎸</div>
+            <div>
+              <div class="inst-name">Guitar Acoustic Yamaha F310</div>
+              <div class="inst-brand">Yamaha · Indonesia</div>
+              <div class="inst-since">Sở hữu từ: 28/04/2026</div>
+            </div>
+          </div>
+          <div class="inst-tags">
+            <span class="inst-tag">🌿 Beginner</span>
+            <span class="inst-tag">🎵 Acoustic</span>
+            <span class="inst-tag">✅ Còn bảo hành</span>
+          </div>
+        </div>
+        <div class="instrument-owned">
+          <div class="inst-header">
+            <div class="inst-icon">🎵</div>
+            <div>
+              <div class="inst-name">Ukulele Kala KA-15S</div>
+              <div class="inst-brand">Kala · USA/China</div>
+              <div class="inst-since">Sở hữu từ: 10/02/2025</div>
+            </div>
+          </div>
+          <div class="inst-tags">
+            <span class="inst-tag">🌿 Beginner</span>
+            <span class="inst-tag">🏝️ Soprano</span>
+          </div>
+        </div>
+        <div class="instrument-owned" style="border-style:dashed;display:flex;align-items:center;justify-content:center;text-align:center;min-height:160px;cursor:pointer;background:rgba(255,255,255,0.02)" onclick="addInstrumentPrompt()">
+          <div>
+            <div style="font-size:3rem;margin-bottom:0.5rem;opacity:0.4">➕</div>
+            <div style="color:var(--text-muted);font-size:0.9rem">Thêm nhạc cụ của bạn</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Learning Progress -->
+    <div class="tab-pane" id="tab-learning">
+      <h2 style="font-size:var(--fs-xl);font-weight:800;margin-bottom:1.5rem">Thành tích học nhạc 📚</h2>
+
+      <!-- Stats -->
+      <div class="progress-overview">
+        <div class="progress-card">
+          <div class="progress-icon">📖</div>
+          <div class="progress-value">28</div>
+          <div class="progress-label">Bài học hoàn thành</div>
+        </div>
+        <div class="progress-card">
+          <div class="progress-icon">⏱️</div>
+          <div class="progress-value">14h</div>
+          <div class="progress-label">Thời gian học</div>
+        </div>
+        <div class="progress-card">
+          <div class="progress-icon">🔥</div>
+          <div class="progress-value">7</div>
+          <div class="progress-label">Streak hiện tại</div>
+        </div>
+        <div class="progress-card">
+          <div class="progress-icon">⭐</div>
+          <div class="progress-value">156</div>
+          <div class="progress-label">Điểm XP</div>
+        </div>
+        <div class="progress-card">
+          <div class="progress-icon">🏆</div>
+          <div class="progress-value">5</div>
+          <div class="progress-label">Huy hiệu đạt được</div>
+        </div>
+      </div>
+
+      <!-- Course progress -->
+      <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:1.1rem">📊 Tiến độ khóa học</h3>
+      <div class="lesson-progress-list">
+        <div class="lesson-progress-item">
+          <div class="lesson-progress-header">
+            <div>
+              <div class="lesson-progress-title">🎸 Guitar cho người mới – Beginner</div>
+              <div class="lesson-progress-meta">8/12 bài · Cập nhật 2 ngày trước</div>
+            </div>
+            <div class="lesson-progress-pct">67%</div>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" style="width:67%"></div>
+          </div>
+          <a href="learning.html" class="btn btn-outline" style="font-size:0.82rem;padding:0.4rem 1rem;display:inline-block;text-decoration:none;margin-top:0.5rem">Tiếp tục học →</a>
+        </div>
+        <div class="lesson-progress-item">
+          <div class="lesson-progress-header">
+            <div>
+              <div class="lesson-progress-title">🎵 Lý thuyết âm nhạc cơ bản</div>
+              <div class="lesson-progress-meta">5/5 bài · Hoàn thành 1 tuần trước</div>
+            </div>
+            <div class="lesson-progress-pct" style="color:var(--success)">100% ✅</div>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" style="width:100%;background:linear-gradient(90deg,var(--success),#2ecc71)"></div>
+          </div>
+        </div>
+        <div class="lesson-progress-item">
+          <div class="lesson-progress-header">
+            <div>
+              <div class="lesson-progress-title">🎼 Đọc nốt nhạc và ký hiệu</div>
+              <div class="lesson-progress-meta">3/8 bài · Cập nhật 5 ngày trước</div>
+            </div>
+            <div class="lesson-progress-pct">38%</div>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" style="width:38%"></div>
+          </div>
+          <a href="learning.html" class="btn btn-outline" style="font-size:0.82rem;padding:0.4rem 1rem;display:inline-block;text-decoration:none;margin-top:0.5rem">Tiếp tục học →</a>
+        </div>
+      </div>
+
+      <!-- Achievements -->
+      <h3 style="font-size:1.05rem;font-weight:700;margin:2rem 0 1.1rem">🏆 Huy hiệu thành tích</h3>
+      <div class="achievement-grid">
+        <div class="achievement-card">
+          <div class="achievement-icon">🌱</div>
+          <div class="achievement-name">Người mới bắt đầu</div>
+          <div class="achievement-desc">Hoàn thành bài học đầu tiên</div>
+        </div>
+        <div class="achievement-card">
+          <div class="achievement-icon">🔥</div>
+          <div class="achievement-name">Streak 7 ngày</div>
+          <div class="achievement-desc">Học liên tục 7 ngày</div>
+        </div>
+        <div class="achievement-card">
+          <div class="achievement-icon">🎸</div>
+          <div class="achievement-name">Guitar Fan</div>
+          <div class="achievement-desc">Thử nhạc cụ online 5 lần</div>
+        </div>
+        <div class="achievement-card">
+          <div class="achievement-icon">📚</div>
+          <div class="achievement-name">Siêng học</div>
+          <div class="achievement-desc">Hoàn thành 20 bài học</div>
+        </div>
+        <div class="achievement-card">
+          <div class="achievement-icon">🏅</div>
+          <div class="achievement-name">Cộng đồng viên</div>
+          <div class="achievement-desc">Đăng 5 bài lên community</div>
+        </div>
+        <div class="achievement-card locked">
+          <div class="achievement-icon">🎓</div>
+          <div class="achievement-name">Tốt nghiệp Beginner</div>
+          <div class="achievement-desc">Hoàn thành 100% khóa Beginner</div>
+        </div>
+        <div class="achievement-card locked">
+          <div class="achievement-icon">🏆</div>
+          <div class="achievement-name">Top 10 tuần</div>
+          <div class="achievement-desc">Vào bảng xếp hạng top 10</div>
+        </div>
+        <div class="achievement-card locked">
+          <div class="achievement-icon">🌟</div>
+          <div class="achievement-name">Nhạc sĩ chuyên nghiệp</div>
+          <div class="achievement-desc">Hoàn thành khóa Advanced</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Settings -->
+    <div class="tab-pane" id="tab-settings">
+      <h2 style="font-size:var(--fs-xl);font-weight:800;margin-bottom:1.5rem">⚙️ Cài đặt tài khoản</h2>
+      <div class="settings-grid">
+
+        <!-- Personal info -->
+        <div class="settings-card">
+          <h3>👤 Thông tin cá nhân</h3>
+          <div class="form-group" style="margin-bottom:0.75rem">
+            <label style="font-size:0.82rem;color:var(--text-muted);display:block;margin-bottom:0.3rem">Tên hiển thị</label>
+            <input type="text" id="settings-name" value="Nguyễn Âm Nhạc" style="width:100%;padding:0.65rem 1rem;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem" aria-label="Tên hiển thị">
+          </div>
+          <div class="form-group" style="margin-bottom:0.75rem">
+            <label style="font-size:0.82rem;color:var(--text-muted);display:block;margin-bottom:0.3rem">Email</label>
+            <input type="email" value="nguyen@example.com" style="width:100%;padding:0.65rem 1rem;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem" aria-label="Email">
+          </div>
+          <div class="form-group" style="margin-bottom:0.75rem">
+            <label style="font-size:0.82rem;color:var(--text-muted);display:block;margin-bottom:0.3rem">Số điện thoại</label>
+            <input type="tel" placeholder="Chưa cập nhật" style="width:100%;padding:0.65rem 1rem;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem" aria-label="Số điện thoại">
+          </div>
+          <button class="btn btn-primary" onclick="saveProfile()" style="font-size:0.875rem;padding:0.55rem 1.25rem">💾 Lưu thay đổi</button>
+        </div>
+
+        <!-- Notifications -->
+        <div class="settings-card">
+          <h3>🔔 Thông báo</h3>
+          <div class="settings-row">
+            <span class="settings-label">Thông báo đơn hàng</span>
+            <label class="toggle-switch" aria-label="Thông báo đơn hàng">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="settings-row">
+            <span class="settings-label">Thông báo khuyến mãi</span>
+            <label class="toggle-switch" aria-label="Thông báo khuyến mãi">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="settings-row">
+            <span class="settings-label">Nhắc nhở học nhạc</span>
+            <label class="toggle-switch" aria-label="Nhắc nhở học nhạc">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="settings-row">
+            <span class="settings-label">Thông báo cộng đồng</span>
+            <label class="toggle-switch" aria-label="Thông báo cộng đồng">
+              <input type="checkbox">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="settings-row">
+            <span class="settings-label">Email newsletter</span>
+            <label class="toggle-switch" aria-label="Email newsletter">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Preferences -->
+        <div class="settings-card">
+          <h3>🎵 Sở thích âm nhạc</h3>
+          <div style="font-size:0.875rem;color:var(--text-muted);margin-bottom:0.75rem">Chọn nhạc cụ yêu thích để nhận gợi ý phù hợp</div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem">
+            <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-size:0.875rem;padding:0.35rem 0.8rem;border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-full);background:var(--bg-dark)">
+              <input type="checkbox" checked style="accent-color:var(--accent)"> 🎸 Guitar
+            </label>
+            <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-size:0.875rem;padding:0.35rem 0.8rem;border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-full);background:var(--bg-dark)">
+              <input type="checkbox" style="accent-color:var(--accent)"> 🎹 Piano
+            </label>
+            <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-size:0.875rem;padding:0.35rem 0.8rem;border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-full);background:var(--bg-dark)">
+              <input type="checkbox" style="accent-color:var(--accent)"> 🥁 Trống
+            </label>
+            <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-size:0.875rem;padding:0.35rem 0.8rem;border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-full);background:var(--bg-dark)">
+              <input type="checkbox" checked style="accent-color:var(--accent)"> 🎵 Ukulele
+            </label>
+            <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-size:0.875rem;padding:0.35rem 0.8rem;border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-full);background:var(--bg-dark)">
+              <input type="checkbox" style="accent-color:var(--accent)"> 🎻 Violin
+            </label>
+          </div>
+          <button class="btn btn-outline" style="font-size:0.875rem;padding:0.5rem 1.2rem" onclick="savePreferences()">Lưu sở thích</button>
+        </div>
+
+        <!-- Security -->
+        <div class="settings-card">
+          <h3>🔒 Bảo mật</h3>
+          <div class="form-group" style="margin-bottom:0.75rem">
+            <label style="font-size:0.82rem;color:var(--text-muted);display:block;margin-bottom:0.3rem">Mật khẩu hiện tại</label>
+            <input type="password" placeholder="••••••••" style="width:100%;padding:0.65rem 1rem;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem" aria-label="Mật khẩu hiện tại">
+          </div>
+          <div class="form-group" style="margin-bottom:0.75rem">
+            <label style="font-size:0.82rem;color:var(--text-muted);display:block;margin-bottom:0.3rem">Mật khẩu mới</label>
+            <input type="password" placeholder="••••••••" style="width:100%;padding:0.65rem 1rem;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem" aria-label="Mật khẩu mới">
+          </div>
+          <button class="btn btn-outline" style="font-size:0.875rem;padding:0.5rem 1.2rem" onclick="changePassword()">🔑 Đổi mật khẩu</button>
+        </div>
+
+      </div>
+
+      <!-- Danger zone -->
+      <div style="margin-top:2rem;padding:1.5rem;background:rgba(220,53,69,0.06);border:1px solid rgba(220,53,69,0.2);border-radius:var(--radius-xl)">
+        <h3 style="color:var(--danger);font-size:1rem;margin-bottom:1rem">⚠️ Vùng nguy hiểm</h3>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap">
+          <button class="btn btn-outline" style="border-color:var(--danger);color:var(--danger);font-size:0.875rem;padding:0.5rem 1.2rem" onclick="exportData()">📥 Xuất dữ liệu</button>
+          <button class="btn btn-outline" style="border-color:var(--danger);color:var(--danger);font-size:0.875rem;padding:0.5rem 1.2rem" onclick="deleteAccount()">🗑️ Xóa tài khoản</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /container tabs -->
+</div><!-- /profile-content -->
+
+<!-- Login prompt (shown when not logged in) -->
+<div id="login-prompt" class="container">
+  <div class="login-prompt">
+    <div class="icon">🎵</div>
+    <h2>Đăng nhập để tiếp tục</h2>
+    <p>Xem lịch sử mua hàng, lưu yêu thích, theo dõi tiến độ học nhạc và nhiều hơn nữa.</p>
+    <div class="login-form-card">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchAuthTab('login')" aria-selected="true">Đăng nhập</button>
+        <button class="auth-tab" onclick="switchAuthTab('register')" aria-selected="false">Đăng ký</button>
+      </div>
+      <!-- Login form -->
+      <div class="auth-form active" id="auth-login">
+        <input type="email" class="auth-input" placeholder="Email của bạn" aria-label="Email đăng nhập">
+        <input type="password" class="auth-input" placeholder="Mật khẩu" aria-label="Mật khẩu">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+          <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;cursor:pointer;color:var(--text-muted)">
+            <input type="checkbox" style="accent-color:var(--accent)"> Ghi nhớ đăng nhập
+          </label>
+          <a href="#" style="font-size:0.82rem;color:var(--accent)">Quên mật khẩu?</a>
+        </div>
+        <button class="btn btn-primary" style="width:100%;margin-bottom:1rem" onclick="login()">🔑 Đăng nhập</button>
+        <div class="auth-divider"><span>hoặc đăng nhập với</span></div>
+        <div class="social-login" style="margin-top:1rem">
+          <button onclick="socialLogin('google')">🔴 Google</button>
+          <button onclick="socialLogin('facebook')">📘 Facebook</button>
+        </div>
+      </div>
+      <!-- Register form -->
+      <div class="auth-form" id="auth-register">
+        <input type="text" class="auth-input" placeholder="Tên của bạn" aria-label="Tên đăng ký">
+        <input type="email" class="auth-input" placeholder="Email" aria-label="Email đăng ký">
+        <input type="password" class="auth-input" placeholder="Mật khẩu (tối thiểu 8 ký tự)" aria-label="Mật khẩu đăng ký">
+        <input type="password" class="auth-input" placeholder="Xác nhận mật khẩu" aria-label="Xác nhận mật khẩu">
+        <label style="display:flex;align-items:flex-start;gap:0.4rem;font-size:0.82rem;cursor:pointer;color:var(--text-muted);margin-bottom:1rem">
+          <input type="checkbox" style="accent-color:var(--accent);margin-top:2px;flex-shrink:0">
+          Tôi đồng ý với <a href="#" style="color:var(--accent);margin-left:0.2rem">điều khoản sử dụng</a>
+        </label>
+        <button class="btn btn-primary" style="width:100%" onclick="register()">🎵 Tạo tài khoản</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">DLQ Music</div>
+        <p>Nền tảng âm nhạc toàn diện – Nhạc cụ chính hãng, học nhạc trực tuyến, cộng đồng âm nhạc sôi động.</p>
+        <div class="footer-social">
+          <a href="#" class="social-link" aria-label="Facebook">📘</a>
+          <a href="#" class="social-link" aria-label="YouTube">▶️</a>
+          <a href="#" class="social-link" aria-label="Instagram">📸</a>
+          <a href="#" class="social-link" aria-label="TikTok">🎵</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Nhạc cụ</h4>
+        <ul>
+          <li><a href="search-results.html?cat=guitar">Guitar Acoustic</a></li>
+          <li><a href="search-results.html?cat=piano">Piano & Keyboard</a></li>
+          <li><a href="search-results.html?cat=drum">Trống & Bộ gõ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Dịch vụ</h4>
+        <ul>
+          <li><a href="learning.html">Học nhạc online</a></li>
+          <li><a href="repair-service.html">Sửa chữa nhạc cụ</a></li>
+          <li><a href="community.html">Cộng đồng</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Liên hệ</h4>
+        <ul>
+          <li>📍 123 Nguyễn Huệ, Q.1, TP.HCM</li>
+          <li>📞 <a href="tel:0901234567">0901 234 567</a></li>
+          <li>✉️ <a href="mailto:hello@dlqmusic.vn">hello@dlqmusic.vn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 DLQ Music Store. Tất cả quyền được bảo lưu.</p>
+      <div class="footer-links">
+        <a href="#">Chính sách bảo mật</a>
+        <a href="#">Điều khoản sử dụng</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/animations.js"></script>
+<script src="../js/main.js"></script>
+<script>
+  // Check login state (demo: use localStorage)
+  function checkAuth() {
+    const user = localStorage.getItem('dlq_user');
+    if (user) {
+      document.getElementById('profile-content').style.display = 'block';
+      document.getElementById('login-prompt').style.display = 'none';
+      const parsed = JSON.parse(user);
+      if (parsed.name) {
+        document.getElementById('profile-display-name').textContent = parsed.name;
+        document.getElementById('settings-name').value = parsed.name;
+      }
+    } else {
+      document.getElementById('profile-content').style.display = 'none';
+      document.getElementById('login-prompt').style.display = 'block';
+    }
+  }
+
+  function login() {
+    // Demo login
+    const user = { name: 'Nguyễn Âm Nhạc', email: 'nguyen@example.com', level: 'Intermediate' };
+    localStorage.setItem('dlq_user', JSON.stringify(user));
+    showToast('Đăng nhập thành công! Chào mừng bạn 🎵', 'success');
+    setTimeout(() => checkAuth(), 1000);
+  }
+
+  function register() {
+    const user = { name: 'Người dùng mới', email: 'new@example.com', level: 'Beginner' };
+    localStorage.setItem('dlq_user', JSON.stringify(user));
+    showToast('Đăng ký thành công! Chào mừng đến DLQ 🎵', 'success');
+    setTimeout(() => checkAuth(), 1000);
+  }
+
+  function socialLogin(provider) {
+    const user = { name: provider === 'google' ? 'Google User' : 'Facebook User', email: provider + '@example.com', level: 'Beginner' };
+    localStorage.setItem('dlq_user', JSON.stringify(user));
+    showToast('Đăng nhập bằng ' + provider + ' thành công!', 'success');
+    setTimeout(() => checkAuth(), 800);
+  }
+
+  function logout() {
+    if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
+    localStorage.removeItem('dlq_user');
+    showToast('Đã đăng xuất. Hẹn gặp lại! 👋', 'success');
+    setTimeout(() => checkAuth(), 1000);
+  }
+
+  function switchAuthTab(tab) {
+    document.querySelectorAll('.auth-tab').forEach((t, i) => {
+      t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
+      t.setAttribute('aria-selected', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
+    });
+    document.getElementById('auth-login').classList.toggle('active', tab === 'login');
+    document.getElementById('auth-register').classList.toggle('active', tab === 'register');
+  }
+
+  function openTab(tabName) {
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.profile-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+    const pane = document.getElementById('tab-' + tabName);
+    if (pane) pane.classList.add('active');
+    const tab = document.querySelector('[data-tab="' + tabName + '"]');
+    if (tab) { tab.classList.add('active'); tab.setAttribute('aria-selected', 'true'); }
+  }
+
+  function removeWishlist(btn) {
+    const card = btn.closest('.wishlist-card');
+    card.style.animation = 'fadeOut 0.3s ease forwards';
+    setTimeout(() => { card.remove(); showToast('Đã xóa khỏi danh sách yêu thích', 'success'); }, 300);
+  }
+
+  function addToCartWishlist(name, price) {
+    let cart = JSON.parse(localStorage.getItem('dlq_cart') || '[]');
+    const existing = cart.find(i => i.name === name);
+    if (existing) existing.qty++;
+    else cart.push({ name, price, qty: 1, emoji: '🎸' });
+    localStorage.setItem('dlq_cart', JSON.stringify(cart));
+    showToast('✅ Đã thêm "' + name + '" vào giỏ hàng!', 'success');
+  }
+
+  function addInstrumentPrompt() {
+    showToast('Tính năng đang phát triển – sắp có!', 'success');
+  }
+
+  function reorder() { showToast('Đã thêm sản phẩm vào giỏ hàng!', 'success'); }
+  function reviewProduct(id) { showToast('Mở form đánh giá sản phẩm...', 'success'); }
+  function trackOrder() { showToast('Đang theo dõi đơn hàng...', 'success'); }
+  function cancelOrder() { if (confirm('Bạn có chắc muốn hủy đơn hàng này?')) showToast('Đã gửi yêu cầu hủy đơn hàng', 'success'); }
+  function saveProfile() {
+    const name = document.getElementById('settings-name').value.trim();
+    if (name) {
+      const user = JSON.parse(localStorage.getItem('dlq_user') || '{}');
+      user.name = name;
+      localStorage.setItem('dlq_user', JSON.stringify(user));
+      document.getElementById('profile-display-name').textContent = name;
+    }
+    showToast('✅ Đã lưu thông tin cá nhân!', 'success');
+  }
+  function savePreferences() { showToast('✅ Đã lưu sở thích âm nhạc!', 'success'); }
+  function changePassword() { showToast('✅ Đổi mật khẩu thành công!', 'success'); }
+  function exportData() { showToast('Đang chuẩn bị file xuất dữ liệu...', 'success'); }
+  function deleteAccount() { if (confirm('⚠️ Bạn có chắc muốn xóa tài khoản? Hành động này không thể hoàn tác!')) showToast('Đã gửi yêu cầu xóa tài khoản', 'success'); }
+  function changeAvatar(input) { if (input.files && input.files[0]) showToast('✅ Ảnh đại diện đã được cập nhật!', 'success'); }
+
+  function showToast(msg, type = 'success') {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.className = 'toast show ' + type;
+    setTimeout(() => toast.classList.remove('show'), 3500);
+  }
+
+  // Animate progress bars on load
+  window.addEventListener('load', () => {
+    checkAuth();
+    setTimeout(() => {
+      document.querySelectorAll('.progress-bar-fill').forEach(bar => {
+        const w = bar.style.width;
+        bar.style.width = '0%';
+        setTimeout(() => { bar.style.width = w; }, 100);
+      });
+    }, 500);
+  });
+</script>
+</body>
+</html>
